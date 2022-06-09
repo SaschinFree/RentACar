@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane fx:id="main" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="573.0" prefWidth="916.0" style="-fx-background-color: #CDD7EC;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="za.nmu.wrrv.rent.Controller">
+   <top>
+      <VBox prefHeight="153.0" prefWidth="916.0" BorderPane.alignment="CENTER">
+         <children>
+            <HBox prefHeight="189.0" prefWidth="916.0" spacing="20.0">
+               <children>
+                  <Label prefHeight="88.0" prefWidth="730.0" text="Rent A Car">
+                     <font>
+                        <Font name="System Italic" size="60.0" />
+                     </font>
+                  </Label>
+                  <Button mnemonicParsing="false" onMouseClicked="#logoutClicked" style="-fx-background-color: #3B2F2F;" text="Logout" textFill="WHITE">
+                     <HBox.margin>
+                        <Insets top="40.0" />
+                     </HBox.margin></Button>
+                  <Button mnemonicParsing="false" onMouseClicked="#loginClicked" style="-fx-background-color: #3B2F2F;" text="Login" textFill="WHITE">
+                     <HBox.margin>
+                        <Insets top="40.0" />
+                     </HBox.margin></Button>
+               </children>
+            </HBox>
+            <Line endX="911.0" stroke="#8d918d" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeWidth="5.0" />
+         </children>
+      </VBox>
+   </top>
+</BorderPane>

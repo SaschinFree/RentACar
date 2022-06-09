@@ -6,9 +6,9 @@
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="287.0" prefWidth="450.0" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="za.nmu.wrrv.rent.Controller">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="287.0" prefWidth="450.0" style="-fx-background-color: #CDD7EC;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="za.nmu.wrrv.rent.Controller">
    <top>
-      <HBox prefHeight="63.0" prefWidth="450.0" style="-fx-background-color: #CDD7EC;" BorderPane.alignment="CENTER">
+      <HBox prefHeight="63.0" prefWidth="450.0" BorderPane.alignment="CENTER">
          <children>
             <Label alignment="TOP_LEFT" text="Rent A Car">
                <font>
@@ -22,7 +22,7 @@
       </HBox>
    </top>
    <center>
-      <VBox prefHeight="200.0" prefWidth="100.0" spacing="25.0" style="-fx-background-color: #CDD7EC;" BorderPane.alignment="CENTER">
+      <VBox prefHeight="200.0" prefWidth="100.0" spacing="25.0" BorderPane.alignment="CENTER">
          <children>
             <Line endX="445.0" fill="#8d918d" stroke="#8d918d" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeWidth="5.0" />
             <HBox alignment="CENTER" prefHeight="22.0" prefWidth="600.0" spacing="150.0">

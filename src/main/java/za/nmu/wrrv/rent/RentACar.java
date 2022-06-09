@@ -3,18 +3,17 @@ package za.nmu.wrrv.rent;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 import java.io.IOException;
 
 public class RentACar extends Application
 {
-    Stage rootStage;
-    Stage loginStage;
-    Stage mainScreen;
+    private Stage mainStage;
 
-    FXMLLoader loginLoader;
-    FXMLLoader mainLoader;
+    private FXMLLoader mainLoader;
 
     public static void main(String[] args) {
         launch();
@@ -23,23 +22,21 @@ public class RentACar extends Application
     @Override
     public void start(Stage stage) throws IOException
     {
-        rootStage = stage;
+        mainStage(stage);
 
-        login();
-
-        loginStage.show();
+        mainStage.show();
     }
-    private Stage login() throws IOException
+    private Stage mainStage(Stage stage) throws IOException
     {
-        loginStage = new Stage();
+        mainStage = stage;
 
-        loginLoader = new FXMLLoader(RentACar.class.getResource("login.fxml"));
+        mainLoader = new FXMLLoader(RentACar.class.getResource("main.fxml"));
 
-        Scene loginScene = new Scene(loginLoader.load());
+        Scene mainScene = new Scene(mainLoader.load());
 
-        loginStage.setScene(loginScene);
-        loginStage.setTitle("Login");
+        mainStage.setScene(mainScene);
+        mainStage.setTitle("Main");
 
-        return loginStage;
+        return mainStage;
     }
 }
