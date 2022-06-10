@@ -11,10 +11,6 @@ import java.io.IOException;
 
 public class RentACar extends Application
 {
-    private Stage mainStage;
-
-    private FXMLLoader mainLoader;
-
     public static void main(String[] args) {
         launch();
     }
@@ -22,21 +18,12 @@ public class RentACar extends Application
     @Override
     public void start(Stage stage) throws IOException
     {
-        mainStage(stage);
-
-        mainStage.show();
-    }
-    private Stage mainStage(Stage stage) throws IOException
-    {
-        mainStage = stage;
-
-        mainLoader = new FXMLLoader(RentACar.class.getResource("main.fxml"));
-
+        FXMLLoader mainLoader = new FXMLLoader(RentACar.class.getResource("main.fxml"));
         Scene mainScene = new Scene(mainLoader.load());
 
-        mainStage.setScene(mainScene);
-        mainStage.setTitle("Main");
+        stage.setScene(mainScene);
+        stage.setTitle("Main");
 
-        return mainStage;
+        stage.show();
     }
 }

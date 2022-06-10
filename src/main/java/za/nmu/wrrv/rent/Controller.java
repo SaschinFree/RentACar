@@ -3,6 +3,8 @@ package za.nmu.wrrv.rent;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
@@ -15,11 +17,12 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
-public class Controller
+public class Controller implements Initializable
 {
-    private Stage thisStage;
-    private FXMLLoader thisLoader;
+    private SceneLoader thisScene = new SceneLoader();
 
     @FXML
     private BorderPane main;
@@ -27,15 +30,25 @@ public class Controller
     private TextField user;
     @FXML
     private PasswordField pass;
+    @FXML
+    private Button logout;
 
-    private boolean isLoggedOn = false;
+    private static boolean isLoggedOn = false;
 
+    @Override
+    public void initialize(URL url, ResourceBundle rb)
+    {
+
+    }
 
     @FXML
     protected void onCancel(MouseEvent mouseEvent)
     {
         if(mouseEvent.getButton() == MouseButton.PRIMARY)
-            user.getScene().getWindow().hide();
+        {
+            BorderPane fakeMain = (BorderPane) user.getScene().getWindow().getScene().getRoot();
+            fakeMain.setCenter(null);
+        }
     }
 
     @FXML
@@ -50,7 +63,9 @@ public class Controller
                 alert.setTitle("Success");
                 alert.setHeaderText("Login successful");
 
-                user.getScene().getWindow().hide();
+                isLoggedOn = true;
+                BorderPane fakeMain = (BorderPane) user.getScene().getWindow().getScene().getRoot();
+                fakeMain.setCenter(newCenter("clerkMenu"));
             }
             else
             {
@@ -87,8 +102,7 @@ public class Controller
             Alert alert;
             if(isLoggedOn)
             {
-                Pane pane = (Pane) main.getCenter();
-                pane.getChildren().removeAll();
+                main.setCenter(null);
                 alert = new Alert(AlertType.INFORMATION);
                 alert.setTitle("Successful");
                 alert.setHeaderText("Logout successful");
@@ -104,36 +118,22 @@ public class Controller
             }
         }
     }
-
     @FXML
-    protected void loginClicked(MouseEvent mouseEvent) throws Exception
+    protected void loginClicked(MouseEvent mouseEvent)
     {
         if(mouseEvent.getButton() == MouseButton.PRIMARY)
         {
             if(!isLoggedOn)
             {
-                login();
-                thisStage.show();
-                isLoggedOn = true;
+                main.setCenter(newCenter("login"));
             }
         }
     }
 
-
-    private Stage login() throws IOException
+    private Parent newCenter(String centerName)
     {
-        thisStage = new Stage();
+        Scene scene = thisScene.getPage(centerName);
 
-        thisLoader = new FXMLLoader(RentACar.class.getResource("login.fxml"));
-
-        Scene loginScene = new Scene(thisLoader.load());
-
-        thisStage.setScene(loginScene);
-        thisStage.setTitle("Login");
-        thisStage.initModality(Modality.APPLICATION_MODAL);
-        thisStage.initStyle(StageStyle.UTILITY);
-        thisStage.initOwner(main.getScene().getWindow());
-
-        return thisStage;
+        return scene.getRoot();
     }
 }
