@@ -3,55 +3,38 @@
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
-<?import javafx.scene.shape.*?>
-<?import javafx.scene.text.*?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="287.0" prefWidth="450.0" style="-fx-background-color: #CDD7EC;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="za.nmu.wrrv.rent.Controller">
-   <top>
-      <HBox prefHeight="63.0" prefWidth="450.0" BorderPane.alignment="CENTER">
+<VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="458.0" style="-fx-background-color: #CDD7EC;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="za.nmu.wrrv.rent.loginController">
+   <children>
+      <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0" spacing="150.0">
          <children>
-            <Label alignment="TOP_LEFT" text="Rent A Car">
-               <font>
-                  <Font name="System Italic" size="30.0" />
-               </font>
-               <padding>
-                  <Insets left="5.0" />
-               </padding>
-            </Label>
+            <Label text="Username" />
+            <TextField fx:id="user" />
          </children>
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </padding>
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
       </HBox>
-   </top>
-   <center>
-      <VBox prefHeight="200.0" prefWidth="100.0" spacing="25.0" BorderPane.alignment="CENTER">
+      <HBox alignment="TOP_CENTER" prefHeight="100.0" prefWidth="200.0" spacing="150.0">
          <children>
-            <Line endX="445.0" fill="#8d918d" stroke="#8d918d" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeWidth="5.0" />
-            <HBox alignment="CENTER" prefHeight="22.0" prefWidth="600.0" spacing="150.0">
-               <children>
-                  <Label text="Username" />
-                  <TextField fx:id="user" />
-               </children>
-               <padding>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-               </padding></HBox>
-            <HBox alignment="CENTER" prefHeight="19.0" prefWidth="600.0" spacing="154.0">
-               <children>
-                  <Label text="Password" />
-                  <PasswordField fx:id="pass" />
-               </children>
-               <padding>
-                  <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
-               </padding>
-            </HBox>
-            <HBox alignment="BOTTOM_RIGHT" prefHeight="57.0" prefWidth="450.0" spacing="25.0">
-               <children>
-                  <Button mnemonicParsing="false" onMouseClicked="#onCancel" style="-fx-background-color: #3B2F2F;" text="Cancel" textFill="WHITE" />
-                  <Button mnemonicParsing="false" onMouseClicked="#onLogin" style="-fx-background-color: #3B2F2F;" text="Login" textFill="WHITE" />
-               </children>
-               <padding>
-                  <Insets right="50.0" />
-               </padding>
-            </HBox>
+            <Label text="Password" />
+            <PasswordField fx:id="pass" />
          </children>
-      </VBox>
-   </center>
-</BorderPane>
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </padding>
+      </HBox>
+      <HBox alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="50.0">
+         <children>
+            <Button mnemonicParsing="false" onMouseClicked="#onCancel" style="-fx-background-color: #3B2F2F;" text="Cancel" textFill="WHITE" />
+            <Button mnemonicParsing="false" onMouseClicked="#onLogin" style="-fx-background-color: #3B2F2F;" text="Login" textFill="WHITE" />
+         </children>
+         <padding>
+            <Insets bottom="5.0" right="5.0" />
+         </padding>
+      </HBox>
+   </children>
+</VBox>

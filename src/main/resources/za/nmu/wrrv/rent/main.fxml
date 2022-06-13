@@ -6,7 +6,7 @@
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
 
-<BorderPane fx:id="main" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="573.0" prefWidth="916.0" style="-fx-background-color: #CDD7EC;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="za.nmu.wrrv.rent.Controller">
+<BorderPane fx:id="main" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="573.0" prefWidth="916.0" style="-fx-background-color: #CDD7EC;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="za.nmu.wrrv.rent.baseController">
    <top>
       <VBox prefHeight="153.0" prefWidth="916.0" BorderPane.alignment="CENTER">
          <children>
@@ -30,7 +30,10 @@
                   <Insets left="25.0" top="10.0" />
                </padding>
             </HBox>
-            <Line endX="911.0" stroke="#8d918d" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeWidth="5.0" />
+            <Line endX="911.0" stroke="#8d918d" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeWidth="5.0">
+               <VBox.margin>
+                  <Insets bottom="10.0" />
+               </VBox.margin></Line>
          </children>
       </VBox>
    </top>
