@@ -10,7 +10,7 @@
          <children>
             <Hyperlink onMouseClicked="#backToMenu" text="Menu" />
             <Label text="&gt;" />
-            <Label text="Manage Clients" textFill="WHITE" underline="true" />
+            <Label fx:id="currentTab" text="Manage Clients" textFill="WHITE" underline="true" />
             <Label disable="true" prefHeight="17.0" prefWidth="547.0" />
             <TextField fx:id="searchQuery" promptText="Search" />
             <Button mnemonicParsing="false" onMouseClicked="#onSearchClicked" style="-fx-background-color: #3B2F2F;" text="Search" textFill="WHITE" />
