@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="420.0" prefWidth="916.0" spacing="10.0" style="-fx-background-color: #CDD7EC;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="za.nmu.wrrv.rent.manageSettingsController">
+   <children>
+      <HBox alignment="CENTER_LEFT" prefHeight="46.0" prefWidth="600.0" spacing="5.0" style="-fx-background-color: #8d918d;">
+         <children>
+            <Hyperlink onMouseClicked="#backToMenu" text="Menu" />
+            <Label text="&gt;" />
+            <Label fx:id="currentTab" text="Manage Settings" textFill="WHITE" underline="true" />
+         </children></HBox>
+      <VBox prefHeight="376.0" prefWidth="916.0" spacing="10.0" style="-fx-background-color: #8d918d;">
+         <children>
+            <TableView fx:id="settingTable" prefHeight="200.0" prefWidth="200.0">
+              <columns>
+                <TableColumn prefWidth="75.0" text="C1" />
+                <TableColumn prefWidth="75.0" text="C2" />
+              </columns>
+            </TableView>
+            <HBox prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Button mnemonicParsing="false" onMouseClicked="#onBackClicked" style="-fx-background-color: #3B2F2F;" text="Back" textFill="WHITE" />
+                  <Label prefHeight="17.0" prefWidth="763.0" />
+                  <Button mnemonicParsing="false" onMouseClicked="#onUpdateClicked" style="-fx-background-color: #3B2F2F;" text="Update Settings" textFill="WHITE" />
+               </children></HBox>
+         </children>
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </padding>
+      </VBox>
+   </children>
+</VBox>

@@ -9,7 +9,7 @@ import javafx.scene.layout.BorderPane;
 public class clerkController extends baseController
 {
     @FXML
-    private Button manageClients;
+    protected Button manageClients;
 
     @FXML
     protected void manageClientsClicked(MouseEvent mouseEvent)

@@ -8,16 +8,17 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 
-public class manageClientsController extends baseController
+public class manageVehiclesController extends baseController
 {
     @FXML
     protected Label currentTab;
     @FXML
     protected TextField searchQuery;
     @FXML
-    protected TableView clientTable;
+    protected TableView vehicleTable;
 
-    public void backToMenu(MouseEvent mouseEvent)
+    @FXML
+    protected void backToMenu(MouseEvent mouseEvent)
     {
         if(mouseEvent.getButton() == MouseButton.PRIMARY)
             nextScene("clerkMenu");
@@ -34,14 +35,14 @@ public class manageClientsController extends baseController
     protected void onAddClicked(MouseEvent mouseEvent)
     {
         if(mouseEvent.getButton() == MouseButton.PRIMARY)
-            nextScene("addClient");
+            nextScene("addVehicle");
     }
 
     @FXML
     protected void onUpdateClicked(MouseEvent mouseEvent)
     {
         if(mouseEvent.getButton() == MouseButton.PRIMARY)
-            nextScene("updateClient");
+            nextScene("updateVehicle");
     }
 
     @FXML
