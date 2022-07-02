@@ -3,16 +3,19 @@ package za.nmu.wrrv.rent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 
-public class manageSettingsController extends baseController
+public class returnVehicleController extends baseController
 {
     @FXML
     protected Label currentTab;
     @FXML
-    protected TableView settingTable;
+    protected TextField searchQuery;
+    @FXML
+    protected TableView vehicleTable;
 
     @FXML
     protected void backToMenu(MouseEvent mouseEvent)
@@ -22,10 +25,17 @@ public class manageSettingsController extends baseController
     }
 
     @FXML
-    protected void onUpdateClicked(MouseEvent mouseEvent)
+    protected void onSearchClicked(MouseEvent mouseEvent)
     {
         if(mouseEvent.getButton() == MouseButton.PRIMARY)
-            nextScene("updateSetting");
+            nextScene("");
+    }
+
+    @FXML
+    protected void onReturnClicked(MouseEvent mouseEvent)
+    {
+        if(mouseEvent.getButton() == MouseButton.PRIMARY)
+            nextScene("");
     }
 
     private void nextScene(String sceneName)

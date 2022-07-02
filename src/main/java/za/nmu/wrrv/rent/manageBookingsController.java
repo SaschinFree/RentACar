@@ -46,13 +46,6 @@ public class manageBookingsController extends baseController
             nextScene("cancelBooking");
     }
 
-    @FXML
-    protected void onBackClicked(MouseEvent mouseEvent)
-    {
-        if(mouseEvent.getButton() == MouseButton.PRIMARY)
-            nextScene("clerkMenu");
-    }
-
     private void nextScene(String sceneName)
     {
         BorderPane fakeMain = (BorderPane) currentTab.getScene().getWindow().getScene().getRoot();

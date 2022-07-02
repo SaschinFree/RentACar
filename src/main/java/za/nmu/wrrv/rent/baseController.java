@@ -61,8 +61,13 @@ public class baseController implements Initializable
         if(mouseEvent.getButton() == MouseButton.PRIMARY)
         {
             if(!isLoggedOn)
-            {
                 main.setCenter(newCenter("login"));
+            else
+            {
+                Alert alert = new Alert(AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText("User is already logged in");
+                alert.showAndWait();
             }
         }
     }

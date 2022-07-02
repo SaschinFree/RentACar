@@ -1,7 +1,9 @@
 package za.nmu.wrrv.rent;
 
 import javafx.fxml.FXML;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
@@ -9,83 +11,40 @@ import javafx.scene.layout.BorderPane;
 public class clerkController extends baseController
 {
     @FXML
+    protected Label user;
+    @FXML
     protected Button manageClients;
+    @FXML
+    protected Button manageBookings;
+    @FXML
+    protected Button dispatchVehicle;
+    @FXML
+    protected Button returnVehicle;
+    @FXML
+    protected Button manageVehicles;
+    @FXML
+    protected Button manageSettings;
+    @FXML
+    protected Button generateReport;
+    @FXML
+    protected Button payClient;
 
     @FXML
-    protected void manageClientsClicked(MouseEvent mouseEvent)
+    protected void buttonClicked(MouseEvent mouseEvent)
     {
         if(mouseEvent.getButton() == MouseButton.PRIMARY)
         {
-            nextScene("manageClients");
-        }
-    }
+            Button thisButton = (Button) mouseEvent.getSource();
+            String buttonId = thisButton.getId();
 
-    @FXML
-    protected void manageBookingsClicked(MouseEvent mouseEvent)
-    {
-        if(mouseEvent.getButton() == MouseButton.PRIMARY)
-        {
-            nextScene("manageBookings");
-        }
-    }
-
-    @FXML
-    protected void sendVehicleClicked(MouseEvent mouseEvent)
-    {
-        if(mouseEvent.getButton() == MouseButton.PRIMARY)
-        {
-            nextScene("sendVehicle");
-        }
-    }
-
-    @FXML
-    protected void returnVehicleClicked(MouseEvent mouseEvent)
-    {
-        if(mouseEvent.getButton() == MouseButton.PRIMARY)
-        {
-            nextScene("returnVehicle");
-        }
-    }
-
-    @FXML
-    protected void manageVehiclesClicked(MouseEvent mouseEvent)
-    {
-        if(mouseEvent.getButton() == MouseButton.PRIMARY)
-        {
-            nextScene("manageVehicles");
-        }
-    }
-
-    @FXML
-    protected void manageSettingsClicked(MouseEvent mouseEvent)
-    {
-        if(mouseEvent.getButton() == MouseButton.PRIMARY)
-        {
-            nextScene("manageSettings");
-        }
-    }
-
-    @FXML
-    protected void generateReportClicked(MouseEvent mouseEvent)
-    {
-        if(mouseEvent.getButton() == MouseButton.PRIMARY)
-        {
-            nextScene("generateReport");
-        }
-    }
-
-    @FXML
-    protected void payClientClicked(MouseEvent mouseEvent)
-    {
-        if(mouseEvent.getButton() == MouseButton.PRIMARY)
-        {
-            nextScene("payClient");
+            nextScene(buttonId);
         }
     }
 
     private void nextScene(String sceneName)
     {
-        BorderPane fakeMain = (BorderPane) manageClients.getScene().getWindow().getScene().getRoot();
-        fakeMain.setCenter(newCenter(sceneName));
+        BorderPane fakeMain = (BorderPane) user.getScene().getWindow().getScene().getRoot();
+        Parent center = newCenter(sceneName);
+        fakeMain.setCenter(center);
     }
 }

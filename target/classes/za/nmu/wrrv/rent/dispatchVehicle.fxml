@@ -4,34 +4,33 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="420.0" prefWidth="916.0" spacing="10.0" style="-fx-background-color: #CDD7EC;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="za.nmu.wrrv.rent.manageClientsController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="420.0" prefWidth="916.0" spacing="10.0" style="-fx-background-color: #CDD7EC;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="za.nmu.wrrv.rent.dispatchVehicleController">
    <children>
       <HBox alignment="CENTER_LEFT" prefHeight="46.0" prefWidth="600.0" spacing="5.0" style="-fx-background-color: #8d918d;">
          <children>
             <Hyperlink onMouseClicked="#backToMenu" text="Menu" />
             <Label text="&gt;" />
-            <Label fx:id="currentTab" text="Manage Clients" textFill="WHITE" underline="true" />
-            <Label disable="true" prefHeight="17.0" prefWidth="555.0" />
+            <Label fx:id="currentTab" layoutX="74.0" layoutY="10.0" text="Send Vehicle" textFill="WHITE" underline="true" />
+            <Label layoutX="107.0" layoutY="10.0" prefHeight="17.0" prefWidth="568.0" />
             <TextField fx:id="searchQuery" promptText="Search" />
             <Button mnemonicParsing="false" onMouseClicked="#onSearchClicked" style="-fx-background-color: #3B2F2F;" text="Search" textFill="WHITE" />
          </children>
       </HBox>
       <VBox prefHeight="376.0" prefWidth="916.0" spacing="10.0" style="-fx-background-color: #8d918d;">
          <children>
-            <TableView fx:id="clientTable" prefHeight="200.0" prefWidth="200.0">
+            <TableView fx:id="vehicleTable" prefHeight="200.0" prefWidth="200.0">
               <columns>
                 <TableColumn prefWidth="75.0" text="C1" />
                 <TableColumn prefWidth="75.0" text="C2" />
               </columns>
             </TableView>
-            <HBox prefHeight="115.0" prefWidth="906.0">
+            <HBox prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <Button mnemonicParsing="false" onMouseClicked="#onAddClicked" prefHeight="25.0" prefWidth="79.0" style="-fx-background-color: #3B2F2F;" text="Add Client" textFill="WHITE" />
-                  <Label disable="true" prefHeight="17.0" prefWidth="740.0" />
-                  <Button mnemonicParsing="false" onMouseClicked="#onUpdateClicked" style="-fx-background-color: #3B2F2F;" text="Update Client" textFill="WHITE" />
+                  <Button mnemonicParsing="false" onMouseClicked="#backToMenu" style="-fx-background-color: #3B2F2F;" text="Back" textFill="WHITE" />
+                  <Label prefHeight="17.0" prefWidth="781.0" />
+                  <Button mnemonicParsing="false" onMouseClicked="#onSendClicked" style="-fx-background-color: #3B2F2F;" text="Send Vehicle" textFill="WHITE" />
                </children>
             </HBox>
-            <Button mnemonicParsing="false" onMouseClicked="#backToMenu" style="-fx-background-color: #3B2F2F;" text="Back" textFill="WHITE" />
          </children>
          <padding>
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />

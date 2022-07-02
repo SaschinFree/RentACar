@@ -23,6 +23,7 @@ public class RentACar extends Application
 
         stage.setScene(mainScene);
         stage.setTitle("Main");
+        stage.setResizable(false);
 
         stage.show();
     }

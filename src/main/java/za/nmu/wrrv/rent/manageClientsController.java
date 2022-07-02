@@ -44,13 +44,6 @@ public class manageClientsController extends baseController
             nextScene("updateClient");
     }
 
-    @FXML
-    protected void onBackClicked(MouseEvent mouseEvent)
-    {
-        if(mouseEvent.getButton() == MouseButton.PRIMARY)
-            nextScene("clerkMenu");
-    }
-
     private void nextScene(String sceneName)
     {
         BorderPane fakeMain = (BorderPane) currentTab.getScene().getWindow().getScene().getRoot();

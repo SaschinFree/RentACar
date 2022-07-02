@@ -5,16 +5,16 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="420.0" prefWidth="916.0" style="-fx-background-color: #CDD7EC;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="za.nmu.wrrv.rent.clerkController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="420.0" prefWidth="916.0" spacing="10.0" style="-fx-background-color: #CDD7EC;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="za.nmu.wrrv.rent.clerkController">
    <children>
-      <HBox prefHeight="51.0" prefWidth="600.0" spacing="10.0">
+      <HBox alignment="CENTER_LEFT" prefHeight="51.0" prefWidth="600.0" spacing="10.0">
          <children>
             <Label text="Logged in as">
                <font>
                   <Font size="15.0" />
                </font>
             </Label>
-            <Label text="Admin/Clerk">
+            <Label fx:id="user" text="Admin/Clerk">
                <font>
                   <Font size="15.0" />
                </font>
@@ -36,14 +36,14 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Button fx:id="manageClients" mnemonicParsing="false" onMouseClicked="#manageClientsClicked" prefHeight="80.0" prefWidth="120.0" style="-fx-background-color: #3B2F2F;" text="Manage Clients" textFill="WHITE" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-            <Button mnemonicParsing="false" onMouseClicked="#manageBookingsClicked" prefHeight="80.0" prefWidth="120.0" style="-fx-background-color: #3B2F2F;" text="Manage Bookings" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-            <Button mnemonicParsing="false" onMouseClicked="#sendVehicleClicked" prefHeight="80.0" prefWidth="120.0" style="-fx-background-color: #3B2F2F;" text="Send Vehicle" textFill="WHITE" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-            <Button mnemonicParsing="false" onMouseClicked="#returnVehicleClicked" prefHeight="80.0" prefWidth="120.0" style="-fx-background-color: #3B2F2F;" text="Return Vehicle" textFill="WHITE" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
-            <Button mnemonicParsing="false" onMouseClicked="#manageVehiclesClicked" prefHeight="80.0" prefWidth="120.0" style="-fx-background-color: #3B2F2F;" text="Manage Vehicles" textFill="WHITE" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-            <Button mnemonicParsing="false" onMouseClicked="#manageSettingsClicked" prefHeight="80.0" prefWidth="120.0" style="-fx-background-color: #3B2F2F;" text="Manage Settings" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-            <Button mnemonicParsing="false" onMouseClicked="#generateReportClicked" prefHeight="80.0" prefWidth="120.0" style="-fx-background-color: #3B2F2F;" text="Generate Report" textFill="WHITE" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
-            <Button mnemonicParsing="false" onMouseClicked="#payClientClicked" prefHeight="80.0" prefWidth="120.0" style="-fx-background-color: #3B2F2F;" text="Pay Client" textFill="WHITE" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+            <Button fx:id="manageClients" mnemonicParsing="false" onMouseClicked="#buttonClicked" prefHeight="80.0" prefWidth="120.0" style="-fx-background-color: #3B2F2F;" text="Manage Clients" textFill="WHITE" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+            <Button fx:id="manageBookings" mnemonicParsing="false" onMouseClicked="#buttonClicked" prefHeight="80.0" prefWidth="120.0" style="-fx-background-color: #3B2F2F;" text="Manage Bookings" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+            <Button fx:id="dispatchVehicle" mnemonicParsing="false" onMouseClicked="#buttonClicked" prefHeight="80.0" prefWidth="120.0" style="-fx-background-color: #3B2F2F;" text="Dispatch Vehicle" textFill="WHITE" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+            <Button fx:id="returnVehicle" mnemonicParsing="false" onMouseClicked="#buttonClicked" prefHeight="80.0" prefWidth="120.0" style="-fx-background-color: #3B2F2F;" text="Return Vehicle" textFill="WHITE" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+            <Button fx:id="manageVehicles" mnemonicParsing="false" onMouseClicked="#buttonClicked" prefHeight="80.0" prefWidth="120.0" style="-fx-background-color: #3B2F2F;" text="Manage Vehicles" textFill="WHITE" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+            <Button fx:id="manageSettings" mnemonicParsing="false" onMouseClicked="#buttonClicked" prefHeight="80.0" prefWidth="120.0" style="-fx-background-color: #3B2F2F;" text="Manage Settings" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+            <Button fx:id="generateReport" mnemonicParsing="false" onMouseClicked="#buttonClicked" prefHeight="80.0" prefWidth="120.0" style="-fx-background-color: #3B2F2F;" text="Generate Report" textFill="WHITE" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+            <Button fx:id="payClient" mnemonicParsing="false" onMouseClicked="#buttonClicked" prefHeight="80.0" prefWidth="120.0" style="-fx-background-color: #3B2F2F;" text="Pay Client" textFill="WHITE" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
          </children>
       </GridPane>
    </children>

@@ -45,13 +45,6 @@ public class manageVehiclesController extends baseController
             nextScene("updateVehicle");
     }
 
-    @FXML
-    protected void onBackClicked(MouseEvent mouseEvent)
-    {
-        if(mouseEvent.getButton() == MouseButton.PRIMARY)
-            nextScene("clerkMenu");
-    }
-
     private void nextScene(String sceneName)
     {
         BorderPane fakeMain = (BorderPane) currentTab.getScene().getWindow().getScene().getRoot();
