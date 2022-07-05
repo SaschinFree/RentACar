@@ -10,8 +10,8 @@
          <children>
             <Hyperlink onMouseClicked="#backToMenu" text="Menu" />
             <Label text="&gt;" />
-            <Label fx:id="currentTab" layoutX="74.0" layoutY="10.0" text="Send Vehicle" textFill="WHITE" underline="true" />
-            <Label layoutX="107.0" layoutY="10.0" prefHeight="17.0" prefWidth="568.0" />
+            <Label fx:id="currentTab" layoutX="74.0" layoutY="10.0" text="Dispatch Vehicle" textFill="WHITE" underline="true" />
+            <Label layoutX="107.0" layoutY="10.0" prefHeight="17.0" prefWidth="548.0" />
             <TextField fx:id="searchQuery" promptText="Search" />
             <Button mnemonicParsing="false" onMouseClicked="#onSearchClicked" style="-fx-background-color: #3B2F2F;" text="Search" textFill="WHITE" />
          </children>
@@ -27,8 +27,8 @@
             <HBox prefHeight="100.0" prefWidth="200.0">
                <children>
                   <Button mnemonicParsing="false" onMouseClicked="#backToMenu" style="-fx-background-color: #3B2F2F;" text="Back" textFill="WHITE" />
-                  <Label prefHeight="17.0" prefWidth="781.0" />
-                  <Button mnemonicParsing="false" onMouseClicked="#onSendClicked" style="-fx-background-color: #3B2F2F;" text="Send Vehicle" textFill="WHITE" />
+                  <Label prefHeight="17.0" prefWidth="761.0" />
+                  <Button mnemonicParsing="false" onMouseClicked="#onSendClicked" style="-fx-background-color: #3B2F2F;" text="Dispatch Vehicle" textFill="WHITE" />
                </children>
             </HBox>
          </children>

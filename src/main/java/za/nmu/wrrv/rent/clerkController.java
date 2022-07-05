@@ -44,7 +44,6 @@ public class clerkController extends baseController
     private void nextScene(String sceneName)
     {
         BorderPane fakeMain = (BorderPane) user.getScene().getWindow().getScene().getRoot();
-        Parent center = newCenter(sceneName);
-        fakeMain.setCenter(center);
+        fakeMain.setCenter(newCenter(sceneName));
     }
 }

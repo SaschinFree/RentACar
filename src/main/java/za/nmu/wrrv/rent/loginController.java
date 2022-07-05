@@ -31,12 +31,11 @@ public class loginController extends baseController
         if(mouseEvent.getButton() == MouseButton.PRIMARY)
         {
             Alert alert;
-            if(user.getText().equals("user") && pass.getText().equals("pass"))
+            if((user.getText().equals("clerk") || user.getText().equals("admin")) && pass.getText().equals("pass"))
             {
                 alert = new Alert(Alert.AlertType.INFORMATION);
                 alert.setTitle("Success");
                 alert.setHeaderText("Login successful");
-
                 isLoggedOn = true;
             }
             else

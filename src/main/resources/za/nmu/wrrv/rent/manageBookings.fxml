@@ -11,9 +11,9 @@
             <Hyperlink onMouseClicked="#backToMenu" text="Menu" />
             <Label text="&gt;" />
             <Label fx:id="currentTab" text="Manage Bookings" textFill="WHITE" underline="true" />
-            <Label prefHeight="17.0" prefWidth="534.0" />
+            <Label prefHeight="17.0" prefWidth="539.0" />
             <TextField fx:id="searchQuery" promptText="Search" />
-            <Button mnemonicParsing="false" onMouseClicked="#onSearchClicked" style="-fx-background-color: #3B2F2F;" text="Search" textFill="WHITE" />
+            <Button fx:id="search" mnemonicParsing="false" onMouseClicked="#buttonClicked" style="-fx-background-color: #3B2F2F;" text="Search" textFill="WHITE" />
          </children></HBox>
       <VBox prefHeight="376.0" prefWidth="916.0" spacing="10.0" style="-fx-background-color: #8d918d;">
          <children>
@@ -25,11 +25,11 @@
             </TableView>
             <HBox prefHeight="115.0" prefWidth="200.0">
                <children>
-                  <Button mnemonicParsing="false" onMouseClicked="#onCreateClicked" style="-fx-background-color: #3B2F2F;" text="Create Booking" textFill="WHITE" />
+                  <Button fx:id="createBooking" mnemonicParsing="false" onMouseClicked="#buttonClicked" style="-fx-background-color: #3B2F2F;" text="Create Booking" textFill="WHITE" />
                   <Label prefHeight="17.0" prefWidth="708.0" />
-                  <Button mnemonicParsing="false" onMouseClicked="#onCancelClicked" style="-fx-background-color: #3B2F2F;" text="Cancel Booking" textFill="WHITE" />
+                  <Button fx:id="cancelBooking" mnemonicParsing="false" onMouseClicked="#buttonClicked" style="-fx-background-color: #3B2F2F;" text="Cancel Booking" textFill="WHITE" />
                </children></HBox>
-            <Button mnemonicParsing="false" onMouseClicked="#onBackClicked" style="-fx-background-color: #3B2F2F;" text="Back" textFill="WHITE" />
+            <Button mnemonicParsing="false" onMouseClicked="#backToMenu" style="-fx-background-color: #3B2F2F;" text="Back" textFill="WHITE" />
          </children>
          <padding>
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />

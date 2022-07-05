@@ -1,6 +1,7 @@
 package za.nmu.wrrv.rent;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
@@ -10,6 +11,12 @@ import javafx.scene.layout.BorderPane;
 
 public class manageVehiclesController extends baseController
 {
+    @FXML
+    protected Button search;
+    @FXML
+    protected Button addVehicle;
+    @FXML
+    protected Button updateVehicle;
     @FXML
     protected Label currentTab;
     @FXML
@@ -25,24 +32,23 @@ public class manageVehiclesController extends baseController
     }
 
     @FXML
-    protected void onSearchClicked(MouseEvent mouseEvent)
+    protected void buttonClicked(MouseEvent mouseEvent)
     {
         if(mouseEvent.getButton() == MouseButton.PRIMARY)
-            nextScene("");
+        {
+            Button thisButton = (Button) mouseEvent.getSource();
+            String buttonId = thisButton.getId();
+            if(buttonId.equals("search"))
+                onSearchClicked(searchQuery);
+            else
+                nextScene(buttonId);
+        }
     }
 
     @FXML
-    protected void onAddClicked(MouseEvent mouseEvent)
+    protected void onSearchClicked(TextField thisQuery)
     {
-        if(mouseEvent.getButton() == MouseButton.PRIMARY)
-            nextScene("addVehicle");
-    }
 
-    @FXML
-    protected void onUpdateClicked(MouseEvent mouseEvent)
-    {
-        if(mouseEvent.getButton() == MouseButton.PRIMARY)
-            nextScene("updateVehicle");
     }
 
     private void nextScene(String sceneName)

@@ -13,7 +13,7 @@
             <Label fx:id="currentTab" text="Manage Vehicles" textFill="WHITE" underline="true" />
             <Label prefHeight="17.0" prefWidth="547.0" />
             <TextField fx:id="searchQuery" promptText="Search" />
-            <Button mnemonicParsing="false" onMouseClicked="#onSearchClicked" style="-fx-background-color: #3B2F2F;" text="Search" textFill="WHITE" />
+            <Button fx:id="search" mnemonicParsing="false" onMouseClicked="#buttonClicked" style="-fx-background-color: #3B2F2F;" text="Search" textFill="WHITE" />
          </children></HBox>
       <VBox prefHeight="376.0" prefWidth="916.0" spacing="10.0" style="-fx-background-color: #8d918d;">
          <padding>
@@ -28,11 +28,11 @@
             </TableView>
             <HBox prefHeight="115.0" prefWidth="906.0">
                <children>
-                  <Button mnemonicParsing="false" onMouseClicked="#onAddClicked" style="-fx-background-color: #3B2F2F;" text="Add Vehicle" textFill="WHITE" />
+                  <Button fx:id="addVehicle" mnemonicParsing="false" onMouseClicked="#buttonClicked" style="-fx-background-color: #3B2F2F;" text="Add Vehicle" textFill="WHITE" />
                   <Label prefHeight="17.0" prefWidth="728.0" />
-                  <Button mnemonicParsing="false" onMouseClicked="#onUpdateClicked" style="-fx-background-color: #3B2F2F;" text="Update Vehicle" textFill="WHITE" />
+                  <Button fx:id="updateVehicle" mnemonicParsing="false" onMouseClicked="#buttonClicked" style="-fx-background-color: #3B2F2F;" text="Update Vehicle" textFill="WHITE" />
                </children></HBox>
-            <Button mnemonicParsing="false" onMouseClicked="#onBackClicked" style="-fx-background-color: #3B2F2F;" text="Back" textFill="WHITE" />
+            <Button mnemonicParsing="false" onMouseClicked="#backToMenu" style="-fx-background-color: #3B2F2F;" text="Back" textFill="WHITE" />
          </children></VBox>
    </children>
 </VBox>
