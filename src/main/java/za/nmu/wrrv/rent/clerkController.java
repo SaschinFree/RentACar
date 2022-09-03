@@ -1,7 +1,6 @@
 package za.nmu.wrrv.rent;
 
 import javafx.fxml.FXML;
-import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseButton;
@@ -29,6 +28,14 @@ public class clerkController extends baseController
     @FXML
     protected Button payClient;
 
+    @FXML
+    protected void setupExtras(MouseEvent mouseEvent)
+    {
+        if(loginController.thisUser.isAdmin())
+            user.setText("Admin");
+        else
+            user.setText("Clerk");
+    }
     @FXML
     protected void buttonClicked(MouseEvent mouseEvent)
     {

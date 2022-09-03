@@ -8,12 +8,16 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 
+import java.sql.SQLException;
+
 public class loginController extends baseController
 {
     @FXML
     private TextField user;
     @FXML
     private PasswordField pass;
+
+    protected static User thisUser;
 
     @FXML
     protected void onCancel(MouseEvent mouseEvent)
@@ -26,41 +30,50 @@ public class loginController extends baseController
     }
 
     @FXML
-    protected void onLogin(MouseEvent mouseEvent)
+    protected void onLogin(MouseEvent mouseEvent) throws SQLException
     {
+        String username = user.getText();
+        String password = pass.getText();
+        thisUser = User.getUser(username);
+
         if(mouseEvent.getButton() == MouseButton.PRIMARY)
         {
             Alert alert;
-            if((user.getText().equals("clerk") || user.getText().equals("admin")) && pass.getText().equals("pass"))
-            {
-                alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Success");
-                alert.setHeaderText("Login successful");
-                isLoggedOn = true;
-            }
-            else
+
+            if(thisUser == null)
             {
                 alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Failed");
                 alert.setHeaderText("Login failed");
 
-                if(user.getText().isEmpty() | pass.getText().isEmpty())
+                if(username.isEmpty())
+                    alert.setContentText("Username is empty");
+                else
+                    alert.setContentText("Username is incorrect");
+            }
+            else
+            {
+                if(password.equals(thisUser.getPassword()))
                 {
-                    if(user.getText().isEmpty())
-                        alert.setContentText("Username is empty");
-                    else
-                    {
-                        if(pass.getText().isEmpty())
-                            alert.setContentText("Password is empty");
-                        else
-                            alert.setContentText("Username and Password is empty");
-                    }
+                    alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Success");
+                    alert.setHeaderText("Login successful");
+                    isLoggedOn = true;
                 }
                 else
-                    alert.setContentText("Username and/or password is incorrect");
-                user.clear();
-                pass.clear();
+                {
+                    alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Failed");
+                    alert.setHeaderText("Login failed");
+
+                    if(password.isEmpty())
+                        alert.setContentText("Password is empty");
+                    else
+                        alert.setContentText("Password is incorrect");
+                }
             }
+            user.clear();
+            pass.clear();
             alert.showAndWait();
             if(isLoggedOn)
             {

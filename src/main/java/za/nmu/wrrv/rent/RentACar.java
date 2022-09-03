@@ -1,17 +1,18 @@
 package za.nmu.wrrv.rent;
 
+import java.sql.*;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.layout.HBox;
-import javafx.stage.Modality;
+import javafx.scene.control.Alert;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
-
 import java.io.IOException;
 
 public class RentACar extends Application
 {
+    protected static Connection connection = null;
+    protected static Statement statement = null;
+
     public static void main(String[] args) {
         launch();
     }
@@ -22,10 +23,35 @@ public class RentACar extends Application
         FXMLLoader mainLoader = new FXMLLoader(RentACar.class.getResource("main.fxml"));
         Scene mainScene = new Scene(mainLoader.load());
 
-        stage.setScene(mainScene);
-        stage.setTitle("Main");
-        stage.setResizable(false);
 
-        stage.show();
+        if(connectToDB())
+        {
+            stage.setScene(mainScene);
+            stage.setTitle("Main");
+            stage.setResizable(false);
+
+            stage.show();
+        }
+        else
+            System.exit(0);
+    }
+    private boolean connectToDB()
+    {
+        try
+        {
+            connection = DriverManager.getConnection("jdbc:ucanaccess://RentACar.accdb");
+            statement = connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+
+            return true;
+        }
+        catch (Exception e)
+        {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setHeaderText("Database Connection Failed");
+            alert.setContentText(e.getMessage());
+            alert.showAndWait();
+
+            return false;
+        }
     }
 }

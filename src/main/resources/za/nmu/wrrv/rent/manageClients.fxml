@@ -18,10 +18,21 @@
       </HBox>
       <VBox prefHeight="376.0" prefWidth="916.0" spacing="10.0" style="-fx-background-color: #8d918d;">
          <children>
-            <TableView fx:id="clientTable" prefHeight="200.0" prefWidth="200.0">
+            <TableView fx:id="clientTable" onMouseMoved="#setupExtras" prefHeight="200.0" prefWidth="200.0">
               <columns>
-                <TableColumn prefWidth="75.0" text="C1" />
-                <TableColumn prefWidth="75.0" text="C2" />
+                  <TableColumn id="clientID" prefWidth="75.0" text="Client ID" />
+                  <TableColumn id="firstName" prefWidth="75.0" text="First Name" />
+                  <TableColumn id="surname" prefWidth="75.0" text="Surname" />
+                  <TableColumn id="contactNumber" prefWidth="75.0" text="Contact Number" />
+                  <TableColumn id="email" prefWidth="75.0" text="Email" />
+                  <TableColumn id="licenceExpiryDate" prefWidth="75.0" text="Licence Expiry Date" />
+                  <TableColumn id="streetNumber" prefWidth="75.0" text="Street Number" />
+                  <TableColumn id="streetName" prefWidth="75.0" text="Street Name" />
+                  <TableColumn id="suburb" prefWidth="75.0" text="Suburb" />
+                  <TableColumn id="city" prefWidth="75.0" text="City" />
+                  <TableColumn id="postalCode" prefWidth="75.0" text="Postal Code" />
+                  <TableColumn id="companyName" prefWidth="75.0" text="Company Name" />
+                  <TableColumn id="moneyOwed" prefWidth="75.0" text="Money Owed" />
               </columns>
             </TableView>
             <HBox prefHeight="115.0" prefWidth="906.0">

@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="420.0" prefWidth="916.0" spacing="10.0" style="-fx-background-color: #CDD7EC;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="za.nmu.wrrv.rent.clerkController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onMouseMoved="#setupExtras" prefHeight="420.0" prefWidth="916.0" spacing="10.0" style="-fx-background-color: #CDD7EC;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="za.nmu.wrrv.rent.clerkController">
    <children>
       <HBox alignment="CENTER_LEFT" prefHeight="51.0" prefWidth="600.0" spacing="10.0">
          <children>
@@ -14,7 +14,7 @@
                   <Font size="15.0" />
                </font>
             </Label>
-            <Label fx:id="user" text="Admin/Clerk">
+            <Label fx:id="user">
                <font>
                   <Font size="15.0" />
                </font>

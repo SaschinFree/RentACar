@@ -13,22 +13,33 @@
             <Label fx:id="currentTab" text="Manage Clients" textFill="WHITE" underline="true" />
             <Label disable="true" prefHeight="17.0" prefWidth="555.0" />
             <TextField fx:id="searchQuery" promptText="Search" />
-            <Button mnemonicParsing="false" onMouseClicked="#onSearchClicked" style="-fx-background-color: #3B2F2F;" text="Search" textFill="WHITE" />
+            <Button fx:id="search" mnemonicParsing="false" onMouseClicked="#buttonClicked" style="-fx-background-color: #3B2F2F;" text="Search" textFill="WHITE" />
          </children>
       </HBox>
       <VBox prefHeight="376.0" prefWidth="916.0" spacing="10.0" style="-fx-background-color: #8d918d;">
          <children>
-            <TableView fx:id="clientTable" prefHeight="200.0" prefWidth="200.0">
+            <TableView fx:id="clientTable" onMouseMoved="#setupExtras" prefHeight="200.0" prefWidth="200.0">
               <columns>
-                <TableColumn prefWidth="75.0" text="C1" />
-                <TableColumn prefWidth="75.0" text="C2" />
+                  <TableColumn id="clientID" prefWidth="75.0" text="Client ID" />
+                  <TableColumn id="firstName" prefWidth="75.0" text="First Name" />
+                  <TableColumn id="surname" prefWidth="75.0" text="Surname" />
+                  <TableColumn id="contactNumber" prefWidth="75.0" text="Contact Number" />
+                  <TableColumn id="email" prefWidth="75.0" text="Email" />
+                  <TableColumn id="licenceExpiryDate" prefWidth="75.0" text="Licence Expiry Date" />
+                  <TableColumn id="streetNumber" prefWidth="75.0" text="Street Number" />
+                  <TableColumn id="streetName" prefWidth="75.0" text="Street Name" />
+                  <TableColumn id="suburb" prefWidth="75.0" text="Suburb" />
+                  <TableColumn id="city" prefWidth="75.0" text="City" />
+                  <TableColumn id="postalCode" prefWidth="75.0" text="Postal Code" />
+                  <TableColumn id="companyName" prefWidth="75.0" text="Company Name" />
+                  <TableColumn id="moneyOwed" prefWidth="75.0" text="Money Owed" />
               </columns>
             </TableView>
             <HBox prefHeight="115.0" prefWidth="906.0">
                <children>
-                  <Button mnemonicParsing="false" onMouseClicked="#onAddClicked" prefHeight="25.0" prefWidth="79.0" style="-fx-background-color: #3B2F2F;" text="Add Client" textFill="WHITE" />
+                  <Button fx:id="addClient" mnemonicParsing="false" onMouseClicked="#buttonClicked" prefHeight="25.0" prefWidth="79.0" style="-fx-background-color: #3B2F2F;" text="Add Client" textFill="WHITE" />
                   <Label disable="true" prefHeight="17.0" prefWidth="740.0" />
-                  <Button mnemonicParsing="false" onMouseClicked="#onUpdateClicked" style="-fx-background-color: #3B2F2F;" text="Update Client" textFill="WHITE" />
+                  <Button fx:id="updateClient" mnemonicParsing="false" onMouseClicked="#buttonClicked" style="-fx-background-color: #3B2F2F;" text="Update Client" textFill="WHITE" />
                </children>
             </HBox>
             <Button mnemonicParsing="false" onMouseClicked="#backToMenu" style="-fx-background-color: #3B2F2F;" text="Back" textFill="WHITE" />
