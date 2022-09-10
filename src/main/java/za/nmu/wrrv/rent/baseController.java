@@ -2,34 +2,27 @@ package za.nmu.wrrv.rent;
 
 
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.Parent;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 
-import java.net.URL;
-import java.util.ResourceBundle;
+import java.io.IOException;
 
-public class baseController implements Initializable
+public class baseController
 {
-    private final SceneLoader thisScene = new SceneLoader();
-
+    protected static final SceneLoader thisScene = new SceneLoader();
     @FXML
     protected BorderPane main;
     @FXML
     protected Button logout;
 
     protected static boolean isLoggedOn = false;
-
-    @Override
-    public void initialize(URL url, ResourceBundle rb)
-    {
-
-    }
 
     @FXML
     protected void logoutClicked(MouseEvent mouseEvent)
@@ -56,12 +49,24 @@ public class baseController implements Initializable
         }
     }
     @FXML
-    protected void loginClicked(MouseEvent mouseEvent)
+    protected void loginClicked(MouseEvent mouseEvent) throws IOException
     {
         if(mouseEvent.getButton() == MouseButton.PRIMARY)
         {
             if(!isLoggedOn)
-                main.setCenter(newCenter("login"));
+            {
+                FXMLLoader loginLoader = new FXMLLoader(RentACar.class.getResource("login.fxml"));
+                Scene loginScene = new Scene(loginLoader.load());
+                Stage loginStage = new Stage();
+
+                loginStage.setScene(loginScene);
+                loginStage.setTitle("Login");
+                loginStage.setResizable(false);
+                loginStage.initModality(Modality.WINDOW_MODAL);
+                loginStage.initOwner(RentACar.mainStage);
+
+                loginStage.show();
+            }
             else
             {
                 Alert alert = new Alert(AlertType.ERROR);
@@ -70,12 +75,5 @@ public class baseController implements Initializable
                 alert.showAndWait();
             }
         }
-    }
-
-    protected Parent newCenter(String centerName)
-    {
-        Scene scene = thisScene.getPage(centerName);
-
-        return scene.getRoot();
     }
 }

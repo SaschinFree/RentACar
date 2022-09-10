@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: #CDD7EC;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="za.nmu.wrrv.rent.addVehicleController">
+   <children>
+      <Label prefHeight="100.0" text="Rent A Car">
+         <padding>
+            <Insets left="25.0" top="10.0" />
+         </padding>
+         <font>
+            <Font name="System Italic" size="60.0" />
+         </font></Label>
+      <Line endX="894.0" stroke="#8d918d" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeWidth="5.0">
+         <VBox.margin>
+            <Insets top="10.0" />
+         </VBox.margin></Line>
+      <HBox prefHeight="356.0">
+         <children>
+            <VBox prefWidth="400.0">
+               <children>
+                  <HBox alignment="CENTER_LEFT" prefHeight="100.0">
+                     <children>
+                        <Label prefWidth="200.0" text="Registration Number">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="registrationNumber" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER_LEFT" prefHeight="100.0">
+                     <children>
+                        <Label prefWidth="200.0" text="Make">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="vehicleMake" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER_LEFT" prefHeight="100.0">
+                     <children>
+                        <Label prefWidth="200.0" text="Model">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="vehicleModel" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER_LEFT" prefHeight="100.0">
+                     <children>
+                        <Label prefWidth="200.0" text="Colour">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="vehicleColour" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER_LEFT" prefHeight="100.0">
+                     <children>
+                        <Label prefWidth="200.0" text="Seats">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                        <Spinner fx:id="vehicleSeats" editable="true" />
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+            <VBox prefWidth="400.0">
+               <children>
+                  <HBox alignment="CENTER_LEFT" prefHeight="60.0">
+                     <children>
+                        <Label prefWidth="200.0" text="Licence Expiration Date">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                        <DatePicker fx:id="licenceExpirationDate" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER_LEFT" prefHeight="65.0">
+                     <children>
+                        <Label prefWidth="200.0" text="Car is Insured">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                        <CheckBox fx:id="vehicleInsurance" mnemonicParsing="false" />
+                     </children>
+                  </HBox>
+               </children>
+            </VBox>
+         </children>
+         <padding>
+            <Insets left="10.0" right="10.0" />
+         </padding>
+      </HBox>
+      <Label text="Availability Period">
+         <font>
+            <Font size="16.0" />
+         </font>
+         <VBox.margin>
+            <Insets left="10.0" right="10.0" />
+         </VBox.margin>
+      </Label>
+      <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="225.0" prefHeight="100.0" prefWidth="200.0">
+         <children>
+            <Label prefWidth="200.0" text="Start Date">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <DatePicker fx:id="vehicleStartDate" />
+         </children>
+         <padding>
+            <Insets left="10.0" right="10.0" />
+         </padding>
+      </HBox>
+      <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="325.0" prefHeight="100.0" prefWidth="200.0">
+         <children>
+            <Label prefWidth="200.0" text="End Date">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <DatePicker fx:id="vehicleEndDate" />
+         </children>
+         <padding>
+            <Insets left="10.0" right="10.0" />
+         </padding>
+      </HBox>
+      <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="20.0">
+         <children>
+            <Button fx:id="cancel" mnemonicParsing="false" style="-fx-background-color: #3B2F2F;" text="Cancel" textFill="WHITE" />
+            <Button fx:id="addVehicle" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" style="-fx-background-color: #3B2F2F;" text="Add Vehicle" textFill="WHITE">
+               <HBox.margin>
+                  <Insets right="10.0" />
+               </HBox.margin>
+            </Button>
+         </children>
+      </HBox>
+   </children>
+</VBox>

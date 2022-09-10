@@ -7,10 +7,11 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.Stage;
 
 import java.sql.SQLException;
 
-public class loginController extends baseController
+public class loginController
 {
     @FXML
     private TextField user;
@@ -24,8 +25,8 @@ public class loginController extends baseController
     {
         if(mouseEvent.getButton() == MouseButton.PRIMARY)
         {
-            BorderPane fakeMain = (BorderPane) user.getScene().getWindow().getScene().getRoot();
-            fakeMain.setCenter(null);
+            Stage loginStage = (Stage) user.getScene().getWindow();
+            loginStage.close();
         }
     }
 
@@ -58,7 +59,7 @@ public class loginController extends baseController
                     alert = new Alert(Alert.AlertType.INFORMATION);
                     alert.setTitle("Success");
                     alert.setHeaderText("Login successful");
-                    isLoggedOn = true;
+                    baseController.isLoggedOn = true;
                 }
                 else
                 {
@@ -75,10 +76,21 @@ public class loginController extends baseController
             user.clear();
             pass.clear();
             alert.showAndWait();
-            if(isLoggedOn)
+            if(baseController.isLoggedOn)
             {
-                BorderPane fakeMain = (BorderPane) user.getScene().getWindow().getScene().getRoot();
-                fakeMain.setCenter(newCenter("clerkMenu"));
+                Stage loginStage = (Stage) user.getScene().getWindow();
+                BorderPane fakeMain = (BorderPane) loginStage.getOwner().getScene().getRoot();
+
+                if(thisUser.isAdmin())
+                {
+                    fakeMain.setCenter(baseController.thisScene.getPage("clerkMenu").getRoot());
+                }
+                else
+                {
+                    fakeMain.setCenter(baseController.thisScene.getPage("clerkMenu").getRoot());
+                }
+
+                loginStage.close();
             }
         }
     }

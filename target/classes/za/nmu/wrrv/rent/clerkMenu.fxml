@@ -14,7 +14,7 @@
                   <Font size="15.0" />
                </font>
             </Label>
-            <Label fx:id="user" text="Admin/Clerk">
+            <Label fx:id="user" textFill="#8d918d">
                <font>
                   <Font size="15.0" />
                </font>

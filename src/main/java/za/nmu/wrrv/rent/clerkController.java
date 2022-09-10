@@ -1,13 +1,17 @@
 package za.nmu.wrrv.rent;
 
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 
-public class clerkController extends baseController
+import java.net.URL;
+import java.util.ResourceBundle;
+
+public class clerkController implements Initializable
 {
     @FXML
     protected Label user;
@@ -28,8 +32,8 @@ public class clerkController extends baseController
     @FXML
     protected Button payClient;
 
-    @FXML
-    protected void setupExtras(MouseEvent mouseEvent)
+    @Override
+    public void initialize(URL url, ResourceBundle rb)
     {
         if(loginController.thisUser.isAdmin())
             user.setText("Admin");
@@ -50,7 +54,7 @@ public class clerkController extends baseController
 
     private void nextScene(String sceneName)
     {
-        BorderPane fakeMain = (BorderPane) user.getScene().getWindow().getScene().getRoot();
-        fakeMain.setCenter(newCenter(sceneName));
+        BorderPane fakeMain = (BorderPane) user.getScene().getRoot();
+        fakeMain.setCenter(baseController.thisScene.getPage(sceneName).getRoot());
     }
 }

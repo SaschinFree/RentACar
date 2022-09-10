@@ -2,14 +2,13 @@ package za.nmu.wrrv.rent;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 
-public class manageBookingsController extends baseController
+public class manageBookingsController
 {
     @FXML
     protected Button search;
@@ -17,8 +16,6 @@ public class manageBookingsController extends baseController
     protected Button createBooking;
     @FXML
     protected Button cancelBooking;
-    @FXML
-    protected Label currentTab;
     @FXML
     protected TextField searchQuery;
     @FXML
@@ -54,7 +51,7 @@ public class manageBookingsController extends baseController
 
     private void nextScene(String sceneName)
     {
-        BorderPane fakeMain = (BorderPane) currentTab.getScene().getWindow().getScene().getRoot();
-        fakeMain.setCenter(newCenter(sceneName));
+        BorderPane fakeMain = (BorderPane) searchQuery.getScene().getRoot();
+        fakeMain.setCenter(baseController.thisScene.getPage(sceneName).getRoot());
     }
 }

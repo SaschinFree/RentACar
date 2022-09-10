@@ -11,6 +11,7 @@ import java.sql.SQLException;
 public class Client
 {
     private static final ObservableList<Client> clientList = FXCollections.observableArrayList();
+    private IntegerProperty clientNumber = new SimpleIntegerProperty();
     private IntegerProperty clientID = new SimpleIntegerProperty();
     private StringProperty firstName = new SimpleStringProperty();
     private StringProperty surname = new SimpleStringProperty();
@@ -25,8 +26,9 @@ public class Client
     private StringProperty companyName = new SimpleStringProperty();
     private IntegerProperty moneyOwed = new SimpleIntegerProperty();
 
-    public Client(int clientID, String firstName, String surname, String contactNumber, String email, Date licenceExpiryDate, int streetNumber, String streetName, String suburb, int postalCode, String city, String companyName, int moneyOwed)
+    public Client(int clientNumber, int clientID, String firstName, String surname, String contactNumber, String email, Date licenceExpiryDate, int streetNumber, String streetName, String suburb, int postalCode, String city, String companyName, int moneyOwed)
     {
+        this.clientNumber.set(clientNumber);
         this.clientID.set(clientID);
         this.firstName.set(firstName);
         this.surname.set(surname);
@@ -49,6 +51,7 @@ public class Client
 
         while(result.next())
         {
+            int thisClientNumber = result.getInt("clientNumber");
             int thisClientID = result.getInt("clientID");
             String thisFirstName = result.getString("firstName");
             String thisSurname = result.getString("surname");
@@ -64,6 +67,7 @@ public class Client
             int thisMoneyOwed = result.getInt("moneyOwed");
 
             clientList.add(new Client(
+                    thisClientNumber,
                     thisClientID,
                     thisFirstName,
                     thisSurname,
@@ -79,6 +83,16 @@ public class Client
                     thisMoneyOwed));
         }
         return clientList;
+    }
+
+    public int getClientNumber() {
+        return clientNumber.get();
+    }
+    public IntegerProperty clientNumberProperty() {
+        return clientNumber;
+    }
+    public void setClientNumber(int clientNumber) {
+        this.clientNumber.set(clientNumber);
     }
 
     public int getClientID() {

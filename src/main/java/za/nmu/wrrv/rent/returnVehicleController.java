@@ -1,17 +1,14 @@
 package za.nmu.wrrv.rent;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 
-public class returnVehicleController extends baseController
+public class returnVehicleController
 {
-    @FXML
-    protected Label currentTab;
     @FXML
     protected TextField searchQuery;
     @FXML
@@ -40,7 +37,7 @@ public class returnVehicleController extends baseController
 
     private void nextScene(String sceneName)
     {
-        BorderPane fakeMain = (BorderPane) currentTab.getScene().getWindow().getScene().getRoot();
-        fakeMain.setCenter(newCenter(sceneName));
+        BorderPane fakeMain = (BorderPane) searchQuery.getScene().getRoot();
+        fakeMain.setCenter(baseController.thisScene.getPage(sceneName).getRoot());
     }
 }

@@ -6,14 +6,13 @@
 
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="420.0" prefWidth="916.0" spacing="10.0" style="-fx-background-color: #CDD7EC;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="za.nmu.wrrv.rent.returnVehicleController">
    <children>
-      <HBox alignment="CENTER_LEFT" prefHeight="46.0" prefWidth="600.0" spacing="5.0" style="-fx-background-color: #8d918d;">
+      <HBox alignment="CENTER_RIGHT" prefHeight="46.0" prefWidth="600.0" spacing="5.0" style="-fx-background-color: #8d918d;">
          <children>
-            <Hyperlink onMouseClicked="#backToMenu" text="Menu" />
-            <Label text="&gt;" />
-            <Label fx:id="currentTab" layoutX="74.0" layoutY="10.0" text="Return Vehicle" textFill="WHITE" underline="true" />
-            <Label layoutX="107.0" layoutY="10.0" prefHeight="17.0" prefWidth="560.0" />
             <TextField fx:id="searchQuery" promptText="Search" />
-            <Button mnemonicParsing="false" onMouseClicked="#onSearchClicked" style="-fx-background-color: #3B2F2F;" text="Search" textFill="WHITE" />
+            <Button mnemonicParsing="false" onMouseClicked="#onSearchClicked" style="-fx-background-color: #3B2F2F;" text="Search" textFill="WHITE">
+               <HBox.margin>
+                  <Insets right="5.0" />
+               </HBox.margin></Button>
          </children>
       </HBox>
       <VBox prefHeight="376.0" prefWidth="916.0" spacing="10.0" style="-fx-background-color: #8d918d;">

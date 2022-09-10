@@ -8,10 +8,8 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 
-public class dispatchVehicleController extends baseController
+public class dispatchVehicleController
 {
-    @FXML
-    protected Label currentTab;
     @FXML
     protected TextField searchQuery;
     @FXML
@@ -40,7 +38,7 @@ public class dispatchVehicleController extends baseController
 
     private void nextScene(String sceneName)
     {
-        BorderPane fakeMain = (BorderPane) currentTab.getScene().getWindow().getScene().getRoot();
-        fakeMain.setCenter(newCenter(sceneName));
+        BorderPane fakeMain = (BorderPane) searchQuery.getScene().getRoot();
+        fakeMain.setCenter(baseController.thisScene.getPage(sceneName).getRoot());
     }
 }

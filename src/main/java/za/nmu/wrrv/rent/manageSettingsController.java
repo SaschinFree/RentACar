@@ -2,18 +2,15 @@ package za.nmu.wrrv.rent;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 
-public class manageSettingsController extends baseController
+public class manageSettingsController
 {
     @FXML
     protected Button updateSetting;
-    @FXML
-    protected Label currentTab;
     @FXML
     protected TableView settingTable;
 
@@ -38,7 +35,7 @@ public class manageSettingsController extends baseController
 
     private void nextScene(String sceneName)
     {
-        BorderPane fakeMain = (BorderPane) currentTab.getScene().getWindow().getScene().getRoot();
-        fakeMain.setCenter(newCenter(sceneName));
+        BorderPane fakeMain = (BorderPane) updateSetting.getScene().getRoot();
+        fakeMain.setCenter(baseController.thisScene.getPage(sceneName).getRoot());
     }
 }
