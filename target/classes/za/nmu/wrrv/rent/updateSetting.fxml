@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: #CDD7EC;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="za.nmu.wrrv.rent.updateSettingController">
+   <children>
+      <Label text="Rent A Car">
+         <font>
+            <Font name="System Italic" size="60.0" />
+         </font>
+         <padding>
+            <Insets left="25.0" top="10.0" />
+         </padding>
+         <VBox.margin>
+            <Insets />
+         </VBox.margin></Label>
+      <Line endX="894.0" stroke="#8d918d" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeWidth="5.0">
+         <VBox.margin>
+            <Insets bottom="10.0" top="10.0" />
+         </VBox.margin></Line>
+      <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
+         <children>
+            <Label prefWidth="200.0" text="Setting ID">
+               <font>
+                  <Font size="16.0" />
+               </font></Label>
+            <Label fx:id="settingID" text="settingID" textFill="#8d918d">
+               <font>
+                  <Font size="16.0" />
+               </font></Label>
+         </children>
+         <padding>
+            <Insets left="10.0" right="10.0" />
+         </padding>
+      </HBox>
+      <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="133.0" prefHeight="100.0" prefWidth="200.0">
+         <children>
+            <Label prefWidth="200.0" text="Setting Value">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <TextField fx:id="settingValue" promptText="00.00" />
+         </children>
+         <padding>
+            <Insets left="10.0" right="10.0" />
+         </padding>
+      </HBox>
+      <HBox alignment="BOTTOM_RIGHT" prefHeight="274.0" prefWidth="900.0" spacing="20.0">
+         <children>
+            <Button mnemonicParsing="false" onMouseClicked="#onCancel" style="-fx-background-color: #3B2F2F;" text="Cancel" textFill="WHITE" />
+            <Button mnemonicParsing="false" onMouseClicked="#onUpdate" style="-fx-background-color: #3B2F2F;" text="Update Setting" textFill="WHITE" />
+         </children>
+         <padding>
+            <Insets left="10.0" right="10.0" />
+         </padding></HBox>
+   </children>
+</VBox>

@@ -9,15 +9,15 @@
       <HBox alignment="CENTER_LEFT" prefHeight="46.0" prefWidth="600.0" spacing="5.0" style="-fx-background-color: #8d918d;" />
       <VBox prefHeight="376.0" prefWidth="916.0" spacing="10.0" style="-fx-background-color: #8d918d;">
          <children>
-            <TableView fx:id="settingTable" prefHeight="200.0" prefWidth="200.0">
+            <TableView fx:id="settingTable" onMouseClicked="#settingSelected" prefHeight="200.0" prefWidth="200.0">
               <columns>
-                <TableColumn prefWidth="75.0" text="C1" />
-                <TableColumn prefWidth="75.0" text="C2" />
+                <TableColumn fx:id="settingID" prefWidth="150.0" text="Setting ID" />
+                <TableColumn fx:id="settingValue" prefWidth="100.0" text="Setting Value" />
               </columns>
             </TableView>
             <HBox prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <Button mnemonicParsing="false" onMouseClicked="#backToMenu" style="-fx-background-color: #3B2F2F;" text="Back" textFill="WHITE" />
+                  <Button fx:id="back" mnemonicParsing="false" onMouseClicked="#buttonClicked" style="-fx-background-color: #3B2F2F;" text="Back" textFill="WHITE" />
                   <Label prefHeight="17.0" prefWidth="768.0" />
                   <Button fx:id="updateSetting" mnemonicParsing="false" onMouseClicked="#buttonClicked" style="-fx-background-color: #3B2F2F;" text="Update Setting" textFill="WHITE" />
                </children></HBox>

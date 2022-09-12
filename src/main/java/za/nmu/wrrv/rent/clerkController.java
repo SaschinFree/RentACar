@@ -6,7 +6,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.BorderPane;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -48,13 +47,7 @@ public class clerkController implements Initializable
             Button thisButton = (Button) mouseEvent.getSource();
             String buttonId = thisButton.getId();
 
-            nextScene(buttonId);
+            baseController.nextScene(buttonId);
         }
-    }
-
-    private void nextScene(String sceneName)
-    {
-        BorderPane fakeMain = (BorderPane) user.getScene().getRoot();
-        fakeMain.setCenter(baseController.thisScene.getPage(sceneName).getRoot());
     }
 }

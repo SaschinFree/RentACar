@@ -27,7 +27,7 @@
                <children>
                   <Button mnemonicParsing="false" onMouseClicked="#backToMenu" style="-fx-background-color: #3B2F2F;" text="Back" textFill="WHITE" />
                   <Label prefHeight="17.0" prefWidth="761.0" />
-                  <Button mnemonicParsing="false" onMouseClicked="#onSendClicked" style="-fx-background-color: #3B2F2F;" text="Dispatch Vehicle" textFill="WHITE" />
+                  <Button mnemonicParsing="false" onMouseClicked="#onDispatchClicked" style="-fx-background-color: #3B2F2F;" text="Dispatch Vehicle" textFill="WHITE" />
                </children>
             </HBox>
          </children>

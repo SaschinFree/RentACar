@@ -87,7 +87,7 @@
                         <DatePicker fx:id="licenceExpirationDate" />
                      </children>
                   </HBox>
-                  <HBox alignment="CENTER_LEFT" prefHeight="70.0">
+                  <HBox alignment="CENTER_LEFT" prefHeight="65.0">
                      <children>
                         <Label prefWidth="200.0" text="Car is Insured">
                            <font>

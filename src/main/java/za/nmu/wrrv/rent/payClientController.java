@@ -7,7 +7,6 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -24,14 +23,14 @@ public class payClientController
     protected void backToMenu(MouseEvent mouseEvent)
     {
         if(mouseEvent.getButton() == MouseButton.PRIMARY)
-            nextScene("clerkMenu");
+            baseController.nextScene(baseController.userLoggedOn);
     }
 
     @FXML
     protected void onSearchClicked(MouseEvent mouseEvent)
     {
         if(mouseEvent.getButton() == MouseButton.PRIMARY)
-            nextScene("");
+            baseController.nextScene("");
     }
 
     @FXML
@@ -51,11 +50,5 @@ public class payClientController
 
             makePaymentStage.show();
         }
-    }
-
-    private void nextScene(String sceneName)
-    {
-        BorderPane fakeMain = (BorderPane) searchQuery.getScene().getRoot();
-        fakeMain.setCenter(baseController.thisScene.getPage(sceneName).getRoot());
     }
 }

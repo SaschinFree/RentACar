@@ -6,7 +6,6 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
 import java.sql.SQLException;
@@ -79,16 +78,13 @@ public class loginController
             if(baseController.isLoggedOn)
             {
                 Stage loginStage = (Stage) user.getScene().getWindow();
-                BorderPane fakeMain = (BorderPane) loginStage.getOwner().getScene().getRoot();
 
                 if(thisUser.isAdmin())
-                {
-                    fakeMain.setCenter(baseController.thisScene.getPage("clerkMenu").getRoot());
-                }
+                    baseController.userLoggedOn = "adminMenu";
                 else
-                {
-                    fakeMain.setCenter(baseController.thisScene.getPage("clerkMenu").getRoot());
-                }
+                    baseController.userLoggedOn = "clerkMenu";
+
+                baseController.nextScene(baseController.userLoggedOn);
 
                 loginStage.close();
             }

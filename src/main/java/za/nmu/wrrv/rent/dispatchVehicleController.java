@@ -1,12 +1,10 @@
 package za.nmu.wrrv.rent;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.BorderPane;
 
 public class dispatchVehicleController
 {
@@ -19,26 +17,20 @@ public class dispatchVehicleController
     protected void backToMenu(MouseEvent mouseEvent)
     {
         if(mouseEvent.getButton() == MouseButton.PRIMARY)
-            nextScene("clerkMenu");
+            baseController.nextScene(baseController.userLoggedOn);
     }
 
     @FXML
     protected void onSearchClicked(MouseEvent mouseEvent)
     {
         if(mouseEvent.getButton() == MouseButton.PRIMARY)
-            nextScene("");
+            baseController.nextScene("");
     }
 
     @FXML
-    protected void onSendClicked(MouseEvent mouseEvent)
+    protected void onDispatchClicked(MouseEvent mouseEvent)
     {
         if(mouseEvent.getButton() == MouseButton.PRIMARY)
-            nextScene("");
-    }
-
-    private void nextScene(String sceneName)
-    {
-        BorderPane fakeMain = (BorderPane) searchQuery.getScene().getRoot();
-        fakeMain.setCenter(baseController.thisScene.getPage(sceneName).getRoot());
+            baseController.nextScene("");
     }
 }

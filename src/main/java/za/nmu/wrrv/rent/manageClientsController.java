@@ -7,7 +7,6 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.BorderPane;
 
 import java.net.URL;
 import java.sql.SQLException;
@@ -90,7 +89,7 @@ public class manageClientsController implements Initializable
     public void backToMenu(MouseEvent mouseEvent)
     {
         if(mouseEvent.getButton() == MouseButton.PRIMARY)
-            nextScene("clerkMenu");
+            baseController.nextScene(baseController.userLoggedOn);
     }
 
     @FXML
@@ -103,7 +102,7 @@ public class manageClientsController implements Initializable
             if(buttonId.equals("search"))
                 onSearchClicked(searchQuery);
             else
-                nextScene(buttonId);
+                baseController.nextScene(buttonId);
         }
     }
 
@@ -111,11 +110,5 @@ public class manageClientsController implements Initializable
     protected void onSearchClicked(TextField thisQuery)
     {
 
-    }
-
-    private void nextScene(String sceneName)
-    {
-        BorderPane fakeMain = (BorderPane) searchQuery.getScene().getRoot();
-        fakeMain.setCenter(baseController.thisScene.getPage(sceneName).getRoot());
     }
 }
