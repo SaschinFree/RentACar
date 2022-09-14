@@ -13,8 +13,8 @@ import java.sql.SQLException;
 public class Settings
 {
     private static final ObservableList<Settings> settingsList = FXCollections.observableArrayList();
-    private StringProperty settingID = new SimpleStringProperty();
-    private DoubleProperty settingValue = new SimpleDoubleProperty();
+    private final StringProperty settingID = new SimpleStringProperty();
+    private final DoubleProperty settingValue = new SimpleDoubleProperty();
 
     public Settings(String settingID, double settingValue)
     {

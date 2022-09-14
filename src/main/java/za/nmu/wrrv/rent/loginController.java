@@ -24,8 +24,7 @@ public class loginController
     {
         if(mouseEvent.getButton() == MouseButton.PRIMARY)
         {
-            Stage loginStage = (Stage) user.getScene().getWindow();
-            loginStage.close();
+            closeStage();
         }
     }
 
@@ -77,8 +76,6 @@ public class loginController
             alert.showAndWait();
             if(baseController.isLoggedOn)
             {
-                Stage loginStage = (Stage) user.getScene().getWindow();
-
                 if(thisUser.isAdmin())
                     baseController.userLoggedOn = "adminMenu";
                 else
@@ -86,8 +83,13 @@ public class loginController
 
                 baseController.nextScene(baseController.userLoggedOn);
 
-                loginStage.close();
+                closeStage();
             }
         }
+    }
+    private void closeStage()
+    {
+        Stage thisStage = (Stage) user.getScene().getWindow();
+        thisStage.close();
     }
 }

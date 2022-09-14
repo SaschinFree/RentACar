@@ -1,6 +1,5 @@
 package za.nmu.wrrv.rent;
 
-import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -23,15 +22,15 @@ import java.util.ResourceBundle;
 public class manageSettingsController implements Initializable
 {
     @FXML
-    protected TableColumn settingID;
+    protected TableColumn<Settings, String> settingID;
     @FXML
-    protected TableColumn settingValue;
+    protected TableColumn<Settings, Double> settingValue;
     @FXML
     protected Button back;
     @FXML
     protected Button updateSetting;
     @FXML
-    protected TableView settingTable;
+    protected TableView<Settings> settingTable;
 
     protected static Settings thisSetting;
     protected static boolean settingUpdated;
@@ -57,8 +56,8 @@ public class manageSettingsController implements Initializable
 
         settingTable.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
 
-        settingID.setCellValueFactory(new PropertyValueFactory<Settings, String>("settingID"));
-        settingValue.setCellValueFactory(new PropertyValueFactory<Settings, Double>("settingValue"));
+        settingID.setCellValueFactory(new PropertyValueFactory<>("settingID"));
+        settingValue.setCellValueFactory(new PropertyValueFactory<>("settingValue"));
 
         settingTable.setItems(settings);
     }
@@ -68,9 +67,8 @@ public class manageSettingsController implements Initializable
     {
         if(mouseEvent.getButton() == MouseButton.PRIMARY)
         {
-            thisSetting = (Settings) settingTable.getSelectionModel().getSelectedItem();
-
-            updateSetting.setVisible(thisSetting != null);
+            thisSetting = settingTable.getSelectionModel().getSelectedItem();
+            updateSetting.setVisible(true);
         }
     }
     @FXML
@@ -81,28 +79,28 @@ public class manageSettingsController implements Initializable
             Button thisButton = (Button) mouseEvent.getSource();
             String buttonId = thisButton.getId();
 
-            switch(buttonId)
+            switch (buttonId)
             {
-                case "updateSetting":
-                    updateSettingClicked();
-                    break;
-                case "back":
-                    baseController.nextScene(baseController.userLoggedOn);
+                case "updateSetting" -> updateSetting();
+                case "back" -> baseController.nextScene(baseController.userLoggedOn);
             }
         }
     }
-    private void updateSettingClicked() throws IOException
+    private void updateSetting() throws IOException
     {
-        FXMLLoader updateSettingLoader = new FXMLLoader(RentACar.class.getResource("updateSetting.fxml"));
-        Scene updateSettingScene = new Scene(updateSettingLoader.load());
-        Stage updateSettingStage = new Stage();
+        if(thisSetting != null)
+        {
+            FXMLLoader updateSettingLoader = new FXMLLoader(RentACar.class.getResource("updateSetting.fxml"));
+            Scene updateSettingScene = new Scene(updateSettingLoader.load());
+            Stage updateSettingStage = new Stage();
 
-        updateSettingStage.setScene(updateSettingScene);
-        updateSettingStage.setTitle("Update A Setting");
-        updateSettingStage.setResizable(false);
-        updateSettingStage.initModality(Modality.WINDOW_MODAL);
-        updateSettingStage.initOwner(RentACar.mainStage);
+            updateSettingStage.setScene(updateSettingScene);
+            updateSettingStage.setTitle("Update A Setting");
+            updateSettingStage.setResizable(false);
+            updateSettingStage.initModality(Modality.WINDOW_MODAL);
+            updateSettingStage.initOwner(RentACar.mainStage);
 
-        updateSettingStage.showAndWait();
+            updateSettingStage.showAndWait();
+        }
     }
 }

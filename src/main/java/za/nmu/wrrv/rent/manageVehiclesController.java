@@ -14,6 +14,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
@@ -22,27 +23,27 @@ public class manageVehiclesController implements Initializable
     @FXML
     protected Button search;
     @FXML
-    protected TableColumn vehicleRegistration;
+    protected TableColumn<Vehicle, String> vehicleRegistration;
     @FXML
-    protected TableColumn clientNumber;
+    protected TableColumn<Vehicle, Integer> clientNumber;
     @FXML
-    protected TableColumn registrationExpiryDate;
+    protected TableColumn<Vehicle, Date> registrationExpiryDate;
     @FXML
-    protected TableColumn insured;
+    protected TableColumn<Vehicle, Boolean> insured;
     @FXML
-    protected TableColumn model;
+    protected TableColumn<Vehicle, String> make;
     @FXML
-    protected TableColumn make;
+    protected TableColumn<Vehicle, String> model;
     @FXML
-    protected TableColumn colour;
+    protected TableColumn<Vehicle, String> colour;
     @FXML
-    protected TableColumn seats;
+    protected TableColumn<Vehicle, Integer> seats;
     @FXML
-    protected TableColumn startDate;
+    protected TableColumn<Vehicle, Date> startDate;
     @FXML
-    protected TableColumn endDate;
+    protected TableColumn<Vehicle, Date> endDate;
     @FXML
-    protected TableColumn costMultiplier;
+    protected TableColumn<Vehicle, Double> costMultiplier;
     @FXML
     protected Button addVehicle;
     @FXML
@@ -50,7 +51,10 @@ public class manageVehiclesController implements Initializable
     @FXML
     protected TextField searchQuery;
     @FXML
-    protected TableView vehicleTable;
+    protected TableView<Vehicle> vehicleTable;
+
+    protected static Vehicle thisVehicle;
+    protected static boolean vehicleUpdated;
 
     private static ObservableList<Vehicle> vehicles;
     static
@@ -67,14 +71,18 @@ public class manageVehiclesController implements Initializable
     @Override
     public void initialize(URL url, ResourceBundle rb)
     {
+        vehicleUpdated = false;
+
+        updateVehicle.setVisible(false);
+
         vehicleTable.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
 
         vehicleRegistration.setCellValueFactory(new PropertyValueFactory<>("vehicleRegistration"));
         clientNumber.setCellValueFactory(new PropertyValueFactory<>("clientNumber"));
         registrationExpiryDate.setCellValueFactory(new PropertyValueFactory<>("registrationExpiryDate"));
         insured.setCellValueFactory(new PropertyValueFactory<>("insured"));
-        model.setCellValueFactory(new PropertyValueFactory<>("model"));
         make.setCellValueFactory(new PropertyValueFactory<>("make"));
+        model.setCellValueFactory(new PropertyValueFactory<>("model"));
         colour.setCellValueFactory(new PropertyValueFactory<>("colour"));
         seats.setCellValueFactory(new PropertyValueFactory<>("seats"));
         startDate.setCellValueFactory(new PropertyValueFactory<>("startDate"));
@@ -84,6 +92,15 @@ public class manageVehiclesController implements Initializable
         vehicleTable.setItems(vehicles);
     }
 
+    @FXML
+    protected void vehicleSelected(MouseEvent mouseEvent)
+    {
+        if(mouseEvent.getButton() == MouseButton.PRIMARY)
+        {
+            thisVehicle = vehicleTable.getSelectionModel().getSelectedItem();
+            updateVehicle.setVisible(true);
+        }
+    }
     @FXML
     protected void backToMenu(MouseEvent mouseEvent)
     {
@@ -98,17 +115,29 @@ public class manageVehiclesController implements Initializable
         {
             Button thisButton = (Button) mouseEvent.getSource();
             String buttonId = thisButton.getId();
-            switch(buttonId)
+            switch (buttonId)
             {
-                case "search":
-                    onSearchClicked(searchQuery);
-                    break;
-                case "addVehicle":
-                    addVehicle();
-                    break;
-                case "updateVehicle":
-                    break;
+                case "search" -> onSearchClicked(searchQuery);
+                case "addVehicle" -> addVehicle();
+                case "updateVehicle" -> updateVehicle();
             }
+        }
+    }
+    private void updateVehicle() throws IOException
+    {
+        if(thisVehicle != null)
+        {
+            FXMLLoader updateVehicleLoader = new FXMLLoader(RentACar.class.getResource("updateVehicle.fxml"));
+            Scene updateVehicleScene = new Scene(updateVehicleLoader.load());
+            Stage updateVehicleStage = new Stage();
+
+            updateVehicleStage.setScene(updateVehicleScene);
+            updateVehicleStage.setTitle("Update A Vehicle");
+            updateVehicleStage.setResizable(false);
+            updateVehicleStage.initModality(Modality.WINDOW_MODAL);
+            updateVehicleStage.initOwner(RentACar.mainStage);
+
+            updateVehicleStage.showAndWait();
         }
     }
 
@@ -130,6 +159,6 @@ public class manageVehiclesController implements Initializable
         addVehicleStage.initModality(Modality.WINDOW_MODAL);
         addVehicleStage.initOwner(RentACar.mainStage);
 
-        addVehicleStage.show();
+        addVehicleStage.showAndWait();
     }
 }

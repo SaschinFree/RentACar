@@ -10,32 +10,34 @@ import java.sql.SQLException;
 
 public class Vehicle
 {
-    private static final ObservableList<Vehicle> vehicleList = FXCollections.observableArrayList();
+    protected static final ObservableList<Vehicle> vehicleList = FXCollections.observableArrayList();
     private StringProperty vehicleRegistration = new SimpleStringProperty();
     private IntegerProperty clientNumber = new SimpleIntegerProperty();
     private Property<Date> registrationExpiryDate = new SimpleObjectProperty<>();
     private BooleanProperty insured = new SimpleBooleanProperty();
-    private StringProperty model = new SimpleStringProperty();
     private StringProperty make = new SimpleStringProperty();
+    private StringProperty model = new SimpleStringProperty();
     private StringProperty colour = new SimpleStringProperty();
     private IntegerProperty seats = new SimpleIntegerProperty();
     private Property<Date> startDate = new SimpleObjectProperty<>();
     private Property<Date> endDate = new SimpleObjectProperty<>();
-    private IntegerProperty costMultiplier = new SimpleIntegerProperty();
+    private DoubleProperty costMultiplier = new SimpleDoubleProperty();
+    private BooleanProperty active = new SimpleBooleanProperty();
 
-    public Vehicle(String vehicleRegistration, int clientNumber, Date registrationExpiryDate, boolean insured, String model, String make, String colour, int seats, Date startDate, Date endDate, int costMultiplier)
+    public Vehicle(String vehicleRegistration, int clientNumber, Date registrationExpiryDate, boolean insured, String make, String model, String colour, int seats, Date startDate, Date endDate, double costMultiplier)
     {
         this.vehicleRegistration.set(vehicleRegistration);
         this.clientNumber.set(clientNumber);
         this.registrationExpiryDate.setValue(registrationExpiryDate);
         this.insured.set(insured);
-        this.model.set(model);
         this.make.set(make);
+        this.model.set(model);
         this.colour.set(colour);
         this.seats.set(seats);
         this.startDate.setValue(startDate);
         this.endDate.setValue(endDate);
         this.costMultiplier.set(costMultiplier);
+        active.set(true);
     }
 
     public static ObservableList<Vehicle> getVehicles() throws SQLException
@@ -49,26 +51,31 @@ public class Vehicle
             int thisClientNumber = result.getInt("clientNumber");
             Date thisRegistrationExpiryDate = result.getDate("registrationExpiryDate");
             boolean thisInsured = result.getBoolean("insured");
-            String thisModel = result.getString("model");
             String thisMake = result.getString("make");
+            String thisModel = result.getString("model");
             String thisColour = result.getString("colour");
             int thisSeats = result.getInt("seats");
             Date thisStartDate = result.getDate("startDate");
             Date thisEndDate = result.getDate("endDate");
             int thisCostMultiplier = result.getInt("costMultiplier");
 
-            vehicleList.add( new Vehicle(
-                    thisVehicleRegistration,
-                    thisClientNumber,
-                    thisRegistrationExpiryDate,
-                    thisInsured,
-                    thisModel,
-                    thisMake,
-                    thisColour,
-                    thisSeats,
-                    thisStartDate,
-                    thisEndDate,
-                    thisCostMultiplier));
+            boolean thisActive = result.getBoolean("active");
+
+            if(thisActive)
+            {
+                vehicleList.add( new Vehicle(
+                        thisVehicleRegistration,
+                        thisClientNumber,
+                        thisRegistrationExpiryDate,
+                        thisInsured,
+                        thisMake,
+                        thisModel,
+                        thisColour,
+                        thisSeats,
+                        thisStartDate,
+                        thisEndDate,
+                        thisCostMultiplier));
+            }
         }
         return vehicleList;
     }
@@ -113,16 +120,6 @@ public class Vehicle
         this.insured.set(insured);
     }
 
-    public String getModel() {
-        return model.get();
-    }
-    public StringProperty modelProperty() {
-        return model;
-    }
-    public void setModel(String model) {
-        this.model.set(model);
-    }
-
     public String getMake() {
         return make.get();
     }
@@ -131,6 +128,16 @@ public class Vehicle
     }
     public void setMake(String make) {
         this.make.set(make);
+    }
+
+    public String getModel() {
+        return model.get();
+    }
+    public StringProperty modelProperty() {
+        return model;
+    }
+    public void setModel(String model) {
+        this.model.set(model);
     }
 
     public String getColour() {
@@ -173,13 +180,26 @@ public class Vehicle
         this.endDate.setValue(endDate);
     }
 
-    public int getCostMultiplier() {
+    public double getCostMultiplier() {
         return costMultiplier.get();
     }
-    public IntegerProperty costMultiplierProperty() {
+    public DoubleProperty costMultiplierProperty() {
         return costMultiplier;
     }
-    public void setCostMultiplier(int costMultiplier) {
+    public void setCostMultiplier(double costMultiplier) {
         this.costMultiplier.set(costMultiplier);
+    }
+
+    public boolean isActive()
+    {
+        return active.get();
+    }
+    public BooleanProperty activeProperty()
+    {
+        return active;
+    }
+    public void setActive(boolean active)
+    {
+        this.active.set(active);
     }
 }

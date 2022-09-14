@@ -9,6 +9,7 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 
 import java.net.URL;
+import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
@@ -17,41 +18,41 @@ public class manageClientsController implements Initializable
     @FXML
     protected TextField searchQuery;
     @FXML
-    protected TableColumn clientNumber;
+    protected TableColumn<Client, Integer> clientNumber;
     @FXML
-    protected TableColumn clientID;
+    protected TableColumn<Client, Integer> clientID;
     @FXML
-    protected TableColumn firstName;
+    protected TableColumn<Client, String> firstName;
     @FXML
-    protected TableColumn surname;
+    protected TableColumn<Client, String> surname;
     @FXML
-    protected TableColumn contactNumber;
+    protected TableColumn<Client, String> contactNumber;
     @FXML
-    protected TableColumn email;
+    protected TableColumn<Client, String> email;
     @FXML
-    protected TableColumn licenceExpiryDate;
+    protected TableColumn<Client, Date> licenceExpiryDate;
     @FXML
-    protected TableColumn streetNumber;
+    protected TableColumn<Client, Integer> streetNumber;
     @FXML
-    protected TableColumn streetName;
+    protected TableColumn<Client, String> streetName;
     @FXML
-    protected TableColumn suburb;
+    protected TableColumn<Client, String> suburb;
     @FXML
-    protected TableColumn city;
+    protected TableColumn<Client, String> city;
     @FXML
-    protected TableColumn postalCode;
+    protected TableColumn<Client, Integer> postalCode;
     @FXML
-    protected TableColumn companyName;
+    protected TableColumn<Client, Integer> companyName;
     @FXML
-    protected TableColumn moneyOwed;
+    protected TableColumn<Client, Double> moneyOwed;
     @FXML
     protected Button addClient;
     @FXML
     protected Button updateClient;
     @FXML
-    protected TableView clientTable;
+    protected TableView<Client> clientTable;
 
-    private static ObservableList<Client> clients;
+    protected static ObservableList<Client> clients;
     static
     {
         try

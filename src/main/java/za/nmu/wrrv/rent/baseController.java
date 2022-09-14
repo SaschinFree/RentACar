@@ -20,38 +20,35 @@ import java.sql.ResultSet;
 import java.util.ResourceBundle;
 
 public class baseController implements Initializable
-{    @FXML
+{
+    @FXML
     protected BorderPane main;
     @FXML
     protected Button logout;
+    @FXML
+    protected Label logged;
+    @FXML
+    protected Label user;
 
     protected static BorderPane mainReference;
     protected static final SceneLoader thisScene = new SceneLoader();
     protected static boolean isLoggedOn = false;
     protected static String userLoggedOn;
 
-    protected static final char[] symbols = new char[84];
+    protected static final char[] symbolArray = new char[33];
+    protected static final char[] letterArray = new char[52];
+    protected static final char[] numberArray = new char[10];
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
         mainReference = main;
+        logged.setVisible(false);
+        user.setVisible(false);
 
-        int start = 0;
-        for(int i = 32; i < 127; i++)
-        {
-            switch(i)
-            {
-                case 46:
-                    break;
-                case 48:
-                    i = 57;
-                    break;
-                default:
-                    symbols[start] = (char) i;
-                    start++;
-            }
-        }
+        setSymbolArray();
+        setLetterArray();
+        setNumberArray();
     }
 
     @FXML
@@ -62,22 +59,27 @@ public class baseController implements Initializable
             Alert alert;
             if(isLoggedOn)
             {
-                disconnectToDB();
                 main.setCenter(null);
+
+                disconnectToDB();
+
+                isLoggedOn = false;
+                userLoggedOn = "";
+
+                logged.setVisible(false);
+                user.setVisible(false);
+
                 alert = new Alert(AlertType.INFORMATION);
                 alert.setTitle("Successful");
                 alert.setHeaderText("Logout successful");
-                alert.showAndWait();
-                isLoggedOn = false;
-                userLoggedOn = "";
             }
             else
             {
                 alert = new Alert(AlertType.ERROR);
                 alert.setTitle("Error");
                 alert.setHeaderText("User is not logged in");
-                alert.showAndWait();
             }
+            alert.showAndWait();
         }
     }
     @FXML
@@ -99,7 +101,19 @@ public class baseController implements Initializable
                     loginStage.initModality(Modality.WINDOW_MODAL);
                     loginStage.initOwner(RentACar.mainStage);
 
-                    loginStage.show();
+                    loginStage.showAndWait();
+
+                    if(isLoggedOn)
+                    {
+                        logged.setVisible(true);
+
+                        if(loginController.thisUser.isAdmin())
+                            user.setText("Admin");
+                        else
+                            user.setText("Clerk");
+
+                        user.setVisible(true);
+                    }
                 }
                 else
                     System.exit(0);
@@ -113,6 +127,63 @@ public class baseController implements Initializable
             }
         }
     }
+    private void setSymbolArray()
+    {
+        int start = 0;
+        for(int i = 32; i < 127; i++)
+        {
+            switch (i)
+            {
+                case 48 -> i = 57;
+                case 65 -> i = 90;
+                case 97 -> i = 122;
+                default ->
+                        {
+                    symbolArray[start] = (char) i;
+                    start++;
+                        }
+            }
+        }
+    }
+    private void setLetterArray()
+    {
+        int start = 0;
+        for(int i = 65; i < 123; i++)
+        {
+            if (i == 91)
+                i = 96;
+            else
+            {
+                letterArray[start] = (char) i;
+                start++;
+            }
+        }
+    }
+    private void setNumberArray()
+    {
+        int start = 0;
+        for(int i = 48; i < 58; i++)
+        {
+            numberArray[start] = (char) i;
+            start++;
+        }
+    }
+
+    protected static boolean errorValidationCheck(char[] thisArray, String thisValue, char extraParameter)
+    {
+        for(Character symbol : thisArray)
+        {
+            if(thisValue.contains(symbol.toString()))
+                return false;
+        }
+        for(Character symbol : baseController.symbolArray)
+        {
+            if(thisValue.contains(symbol.toString()) & !symbol.equals(extraParameter))
+                return false;
+        }
+        return true;
+    }
+
     private boolean connectToDB()
     {
         try
@@ -138,6 +209,7 @@ public class baseController implements Initializable
         RentACar.connection = null;
         RentACar.statement = null;
     }
+
     protected static void nextScene(String sceneName)
     {
         mainReference.setCenter(thisScene.getPage(sceneName).getRoot());

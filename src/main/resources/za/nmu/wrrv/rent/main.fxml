@@ -10,7 +10,7 @@
    <top>
       <VBox prefHeight="153.0" prefWidth="916.0" BorderPane.alignment="CENTER">
          <children>
-            <HBox prefHeight="189.0" prefWidth="916.0" spacing="20.0">
+            <HBox prefHeight="180.0" prefWidth="916.0" spacing="20.0">
                <children>
                   <Label prefHeight="88.0" prefWidth="709.0" text="Rent A Car">
                      <font>
@@ -28,6 +28,23 @@
                </children>
                <padding>
                   <Insets left="25.0" top="10.0" />
+               </padding>
+            </HBox>
+            <HBox alignment="CENTER_LEFT" prefHeight="109.0" spacing="5.0">
+               <children>
+                  <Label fx:id="logged" text="Logged in as">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="user" layoutX="10.0" layoutY="10.0" text="clerkAdmin" textFill="#8d918d">
+                     <font>
+                        <Font size="16.0" />
+                     </font>
+                  </Label>
+               </children>
+               <padding>
+                  <Insets left="25.0" />
                </padding>
             </HBox>
             <Line endX="911.0" stroke="#8d918d" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeWidth="5.0">

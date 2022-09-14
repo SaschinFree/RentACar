@@ -19,14 +19,14 @@
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
          </padding>
          <children>
-            <TableView fx:id="vehicleTable" prefHeight="200.0" prefWidth="200.0">
+            <TableView fx:id="vehicleTable" onMouseClicked="#vehicleSelected" prefHeight="200.0" prefWidth="200.0">
               <columns>
                   <TableColumn fx:id="vehicleRegistration" prefWidth="150.0" text="Vehicle Registration" />
                   <TableColumn fx:id="clientNumber" prefWidth="100.0" text="Client Number" />
                   <TableColumn fx:id="registrationExpiryDate" prefWidth="150.0" text="Registration Expiry Date" />
                   <TableColumn fx:id="insured" prefWidth="75.0" text="Insured" />
-                  <TableColumn fx:id="model" prefWidth="75.0" text="Model" />
                   <TableColumn fx:id="make" prefWidth="75.0" text="Make" />
+                  <TableColumn fx:id="model" prefWidth="75.0" text="Model" />
                   <TableColumn fx:id="colour" prefWidth="75.0" text="Colour" />
                   <TableColumn fx:id="seats" prefWidth="75.0" text="Seats" />
                   <TableColumn fx:id="startDate" prefWidth="75.0" text="Start Date" />

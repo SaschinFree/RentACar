@@ -40,14 +40,7 @@ public class updateSettingController implements Initializable
         if(mouseEvent.getButton() == MouseButton.PRIMARY)
         {
             String thisValue = settingValue.getText();
-            if(settingValueErrorValidationCheck(thisValue))
-            {
-                String sql = "UPDATE Settings SET settingValue = \'" + Double.parseDouble(thisValue) + "\' WHERE settingID = \'" + settingID.getText() + "\'";
-                RentACar.statement.executeUpdate(sql);
-                manageSettingsController.thisSetting.setSettingValue(Double.parseDouble(thisValue));
-                closeStage();
-            }
-            else
+            if(!baseController.errorValidationCheck(baseController.letterArray, thisValue, '.'))
             {
                 settingValue.clear();
                 alert.setTitle("Error");
@@ -55,16 +48,14 @@ public class updateSettingController implements Initializable
                 alert.setContentText(thisValue + " is not a number");
                 alert.showAndWait();
             }
+            else
+            {
+                String sql = "UPDATE Settings SET settingValue = \'" + Double.parseDouble(thisValue) + "\' WHERE settingID = \'" + settingID.getText() + "\'";
+                RentACar.statement.executeUpdate(sql);
+                manageSettingsController.thisSetting.setSettingValue(Double.parseDouble(thisValue));
+                closeStage();
+            }
         }
-    }
-    private boolean settingValueErrorValidationCheck(String thisValue)
-    {
-        for(Character symbol : baseController.symbols)
-        {
-            if(thisValue.contains(symbol.toString()))
-                return false;
-        }
-        return true;
     }
     private void closeStage()
     {

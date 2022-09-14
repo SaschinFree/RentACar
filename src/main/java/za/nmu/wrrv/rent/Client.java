@@ -11,22 +11,23 @@ import java.sql.SQLException;
 public class Client
 {
     private static final ObservableList<Client> clientList = FXCollections.observableArrayList();
-    private IntegerProperty clientNumber = new SimpleIntegerProperty();
-    private IntegerProperty clientID = new SimpleIntegerProperty();
-    private StringProperty firstName = new SimpleStringProperty();
-    private StringProperty surname = new SimpleStringProperty();
-    private StringProperty contactNumber = new SimpleStringProperty();
-    private StringProperty email = new SimpleStringProperty();
-    private Property<Date> licenceExpiryDate = new SimpleObjectProperty<>();
-    private IntegerProperty streetNumber = new SimpleIntegerProperty();
-    private StringProperty streetName = new SimpleStringProperty();
-    private StringProperty suburb = new SimpleStringProperty();
-    private IntegerProperty postalCode = new SimpleIntegerProperty();
-    private StringProperty city = new SimpleStringProperty();
-    private StringProperty companyName = new SimpleStringProperty();
-    private IntegerProperty moneyOwed = new SimpleIntegerProperty();
+    private final IntegerProperty clientNumber = new SimpleIntegerProperty();
+    private final StringProperty clientID = new SimpleStringProperty();
+    private final StringProperty firstName = new SimpleStringProperty();
+    private final StringProperty surname = new SimpleStringProperty();
+    private final StringProperty contactNumber = new SimpleStringProperty();
+    private final StringProperty email = new SimpleStringProperty();
+    private final Property<Date> licenceExpiryDate = new SimpleObjectProperty<>();
+    private final IntegerProperty streetNumber = new SimpleIntegerProperty();
+    private final StringProperty streetName = new SimpleStringProperty();
+    private final StringProperty suburb = new SimpleStringProperty();
+    private final StringProperty city = new SimpleStringProperty();
+    private final IntegerProperty postalCode = new SimpleIntegerProperty();
+    private final StringProperty companyName = new SimpleStringProperty();
+    private final DoubleProperty moneyOwed = new SimpleDoubleProperty();
+    private final BooleanProperty active = new SimpleBooleanProperty();
 
-    public Client(int clientNumber, int clientID, String firstName, String surname, String contactNumber, String email, Date licenceExpiryDate, int streetNumber, String streetName, String suburb, int postalCode, String city, String companyName, int moneyOwed)
+    public Client(int clientNumber, String clientID, String firstName, String surname, String contactNumber, String email, Date licenceExpiryDate, int streetNumber, String streetName, String suburb, String city, int postalCode, String companyName, double moneyOwed)
     {
         this.clientNumber.set(clientNumber);
         this.clientID.set(clientID);
@@ -38,10 +39,11 @@ public class Client
         this.streetNumber.set(streetNumber);
         this.streetName.set(streetName);
         this.suburb.set(suburb);
-        this.postalCode.set(postalCode);
         this.city.set(city);
+        this.postalCode.set(postalCode);
         this.companyName.set(companyName);
         this.moneyOwed.set(moneyOwed);
+        active.set(true);
     }
 
     public static ObservableList<Client> getClients() throws SQLException
@@ -52,7 +54,7 @@ public class Client
         while(result.next())
         {
             int thisClientNumber = result.getInt("clientNumber");
-            int thisClientID = result.getInt("clientID");
+            String thisClientID = result.getString("clientID");
             String thisFirstName = result.getString("firstName");
             String thisSurname = result.getString("surname");
             String thisContactNumber = result.getString("contactNumber");
@@ -61,26 +63,31 @@ public class Client
             int thisStreetNumber = result.getInt("streetNumber");
             String thisStreetName = result.getString("streetName");
             String thisSuburb = result.getString("suburb");
-            int thisPostalCode = result.getInt("postalCode");
             String thisCity = result.getString("city");
+            int thisPostalCode = result.getInt("postalCode");
             String thisCompanyName = result.getString("companyName");
-            int thisMoneyOwed = result.getInt("moneyOwed");
+            double thisMoneyOwed = result.getDouble("moneyOwed");
 
-            clientList.add(new Client(
-                    thisClientNumber,
-                    thisClientID,
-                    thisFirstName,
-                    thisSurname,
-                    thisContactNumber,
-                    thisEmail,
-                    thisLicenceExpiryDate,
-                    thisStreetNumber,
-                    thisStreetName,
-                    thisSuburb,
-                    thisPostalCode,
-                    thisCity,
-                    thisCompanyName,
-                    thisMoneyOwed));
+            boolean thisActive = result.getBoolean("active");
+
+            if(thisActive)
+            {
+                clientList.add(new Client(
+                        thisClientNumber,
+                        thisClientID,
+                        thisFirstName,
+                        thisSurname,
+                        thisContactNumber,
+                        thisEmail,
+                        thisLicenceExpiryDate,
+                        thisStreetNumber,
+                        thisStreetName,
+                        thisSuburb,
+                        thisCity,
+                        thisPostalCode,
+                        thisCompanyName,
+                        thisMoneyOwed));
+            }
         }
         return clientList;
     }
@@ -95,13 +102,13 @@ public class Client
         this.clientNumber.set(clientNumber);
     }
 
-    public int getClientID() {
+    public String getClientID() {
         return clientID.get();
     }
-    public IntegerProperty clientIDProperty() {
+    public StringProperty clientIDProperty() {
         return clientID;
     }
-    public void setClientID(int clientID) {
+    public void setClientID(String clientID) {
         this.clientID.set(clientID);
     }
 
@@ -215,31 +222,26 @@ public class Client
         this.companyName.set(companyName);
     }
 
-    public int getMoneyOwed() {
+    public double getMoneyOwed() {
         return moneyOwed.get();
     }
-    public IntegerProperty moneyOwedProperty() {
+    public DoubleProperty moneyOwedProperty() {
         return moneyOwed;
     }
-    public void setMoneyOwed(int moneyOwed) {
+    public void setMoneyOwed(double moneyOwed) {
         this.moneyOwed.set(moneyOwed);
     }
 
-    @Override
-    public String toString()
+    public boolean isActive()
     {
-        return "ID: " + getClientID() + "\n" +
-                "Name: " + getFirstName() + "\n" +
-                "Surname: " + getSurname() + "\n" +
-                "Number: " + getContactNumber() + "\n" +
-                "Email: " + getEmail() + "\n" +
-                "Licence: " + getLicenceExpiryDate() + "\n" +
-                "Street Number: " + getStreetNumber() + "\n" +
-                "Street Name: " + getStreetName() + "\n" +
-                "Suburb: " + getSuburb() + "\n" +
-                "Postal Code: " + getPostalCode() + "\n" +
-                "City: " + getCity() + "\n" +
-                "Company Name: " + getCompanyName() + "\n" +
-                "Money Owed: " + getMoneyOwed() + "\n";
+        return active.get();
+    }
+    public BooleanProperty activeProperty()
+    {
+        return active;
+    }
+    public void setActive(boolean active)
+    {
+        this.active.set(active);
     }
 }

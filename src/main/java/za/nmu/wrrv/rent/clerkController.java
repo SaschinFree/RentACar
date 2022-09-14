@@ -13,8 +13,6 @@ import java.util.ResourceBundle;
 public class clerkController implements Initializable
 {
     @FXML
-    protected Label user;
-    @FXML
     protected Button manageClients;
     @FXML
     protected Button manageBookings;
@@ -34,10 +32,7 @@ public class clerkController implements Initializable
     @Override
     public void initialize(URL url, ResourceBundle rb)
     {
-        if(loginController.thisUser.isAdmin())
-            user.setText("Admin");
-        else
-            user.setText("Clerk");
+
     }
     @FXML
     protected void buttonClicked(MouseEvent mouseEvent)
