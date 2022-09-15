@@ -29,15 +29,15 @@
                <font>
                   <Font size="16.0" />
                </font></Button>
-            <Button fx:id="manageSettings" mnemonicParsing="false" onMouseClicked="#buttonClicked" prefHeight="120.0" prefWidth="180.0" style="-fx-background-color: #3B2F2F;" text="Manage Settings" textFill="WHITE" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+            <Button fx:id="managePayments" mnemonicParsing="false" onMouseClicked="#buttonClicked" prefHeight="120.0" prefWidth="180.0" style="-fx-background-color: #3B2F2F;" text="Manage Payments" textFill="WHITE" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+               <font>
+                  <Font size="16.0" />
+               </font></Button>
+            <Button fx:id="manageSettings" mnemonicParsing="false" onMouseClicked="#buttonClicked" prefHeight="120.0" prefWidth="180.0" style="-fx-background-color: #3B2F2F;" text="Manage Settings" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                <font>
                   <Font size="16.0" />
                </font></Button>
             <Button fx:id="generateReport" mnemonicParsing="false" onMouseClicked="#buttonClicked" prefHeight="120.0" prefWidth="180.0" style="-fx-background-color: #3B2F2F;" text="Generate Report" textFill="WHITE" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
-               <font>
-                  <Font size="16.0" />
-               </font></Button>
-            <Button fx:id="managePayments" mnemonicParsing="false" onMouseClicked="#buttonClicked" prefHeight="120.0" prefWidth="180.0" style="-fx-background-color: #3B2F2F;" text="Manage Payments" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                <font>
                   <Font size="16.0" />
                </font></Button>

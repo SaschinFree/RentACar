@@ -43,6 +43,7 @@ public class baseController implements Initializable
 
     protected static ObservableList<Client> clients;
     protected static ObservableList<Vehicle> vehicles;
+    protected static ObservableList<Booking> bookings;
     protected static ObservableList<Settings> settings;
     protected static ObservableList<Payment> payments;
 
