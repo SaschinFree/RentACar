@@ -11,7 +11,7 @@
          <children>
             <TableView fx:id="settingTable" onMouseClicked="#settingSelected" prefHeight="200.0" prefWidth="200.0">
               <columns>
-                <TableColumn fx:id="settingID" prefWidth="150.0" text="Setting ID" />
+                <TableColumn fx:id="settingName" prefWidth="150.0" text="Setting Name" />
                 <TableColumn fx:id="settingValue" prefWidth="100.0" text="Setting Value" />
               </columns>
             </TableView>

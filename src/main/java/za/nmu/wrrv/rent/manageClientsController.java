@@ -1,6 +1,5 @@
 package za.nmu.wrrv.rent;
 
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -8,9 +7,9 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.Date;
-import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class manageClientsController implements Initializable
@@ -52,21 +51,19 @@ public class manageClientsController implements Initializable
     @FXML
     protected TableView<Client> clientTable;
 
-    protected static ObservableList<Client> clients;
-    static
-    {
-        try
-        {
-            clients = Client.getClients();
-        } catch (SQLException e)
-        {
-            e.printStackTrace();
-        }
-    }
+    protected static Client thisClient;
+    protected static boolean clientUpdated;
 
     @Override
     public void initialize(URL url, ResourceBundle rb)
     {
+        if(loginController.thisUser.isAdmin())
+            addClient.setVisible(false);
+
+        clientUpdated = false;
+
+        updateClient.setVisible(false);
+
         clientTable.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
 
         clientNumber.setCellValueFactory(new PropertyValueFactory<>("clientNumber"));
@@ -84,32 +81,43 @@ public class manageClientsController implements Initializable
         companyName.setCellValueFactory(new PropertyValueFactory<>("companyName"));
         moneyOwed.setCellValueFactory(new PropertyValueFactory<>("moneyOwed"));
 
-        clientTable.setItems(clients);
+        clientTable.setItems(baseController.clients);
     }
-
-    public void backToMenu(MouseEvent mouseEvent)
+    @FXML
+    protected void clientSelected(MouseEvent mouseEvent)
     {
         if(mouseEvent.getButton() == MouseButton.PRIMARY)
-            baseController.nextScene(baseController.userLoggedOn);
+        {
+            if(!loginController.thisUser.isAdmin())
+            {
+                thisClient = clientTable.getSelectionModel().getSelectedItem();
+                updateClient.setVisible(true);
+            }
+        }
     }
-
     @FXML
-    protected void buttonClicked(MouseEvent mouseEvent)
+    protected void buttonClicked(MouseEvent mouseEvent) throws IOException
     {
         if(mouseEvent.getButton() == MouseButton.PRIMARY)
         {
             Button thisButton = (Button) mouseEvent.getSource();
             String buttonId = thisButton.getId();
-            if(buttonId.equals("search"))
-                onSearchClicked(searchQuery);
-            else
-                baseController.nextScene(buttonId);
+
+            switch(buttonId)
+            {
+                case "search" -> onSearch();
+                case "addClient" -> baseController.newScreen("addClient", "Add A Client");
+                case "updateClient" ->
+                        {
+                            if(thisClient != null)
+                                baseController.newScreen("updateClient", "Update A Client");
+                        }
+                case "back" -> baseController.nextScene(baseController.userLoggedOn);
+            }
         }
     }
-
-    @FXML
-    protected void onSearchClicked(TextField thisQuery)
+    private void onSearch()
     {
-
+        //searchQuery
     }
 }

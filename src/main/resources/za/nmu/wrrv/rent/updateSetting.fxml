@@ -28,7 +28,7 @@
                <font>
                   <Font size="16.0" />
                </font></Label>
-            <Label fx:id="settingID" text="settingID" textFill="#8d918d">
+            <Label fx:id="settingName" text="settingName" textFill="#8d918d">
                <font>
                   <Font size="16.0" />
                </font></Label>

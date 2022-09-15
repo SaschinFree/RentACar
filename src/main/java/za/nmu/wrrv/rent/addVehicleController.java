@@ -56,7 +56,7 @@ public class addVehicleController implements Initializable
         plateExtension.getItems().addAll("WP", "ZN", "MP", "EC", "L", "GP", "NC", "FS", "NW");
         plateExtension.setValue("EC");
 
-        for(Client thisClient : manageClientsController.clients)
+        for(Client thisClient : baseController.clients)
         {
             clientNumber.getItems().add(thisClient.getClientNumber());
         }

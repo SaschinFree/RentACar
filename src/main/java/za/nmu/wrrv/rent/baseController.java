@@ -1,6 +1,7 @@
 package za.nmu.wrrv.rent;
 
 
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -17,6 +18,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class baseController implements Initializable
@@ -38,6 +40,11 @@ public class baseController implements Initializable
     protected static final char[] symbolArray = new char[33];
     protected static final char[] letterArray = new char[52];
     protected static final char[] numberArray = new char[10];
+
+    protected static ObservableList<Client> clients;
+    protected static ObservableList<Vehicle> vehicles;
+    protected static ObservableList<Settings> settings;
+    protected static ObservableList<Payment> payments;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
@@ -210,6 +217,20 @@ public class baseController implements Initializable
         RentACar.statement = null;
     }
 
+    protected static void newScreen(String screenName, String title) throws IOException
+    {
+        FXMLLoader newScreenLoader = new FXMLLoader(RentACar.class.getResource(screenName + ".fxml"));
+        Scene newScreenScene = new Scene(newScreenLoader.load());
+        Stage newScreenStage = new Stage();
+
+        newScreenStage.setScene(newScreenScene);
+        newScreenStage.setTitle(title);
+        newScreenStage.setResizable(false);
+        newScreenStage.initModality(Modality.WINDOW_MODAL);
+        newScreenStage.initOwner(RentACar.mainStage);
+
+        newScreenStage.showAndWait();
+    }
     protected static void nextScene(String sceneName)
     {
         mainReference.setCenter(thisScene.getPage(sceneName).getRoot());

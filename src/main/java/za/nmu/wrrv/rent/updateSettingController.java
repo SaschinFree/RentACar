@@ -16,14 +16,14 @@ import java.util.ResourceBundle;
 public class updateSettingController implements Initializable
 {
     @FXML
-    protected Label settingID;
+    protected Label settingName;
     @FXML
     protected TextField settingValue;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
-        settingID.setText(manageSettingsController.thisSetting.getSettingID());
+        settingName.setText(manageSettingsController.thisSetting.getSettingName());
     }
 
     @FXML
@@ -50,7 +50,7 @@ public class updateSettingController implements Initializable
             }
             else
             {
-                String sql = "UPDATE Settings SET settingValue = \'" + Double.parseDouble(thisValue) + "\' WHERE settingID = \'" + settingID.getText() + "\'";
+                String sql = "UPDATE Settings SET settingValue = \'" + Double.parseDouble(thisValue) + "\' WHERE settingID = \'" + settingName.getText() + "\'";
                 RentACar.statement.executeUpdate(sql);
                 manageSettingsController.thisSetting.setSettingValue(Double.parseDouble(thisValue));
                 closeStage();
@@ -59,7 +59,7 @@ public class updateSettingController implements Initializable
     }
     private void closeStage()
     {
-        Stage thisStage = (Stage) settingID.getScene().getWindow();
+        Stage thisStage = (Stage) settingName.getScene().getWindow();
         thisStage.close();
     }
 }

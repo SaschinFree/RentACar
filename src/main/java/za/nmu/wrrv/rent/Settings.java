@@ -13,12 +13,12 @@ import java.sql.SQLException;
 public class Settings
 {
     private static final ObservableList<Settings> settingsList = FXCollections.observableArrayList();
-    private final StringProperty settingID = new SimpleStringProperty();
+    private final StringProperty settingName = new SimpleStringProperty();
     private final DoubleProperty settingValue = new SimpleDoubleProperty();
 
-    public Settings(String settingID, double settingValue)
+    public Settings(String settingName, double settingValue)
     {
-        this.settingID.set(settingID);
+        this.settingName.set(settingName);
         this.settingValue.set(settingValue);
     }
     public static ObservableList<Settings> getSettings() throws SQLException
@@ -28,25 +28,25 @@ public class Settings
 
         while(result.next())
         {
-            String thisSettingID = result.getString("settingID");
+            String thisSettingName = result.getString("settingName");
             double thisSettingValue = result.getDouble("settingValue");
 
-            settingsList.add(new Settings(thisSettingID, thisSettingValue));
+            settingsList.add(new Settings(thisSettingName, thisSettingValue));
         }
         return settingsList;
     }
 
-    public String getSettingID()
+    public String getSettingName()
     {
-        return settingID.get();
+        return settingName.get();
     }
     public StringProperty settingIDProperty()
     {
-        return settingID;
+        return settingName;
     }
-    public void setSettingID(String settingId)
+    public void setSettingName(String settingName)
     {
-        this.settingID.set(settingId);
+        this.settingName.set(settingName);
     }
 
     public double getSettingValue()
