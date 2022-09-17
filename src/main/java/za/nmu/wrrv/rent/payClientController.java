@@ -39,11 +39,11 @@ public class payClientController implements Initializable
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
-        clientID.setText(managePaymentsController.thisClient.getClientID());
-        clientName.setText(managePaymentsController.thisClient.getFirstName());
-        clientSurname.setText(managePaymentsController.thisClient.getSurname());
-        clientContactNumber.setText(managePaymentsController.thisClient.getContactNumber());
-        clientMoneyOwed.setText(String.valueOf(managePaymentsController.thisClient.getMoneyOwed()));
+        clientID.textProperty().bind(managePaymentsController.thisClient.clientIDProperty());
+        clientName.textProperty().bind(managePaymentsController.thisClient.firstNameProperty());
+        clientSurname.textProperty().bind(managePaymentsController.thisClient.surnameProperty());
+        clientContactNumber.textProperty().bind(managePaymentsController.thisClient.contactNumberProperty());
+        clientMoneyOwed.textProperty().bind(managePaymentsController.thisClient.moneyOwedProperty().asString());
     }
 
     @FXML
@@ -87,8 +87,7 @@ public class payClientController implements Initializable
             }
             else
             {
-                alert.setHeaderText("Error");
-                alert.setContentText(errorMessage);
+                alert.setHeaderText(errorMessage);
                 alert.showAndWait();
             }
         }
@@ -105,7 +104,7 @@ public class payClientController implements Initializable
     }
     private boolean errorCheck(String thisAmount)
     {
-        if(!baseController.errorValidationCheck(baseController.letterArray, thisAmount, '.'))
+        if(!baseController.errorValidationCheck(baseController.letterArray, thisAmount) | !baseController.symbolCheck(thisAmount, '.'))
         {
             errorMessage = "Amount Paid is not a number";
             amountPaid.clear();

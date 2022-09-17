@@ -6,7 +6,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.paint.Paint;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.net.URL;
@@ -114,53 +114,74 @@ public class addVehicleController implements Initializable
         if(mouseEvent.getButton() == MouseButton.PRIMARY)
         {
             String regNum = registrationNumber.getText().toUpperCase() + " " + plateExtension.getSelectionModel().getSelectedItem();
-            int clientNumber =  this.clientNumber.getSelectionModel().getSelectedItem();
-            Date regExp = Date.valueOf(registrationExpirationDate.getValue());
-            boolean insured = vehicleInsurance.selectedProperty().getValue();
-            String make = vehicleMake.getText();
-            String model = vehicleModel.getText();
-            String colour = vehicleColour.getText();
-            int seats = vehicleSeats.getValue();
-            Date start = Date.valueOf(vehicleStartDate.getValue());
-            Date end = Date.valueOf(vehicleEndDate.getValue());
-            double costMulti = Double.parseDouble(costMultiplier.getText());
 
             String registrationCheck = "SELECT vehicleRegistration FROM Vehicle WHERE vehicleRegistration = \'" + regNum + "\'";
             ResultSet result = RentACar.statement.executeQuery(registrationCheck);
 
             if(result.next())
             {
-                errorMessage = "Registration Number: This vehicle already exists in the table";
                 registrationNumber.clear();
-                alert.setHeaderText("Error");
-                alert.setContentText(errorMessage);
+                alert.setHeaderText("Registration Number: This vehicle already exists in the table");
                 alert.showAndWait();
 
                 mouseEvent.consume();
             }
 
-            if(emptyChecks(regExp, make, colour, start, end, costMulti) & errorChecks(regExp, make, colour, start, end, costMulti))
+            int clientNumber =  this.clientNumber.getSelectionModel().getSelectedItem();
+
+            String regExpString = registrationExpirationDate.getEditor().getText();
+            regExpString = regExpString.replace("/", "-");
+
+
+            boolean insured = vehicleInsurance.selectedProperty().getValue();
+            String make = vehicleMake.getText();
+            String model = vehicleModel.getText();
+            String colour = vehicleColour.getText();
+            int seats = vehicleSeats.getValue();
+
+            String startDateString = vehicleStartDate.getEditor().getText();
+            startDateString = startDateString.replace("/", "-");
+
+            String endDateString = vehicleEndDate.getEditor().getText();
+            endDateString = endDateString.replace("/", "-");
+
+
+            String costMultiString = costMultiplier.getText();
+
+            if(baseController.dateCheck(registrationExpirationDate, regExpString) & baseController.dateCheck(vehicleStartDate, startDateString) & baseController.dateCheck(vehicleEndDate, endDateString))
             {
+                Date regExp = Date.valueOf(regExpString);
+                Date start = Date.valueOf(startDateString);
+                Date end = Date.valueOf(endDateString);
 
-                String sql = "INSERT INTO Vehicle " +
-                        "(vehicleRegistration, clientNumber, registrationExpiryDate, insured, make, model, colour, seats, startDate, endDate, costMultiplier)" +
-                        "VALUES (\'"+ regNum +"\',\'"+ clientNumber +"\',\'"+ regExp +"\',\'"+ insured +"\',\'"+ make +"\',\'"+ model +"\',\'"+ colour +"\',\'"+ seats +"\',\'"+ start +"\',\'"+ end +"\',\'"+ costMulti +"\')";
-                RentACar.statement.executeUpdate(sql);
+                if(emptyChecks(regExp, make, colour, start, end, costMultiString) & errorChecks(regExp, make, colour, start, end, costMultiString))
+                {
+                    double costMulti = Double.parseDouble(costMultiString);
 
-                Vehicle newVehicle = new Vehicle(regNum, clientNumber, regExp, insured, make, model, colour, seats, start, end, costMulti);
-                Vehicle.vehicleList.add(newVehicle);
+                    String sql = "INSERT INTO Vehicle " +
+                            "(vehicleRegistration, clientNumber, registrationExpiryDate, insured, make, model, colour, seats, startDate, endDate, costMultiplier)" +
+                            "VALUES (\'"+ regNum +"\',\'"+ clientNumber +"\',\'"+ regExp +"\',\'"+ insured +"\',\'"+ make +"\',\'"+ model +"\',\'"+ colour +"\',\'"+ seats +"\',\'"+ start +"\',\'"+ end +"\',\'"+ costMulti +"\')";
+                    RentACar.statement.executeUpdate(sql);
 
-                closeStage();
+                    Vehicle newVehicle = new Vehicle(regNum, clientNumber, regExp, insured, make, model, colour, seats, start, end, costMulti);
+                    Vehicle.vehicleList.add(newVehicle);
+
+                    closeStage();
+                }
+                else
+                {
+                    alert.setHeaderText(errorMessage);
+                    alert.showAndWait();
+                }
             }
             else
             {
-                alert.setHeaderText("Error");
-                alert.setContentText(errorMessage);
+                alert.setHeaderText("Date is in incorrect format");
                 alert.showAndWait();
             }
         }
     }
-    private boolean emptyChecks(Date regExp, String make, String colour, Date start, Date end, double costMulti)
+    private boolean emptyChecks(Date regExp, String make, String colour, Date start, Date end, String costMulti)
     {
         if(regExp.toString().isEmpty())
         {
@@ -197,7 +218,7 @@ public class addVehicleController implements Initializable
             return false;
         }
 
-        if(String.valueOf(costMulti).isEmpty())
+        if(costMulti.isEmpty())
         {
             errorMessage = "Cost Multiplier is empty";
             costMultiplier.clear();
@@ -206,7 +227,7 @@ public class addVehicleController implements Initializable
 
         return true;
     }
-    private boolean errorChecks(Date regExp, String make, String colour, Date start, Date end, double costMulti)
+    private boolean errorChecks(Date regExp, String make, String colour, Date start, Date end, String costMulti)
     {
         if(regExp.before(Date.valueOf(LocalDate.now())))
         {
@@ -215,7 +236,7 @@ public class addVehicleController implements Initializable
             return false;
         }
 
-        if(!baseController.errorValidationCheck(baseController.numberArray, make, '-'))
+        if(!baseController.errorValidationCheck(baseController.numberArray, make) | !baseController.symbolCheck(make, '-'))
         {
             errorMessage = "Vehicle Make: " + make + " is in the incorrect format";
             vehicleMake.clear();
@@ -225,13 +246,17 @@ public class addVehicleController implements Initializable
         String[] colours = colour.split(",");
         for(String thisColour : colours)
         {
-            if(!baseController.errorValidationCheck(baseController.numberArray, thisColour, '-'))
+            if(!baseController.errorValidationCheck(baseController.numberArray, thisColour) | !baseController.symbolCheck(thisColour))
             {
                 errorMessage = "Vehicle Colour: " + thisColour + " is in the incorrect format";
                 vehicleColour.clear();
                 return false;
             }
-            if(Paint.valueOf(colour) == null)
+            try
+            {
+                Color.valueOf(thisColour);
+            }
+            catch (Exception e)
             {
                 errorMessage = "Vehicle Colour: " + thisColour + " is not a colour";
                 vehicleColour.clear();
@@ -253,7 +278,7 @@ public class addVehicleController implements Initializable
             return false;
         }
 
-        if(!baseController.errorValidationCheck(baseController.letterArray, String.valueOf(costMulti), '.'))
+        if(!baseController.errorValidationCheck(baseController.letterArray, costMulti) | !baseController.symbolCheck(costMulti, '.'))
         {
             errorMessage = "Cost Multiplier: " + costMulti + " is not a number";
             costMultiplier.clear();

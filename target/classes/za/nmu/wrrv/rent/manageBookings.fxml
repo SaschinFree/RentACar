@@ -16,10 +16,18 @@
          </children></HBox>
       <VBox prefHeight="376.0" prefWidth="916.0" spacing="10.0" style="-fx-background-color: #8d918d;">
          <children>
-            <TableView fx:id="bookingTable" prefHeight="200.0" prefWidth="200.0">
+            <TableView fx:id="bookingTable" onMouseClicked="#bookingSelected" prefHeight="200.0" prefWidth="200.0">
               <columns>
-                <TableColumn prefWidth="75.0" text="C1" />
-                <TableColumn prefWidth="75.0" text="C2" />
+                  <TableColumn fx:id="bookingNumber" prefWidth="150.0" text="Booking Number" />
+                  <TableColumn fx:id="clientNumber" prefWidth="100.0" text="Client Number" />
+                  <TableColumn fx:id="vehicleRegistration" prefWidth="150.0" text="Vehicle Registration" />
+                  <TableColumn fx:id="startDate" prefWidth="75.0" text="Start Date" />
+                  <TableColumn fx:id="endDate" prefWidth="75.0" text="End Date" />
+                  <TableColumn fx:id="cost" prefWidth="100.0" text="Booking Cost" />
+                  <TableColumn fx:id="companyCommission" prefWidth="150.0" text="Company Commission" />
+                  <TableColumn fx:id="ownerCommission" prefWidth="150.0" text="Owner Commission" />
+                  <TableColumn fx:id="isBeingRented" prefWidth="150.0" text="Vehicle Rented Out" />
+                  <TableColumn fx:id="hasPaid" prefWidth="100.0" text="Booking Paid" />
               </columns>
             </TableView>
             <HBox prefHeight="115.0" prefWidth="200.0">
@@ -28,7 +36,7 @@
                   <Label prefHeight="17.0" prefWidth="708.0" />
                   <Button fx:id="cancelBooking" mnemonicParsing="false" onMouseClicked="#buttonClicked" style="-fx-background-color: #3B2F2F;" text="Cancel Booking" textFill="WHITE" />
                </children></HBox>
-            <Button mnemonicParsing="false" onMouseClicked="#backToMenu" style="-fx-background-color: #3B2F2F;" text="Back" textFill="WHITE" />
+            <Button fx:id="back" mnemonicParsing="false" onMouseClicked="#buttonClicked" style="-fx-background-color: #3B2F2F;" text="Back" textFill="WHITE" />
          </children>
          <padding>
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />

@@ -40,7 +40,7 @@ public class Settings
     {
         return settingName.get();
     }
-    public StringProperty settingIDProperty()
+    public StringProperty settingNameProperty()
     {
         return settingName;
     }

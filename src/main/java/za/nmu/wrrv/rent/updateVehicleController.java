@@ -5,7 +5,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.paint.Paint;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
 import java.net.URL;
@@ -49,11 +49,11 @@ public class updateVehicleController implements Initializable
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
-        clientNumber.setText(String.valueOf(manageVehiclesController.thisVehicle.getClientNumber()));
-        registrationNumber.setText(manageVehiclesController.thisVehicle.getVehicleRegistration());
-        vehicleMake.setText(manageVehiclesController.thisVehicle.getMake());
-        vehicleModel.setText(manageVehiclesController.thisVehicle.getModel());
-        vehicleSeats.setText(String.valueOf(manageVehiclesController.thisVehicle.getSeats()));
+        clientNumber.textProperty().bind(manageVehiclesController.thisVehicle.clientNumberProperty().asString());
+        registrationNumber.textProperty().bind(manageVehiclesController.thisVehicle.vehicleRegistrationProperty());
+        vehicleMake.textProperty().bind(manageVehiclesController.thisVehicle.makeProperty());
+        vehicleModel.textProperty().bind(manageVehiclesController.thisVehicle.modelProperty());
+        vehicleSeats.textProperty().bind(manageVehiclesController.thisVehicle.seatsProperty().asString());
 
         registrationExpirationDate.setValue(LocalDate.parse(manageVehiclesController.thisVehicle.getRegistrationExpiryDate().toString()));
         vehicleStartDate.setValue(LocalDate.parse(manageVehiclesController.thisVehicle.getStartDate().toString()));
@@ -88,47 +88,66 @@ public class updateVehicleController implements Initializable
 
 
                 Alert newAlert = new Alert(Alert.AlertType.INFORMATION);
-                newAlert.setHeaderText("Successful");
-                newAlert.setContentText("Vehicle removed");
+                newAlert.setHeaderText("Vehicle removed");
                 newAlert.showAndWait();
 
                 closeStage();
             }
             else
             {
-                Date regExp = Date.valueOf(registrationExpirationDate.getValue());
+                String regExpString = registrationExpirationDate.getEditor().getText();
+                regExpString = regExpString.replace("/", "-");
+
                 boolean insured = vehicleInsurance.selectedProperty().getValue();
                 String colour = vehicleColour.getText();
-                Date start = Date.valueOf(vehicleStartDate.getValue());
-                Date end = Date.valueOf(vehicleEndDate.getValue());
-                double costMulti = Double.parseDouble(costMultiplier.getText());
 
-                if(emptyChecks(regExp, colour, start, end, costMulti) & errorChecks(regExp, colour, start, end, costMulti))
+                String startDateString = vehicleStartDate.getEditor().getText();
+                startDateString = startDateString.replace("/", "-");
+
+                String endDateString = vehicleEndDate.getEditor().getText();
+                endDateString = endDateString.replace("/", "-");
+
+                String costMultiString = costMultiplier.getText();
+
+                if(baseController.dateCheck(registrationExpirationDate, regExpString) & baseController.dateCheck(vehicleStartDate, startDateString) & baseController.dateCheck(vehicleEndDate, endDateString))
                 {
-                    String sql = "UPDATE Vehicle " +
-                            "SET registrationExpiryDate = \'" + regExp + "\', insured = \'" + insured + "\', colour = \'" + colour + "\', startDate = \'" + start + "\', endDate = \'" + end + "\', costMultiplier = \'" + costMulti + "\'" +
-                            "WHERE vehicleRegistration = \'" + registrationNumber.getText() + "\'";
-                    RentACar.statement.executeUpdate(sql);
+                    Date regExp = Date.valueOf(regExpString);
+                    Date start = Date.valueOf(startDateString);
+                    Date end = Date.valueOf(endDateString);
 
-                    manageVehiclesController.thisVehicle.setRegistrationExpiryDate(regExp);
-                    manageVehiclesController.thisVehicle.setInsured(insured);
-                    manageVehiclesController.thisVehicle.setColour(colour);
-                    manageVehiclesController.thisVehicle.setStartDate(start);
-                    manageVehiclesController.thisVehicle.setEndDate(end);
-                    manageVehiclesController.thisVehicle.setCostMultiplier(costMulti);
+                    if(emptyChecks(regExp, colour, start, end, costMultiString) & errorChecks(regExp, colour, start, end, costMultiString))
+                    {
+                        double costMulti = Double.parseDouble(costMultiString);
 
-                    closeStage();
+                        String sql = "UPDATE Vehicle " +
+                                "SET registrationExpiryDate = \'" + regExp + "\', insured = \'" + insured + "\', colour = \'" + colour + "\', startDate = \'" + start + "\', endDate = \'" + end + "\', costMultiplier = \'" + costMulti + "\'" +
+                                "WHERE vehicleRegistration = \'" + registrationNumber.getText() + "\'";
+                        RentACar.statement.executeUpdate(sql);
+
+                        manageVehiclesController.thisVehicle.setRegistrationExpiryDate(regExp);
+                        manageVehiclesController.thisVehicle.setInsured(insured);
+                        manageVehiclesController.thisVehicle.setColour(colour);
+                        manageVehiclesController.thisVehicle.setStartDate(start);
+                        manageVehiclesController.thisVehicle.setEndDate(end);
+                        manageVehiclesController.thisVehicle.setCostMultiplier(costMulti);
+
+                        closeStage();
+                    }
+                    else
+                    {
+                        alert.setHeaderText(errorMessage);
+                        alert.showAndWait();
+                    }
                 }
                 else
                 {
-                    alert.setHeaderText("Error");
-                    alert.setContentText(errorMessage);
+                    alert.setHeaderText("Date is in incorrect format");
                     alert.showAndWait();
                 }
             }
         }
     }
-    private boolean emptyChecks(Date regExp, String colour, Date start, Date end, double costMulti)
+    private boolean emptyChecks(Date regExp, String colour, Date start, Date end, String costMulti)
     {
         if(regExp.toString().isEmpty())
         {
@@ -158,7 +177,7 @@ public class updateVehicleController implements Initializable
             return false;
         }
 
-        if(String.valueOf(costMulti).isEmpty())
+        if(costMulti.isEmpty())
         {
             errorMessage = "Cost Multiplier is empty";
             costMultiplier.clear();
@@ -167,7 +186,7 @@ public class updateVehicleController implements Initializable
 
         return true;
     }
-    private boolean errorChecks(Date regExp, String colour, Date start, Date end, double costMulti)
+    private boolean errorChecks(Date regExp, String colour, Date start, Date end, String costMulti)
     {
         if(regExp.before(Date.valueOf(LocalDate.now())))
         {
@@ -179,13 +198,17 @@ public class updateVehicleController implements Initializable
         String[] colours = colour.split(",");
         for(String thisColour : colours)
         {
-            if(!baseController.errorValidationCheck(baseController.numberArray, thisColour, '-'))
+            if(!baseController.errorValidationCheck(baseController.numberArray, thisColour) | !baseController.symbolCheck(thisColour))
             {
                 errorMessage = "Vehicle Colour: " + thisColour + " is in the incorrect format";
                 vehicleColour.clear();
                 return false;
             }
-            if(Paint.valueOf(colour) == null)
+            try
+            {
+                Color.valueOf(thisColour);
+            }
+            catch (Exception e)
             {
                 errorMessage = "Vehicle Colour: " + thisColour + " is not a colour";
                 vehicleColour.clear();
@@ -207,7 +230,7 @@ public class updateVehicleController implements Initializable
             return false;
         }
 
-        if(!baseController.errorValidationCheck(baseController.letterArray, String.valueOf(costMulti), '.'))
+        if(!baseController.errorValidationCheck(baseController.letterArray, costMulti) | !baseController.symbolCheck(costMulti, '.'))
         {
             errorMessage = "Cost Multiplier: " + costMulti + " is not a number";
             costMultiplier.clear();

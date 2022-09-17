@@ -91,7 +91,8 @@ public class manageClientsController implements Initializable
             if(!loginController.thisUser.isAdmin())
             {
                 thisClient = clientTable.getSelectionModel().getSelectedItem();
-                updateClient.setVisible(true);
+                if(thisClient != null)
+                    updateClient.setVisible(true);
             }
         }
     }

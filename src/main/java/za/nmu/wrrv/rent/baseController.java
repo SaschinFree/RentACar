@@ -18,7 +18,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class baseController implements Initializable
@@ -50,6 +49,8 @@ public class baseController implements Initializable
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
+        connectToDB();
+
         mainReference = main;
         logged.setVisible(false);
         user.setVisible(false);
@@ -93,38 +94,36 @@ public class baseController implements Initializable
     @FXML
     protected void loginClicked(MouseEvent mouseEvent) throws IOException
     {
+        if(!connectToDB())
+            connectToDB();
+
         if(mouseEvent.getButton() == MouseButton.PRIMARY)
         {
             if(!isLoggedOn)
             {
-                if(connectToDB())
+                FXMLLoader loginLoader = new FXMLLoader(RentACar.class.getResource("login.fxml"));
+                Scene loginScene = new Scene(loginLoader.load());
+                Stage loginStage = new Stage();
+
+                loginStage.setScene(loginScene);
+                loginStage.setTitle("Login");
+                loginStage.setResizable(false);
+                loginStage.initModality(Modality.WINDOW_MODAL);
+                loginStage.initOwner(RentACar.mainStage);
+
+                loginStage.showAndWait();
+
+                if(isLoggedOn)
                 {
-                    FXMLLoader loginLoader = new FXMLLoader(RentACar.class.getResource("login.fxml"));
-                    Scene loginScene = new Scene(loginLoader.load());
-                    Stage loginStage = new Stage();
+                    logged.setVisible(true);
 
-                    loginStage.setScene(loginScene);
-                    loginStage.setTitle("Login");
-                    loginStage.setResizable(false);
-                    loginStage.initModality(Modality.WINDOW_MODAL);
-                    loginStage.initOwner(RentACar.mainStage);
+                    if(loginController.thisUser.isAdmin())
+                        user.setText("Admin");
+                    else
+                        user.setText("Clerk");
 
-                    loginStage.showAndWait();
-
-                    if(isLoggedOn)
-                    {
-                        logged.setVisible(true);
-
-                        if(loginController.thisUser.isAdmin())
-                            user.setText("Admin");
-                        else
-                            user.setText("Clerk");
-
-                        user.setVisible(true);
-                    }
+                    user.setVisible(true);
                 }
-                else
-                    System.exit(0);
             }
             else
             {
@@ -135,6 +134,7 @@ public class baseController implements Initializable
             }
         }
     }
+
     private void setSymbolArray()
     {
         int start = 0;
@@ -177,21 +177,6 @@ public class baseController implements Initializable
         }
     }
 
-    protected static boolean errorValidationCheck(char[] thisArray, String thisValue, char extraParameter)
-    {
-        for(Character symbol : thisArray)
-        {
-            if(thisValue.contains(symbol.toString()))
-                return false;
-        }
-        for(Character symbol : baseController.symbolArray)
-        {
-            if(thisValue.contains(symbol.toString()) & !symbol.equals(extraParameter))
-                return false;
-        }
-        return true;
-    }
-
     private boolean connectToDB()
     {
         try
@@ -216,6 +201,44 @@ public class baseController implements Initializable
     {
         RentACar.connection = null;
         RentACar.statement = null;
+    }
+
+    protected static boolean dateCheck(DatePicker thisDate, String thisDateString)
+    {
+        if(!errorValidationCheck(letterArray, thisDateString) | !symbolCheck(thisDateString, '-'))
+        {
+            thisDate.setValue(null);
+
+            return false;
+        }
+        return true;
+    }
+    protected static boolean errorValidationCheck(char[] thisArray, String thisValue)
+    {
+        for(Character symbol : thisArray)
+        {
+            if(thisValue.contains(symbol.toString()))
+                return false;
+        }
+        return true;
+    }
+    protected static boolean symbolCheck(String thisValue)
+    {
+        for(Character symbol : baseController.symbolArray)
+        {
+            if(thisValue.contains(symbol.toString()))
+                return false;
+        }
+        return true;
+    }
+    protected static boolean symbolCheck(String thisValue, char extraParameter)
+    {
+        for(Character symbol : baseController.symbolArray)
+        {
+            if(thisValue.contains(symbol.toString()) & !symbol.equals(extraParameter))
+                return false;
+        }
+        return true;
     }
 
     protected static void newScreen(String screenName, String title) throws IOException

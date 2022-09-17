@@ -1,5 +1,6 @@
 package za.nmu.wrrv.rent;
 
+
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
@@ -20,10 +21,13 @@ public class updateSettingController implements Initializable
     @FXML
     protected TextField settingValue;
 
+    private final Alert alert = new Alert(Alert.AlertType.ERROR);
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
-        settingName.setText(manageSettingsController.thisSetting.getSettingName());
+        settingName.textProperty().bind(manageSettingsController.thisSetting.settingNameProperty());
+        settingValue.setText(String.valueOf(manageSettingsController.thisSetting.getSettingValue()));
     }
 
     @FXML
@@ -36,16 +40,13 @@ public class updateSettingController implements Initializable
     @FXML
     protected void onUpdate(MouseEvent mouseEvent) throws SQLException
     {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
         if(mouseEvent.getButton() == MouseButton.PRIMARY)
         {
             String thisValue = settingValue.getText();
-            if(!baseController.errorValidationCheck(baseController.letterArray, thisValue, '.'))
+            if(!baseController.errorValidationCheck(baseController.letterArray, thisValue) | !baseController.symbolCheck(thisValue, '.'))
             {
                 settingValue.clear();
-                alert.setTitle("Error");
-                alert.setHeaderText("Incorrect Data Type");
-                alert.setContentText(thisValue + " is not a number");
+                alert.setHeaderText(thisValue + " is not a number");
                 alert.showAndWait();
             }
             else

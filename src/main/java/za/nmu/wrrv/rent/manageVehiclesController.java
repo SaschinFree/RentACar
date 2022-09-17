@@ -87,7 +87,8 @@ public class manageVehiclesController implements Initializable
             if(!loginController.thisUser.isAdmin())
             {
                 thisVehicle = vehicleTable.getSelectionModel().getSelectedItem();
-                updateVehicle.setVisible(true);
+                if(thisVehicle != null)
+                    updateVehicle.setVisible(true);
             }
         }
     }

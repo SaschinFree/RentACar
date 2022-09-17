@@ -54,6 +54,9 @@ public class manageBookingsController implements Initializable
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
+        if(loginController.thisUser.isAdmin())
+            createBooking.setVisible(false);
+
         cancelBooking.setVisible(false);
 
         bookingTable.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
@@ -76,9 +79,12 @@ public class manageBookingsController implements Initializable
     {
         if(mouseEvent.getButton() == MouseButton.PRIMARY)
         {
-            thisBooking = bookingTable.getSelectionModel().getSelectedItem();
-            if(thisBooking != null)
-                cancelBooking.setVisible(true);
+            if(!loginController.thisUser.isAdmin())
+            {
+                thisBooking = bookingTable.getSelectionModel().getSelectedItem();
+                if(thisBooking != null)
+                    cancelBooking.setVisible(true);
+            }
         }
     }
     @FXML
