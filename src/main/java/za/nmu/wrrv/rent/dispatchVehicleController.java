@@ -110,7 +110,16 @@ public class dispatchVehicleController implements Initializable
     private void onSearch() throws SQLException
     {
         ObservableList<Booking> filteredList = Booking.searchQuery(searchFilter.getSelectionModel().getSelectedItem(), searchQuery.getText());
-        filteredTable.setItems(filteredList);
+
+        filteredBookings = FXCollections.observableArrayList();
+
+        for(Booking thisBooking : filteredList)
+        {
+            if(thisBooking.isActive() & thisBooking.getStartDate().after(Date.valueOf(LocalDate.now())) & !thisBooking.isIsBeingRented())
+                filteredBookings.add(thisBooking);
+        }
+
+        filteredTable.setItems(filteredBookings);
     }
     private void onDispatch() throws SQLException
     {

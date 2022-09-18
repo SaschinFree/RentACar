@@ -147,6 +147,8 @@ public class managePaymentsController implements Initializable
     {
         ObservableList<Client> filteredList = Client.searchQuery(searchFilter.getSelectionModel().getSelectedItem(), searchQuery.getText());
 
+        filteredClients = FXCollections.observableArrayList();
+
         for(Client thisClient : filteredList)
         {
             if(thisClient.getMoneyOwed() > 0)

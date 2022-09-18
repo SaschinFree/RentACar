@@ -83,7 +83,7 @@ public class Booking
         if(searchQuery.contains("-"))
             sql = "SELECT * FROM Client WHERE " + tableColumn + " = \'" + Date.valueOf(searchQuery) + "\'";
         else
-            sql = "SELECT * FROM Client WHERE " + tableColumn + " LIKE \'" + "*" + searchQuery + "*" + "\'";
+            sql = "SELECT * FROM Client WHERE " + tableColumn + " LIKE \'" + searchQuery + "\'";
 
         ResultSet result = RentACar.statement.executeQuery(sql);
 
