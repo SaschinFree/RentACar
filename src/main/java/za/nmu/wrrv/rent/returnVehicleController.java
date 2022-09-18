@@ -4,10 +4,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -21,17 +18,19 @@ import java.util.ResourceBundle;
 public class returnVehicleController implements Initializable
 {
     @FXML
+    protected ChoiceBox<String> searchFilter;
+    @FXML
+    protected TextField searchQuery;
+    @FXML
+    protected Button search;
+    @FXML
     protected TableColumn<Booking, String> registrationNumber;
     @FXML
     protected TableColumn<Booking, Date> bookingStart;
     @FXML
     protected TableColumn<Booking, Date> bookingEnd;
     @FXML
-    protected TextField searchQuery;
-    @FXML
     protected TableView<Booking> filteredTable;
-    @FXML
-    protected Button search;
     @FXML
     protected Button back;
     @FXML
@@ -53,11 +52,29 @@ public class returnVehicleController implements Initializable
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
+        searchFilter.getItems().addAll(
+                "vehicleRegistration",
+                "startDate",
+                "endDate");
+
+        searchFilter.setValue("vehicleRegistration");
+
+        searchFilter.getSelectionModel().selectedItemProperty().addListener((observableValue, stringSingleSelectionModel, t1) ->
+        {
+            searchQuery.clear();
+
+            switch(searchFilter.getSelectionModel().getSelectedItem())
+            {
+                case "vehicleRegistration" -> searchQuery.setPromptText("ABC123 EC or CUSTOM MP etc");
+                case "startDate", "endDate" -> searchQuery.setPromptText("YYYY/MM/DD or YYYY-MM-DD");
+            }
+        });
+
         returnVehicle.setVisible(false);
 
         filteredTable.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
 
-        registrationNumber.setCellValueFactory(new PropertyValueFactory<>("registrationNumber"));
+        registrationNumber.setCellValueFactory(new PropertyValueFactory<>("vehicleRegistration"));
         bookingStart.setCellValueFactory(new PropertyValueFactory<>("startDate"));
         bookingEnd.setCellValueFactory(new PropertyValueFactory<>("endDate"));
 
@@ -90,9 +107,10 @@ public class returnVehicleController implements Initializable
             }
         }
     }
-    private void onSearch()
+    private void onSearch() throws SQLException
     {
-        //searchQuery
+        ObservableList<Booking> filteredList = Booking.searchQuery(searchFilter.getSelectionModel().getSelectedItem(), searchQuery.getText());
+        filteredTable.setItems(filteredList);
     }
     private void onReturn() throws SQLException
     {

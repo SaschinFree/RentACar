@@ -79,6 +79,53 @@ public class Vehicle
         }
         return vehicleList;
     }
+    public static ObservableList<Vehicle> searchQuery(String tableColumn, String searchQuery) throws SQLException
+    {
+        ObservableList<Vehicle> thisList = FXCollections.observableArrayList();
+        String sql;
+
+        searchQuery = searchQuery.replace("/", "-");
+        if(searchQuery.contains("-"))
+            sql = "SELECT * FROM Vehicle WHERE " + tableColumn + " = \'" + Date.valueOf(searchQuery) + "\'";
+        else
+            sql = "SELECT * FROM Vehicle WHERE " + tableColumn + " LIKE \'" + searchQuery + "\'";
+
+        ResultSet result = RentACar.statement.executeQuery(sql);
+
+        while(result.next())
+        {
+            String thisVehicleRegistration = result.getString("vehicleRegistration");
+            int thisClientNumber = result.getInt("clientNumber");
+            Date thisRegistrationExpiryDate = result.getDate("registrationExpiryDate");
+            boolean thisInsured = result.getBoolean("insured");
+            String thisMake = result.getString("make");
+            String thisModel = result.getString("model");
+            String thisColour = result.getString("colour");
+            int thisSeats = result.getInt("seats");
+            Date thisStartDate = result.getDate("startDate");
+            Date thisEndDate = result.getDate("endDate");
+            int thisCostMultiplier = result.getInt("costMultiplier");
+
+            boolean thisActive = result.getBoolean("active");
+
+            if(thisActive)
+            {
+                thisList.add( new Vehicle(
+                        thisVehicleRegistration,
+                        thisClientNumber,
+                        thisRegistrationExpiryDate,
+                        thisInsured,
+                        thisMake,
+                        thisModel,
+                        thisColour,
+                        thisSeats,
+                        thisStartDate,
+                        thisEndDate,
+                        thisCostMultiplier));
+            }
+        }
+        return thisList;
+    }
 
     public String getVehicleRegistration() {
         return vehicleRegistration.get();

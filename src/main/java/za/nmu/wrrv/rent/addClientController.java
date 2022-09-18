@@ -144,7 +144,7 @@ public class addClientController implements Initializable
             String city = this.city.getText();
             String postCodeString = postalCode.getText();
 
-            String compName = "";
+            String compName = "Private";
 
             if(isCompany.selectedProperty().getValue())
                 compName = companyName.getText();

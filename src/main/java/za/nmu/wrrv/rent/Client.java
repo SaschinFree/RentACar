@@ -114,6 +114,59 @@ public class Client
         }
         return clientList;
     }
+    public static ObservableList<Client> searchQuery(String tableColumn, String searchQuery) throws SQLException
+    {
+        ObservableList<Client> thisList = FXCollections.observableArrayList();
+        String sql;
+
+        searchQuery = searchQuery.replace("/", "-");
+        if(searchQuery.contains("-"))
+            sql = "SELECT * FROM Client WHERE " + tableColumn + " = \'" + Date.valueOf(searchQuery) + "\'";
+        else
+            sql = "SELECT * FROM Client WHERE " + tableColumn + " LIKE \'" + searchQuery + "\'";
+
+        ResultSet result = RentACar.statement.executeQuery(sql);
+
+        while(result.next())
+        {
+            int thisClientNumber = result.getInt("clientNumber");
+            String thisClientID = result.getString("clientID");
+            String thisFirstName = result.getString("firstName");
+            String thisSurname = result.getString("surname");
+            String thisContactNumber = result.getString("contactNumber");
+            String thisEmail = result.getString("email");
+            Date thisLicenceExpiryDate = result.getDate("licenceExpiryDate");
+            int thisStreetNumber = result.getInt("streetNumber");
+            String thisStreetName = result.getString("streetName");
+            String thisSuburb = result.getString("suburb");
+            String thisCity = result.getString("city");
+            int thisPostalCode = result.getInt("postalCode");
+            String thisCompanyName = result.getString("companyName");
+            double thisMoneyOwed = result.getDouble("moneyOwed");
+
+            boolean thisActive = result.getBoolean("active");
+
+            if(thisActive)
+            {
+                thisList.add(new Client(
+                        thisClientNumber,
+                        thisClientID,
+                        thisFirstName,
+                        thisSurname,
+                        thisContactNumber,
+                        thisEmail,
+                        thisLicenceExpiryDate,
+                        thisStreetNumber,
+                        thisStreetName,
+                        thisSuburb,
+                        thisCity,
+                        thisPostalCode,
+                        thisCompanyName,
+                        thisMoneyOwed));
+            }
+        }
+        return thisList;
+    }
 
     public int getClientNumber() {
         return clientNumber.get();

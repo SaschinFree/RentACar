@@ -1,5 +1,6 @@
 package za.nmu.wrrv.rent;
 
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -10,10 +11,15 @@ import javafx.scene.input.MouseEvent;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Date;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class manageVehiclesController implements Initializable
 {
+    @FXML
+    protected ChoiceBox<String> searchFilter;
+    @FXML
+    protected TextField searchQuery;
     @FXML
     protected Button search;
     @FXML
@@ -45,8 +51,6 @@ public class manageVehiclesController implements Initializable
     @FXML
     protected Button back;
     @FXML
-    protected TextField searchQuery;
-    @FXML
     protected TableView<Vehicle> vehicleTable;
 
     protected static Vehicle thisVehicle;
@@ -55,6 +59,39 @@ public class manageVehiclesController implements Initializable
     @Override
     public void initialize(URL url, ResourceBundle rb)
     {
+        searchFilter.getItems().addAll(
+                "vehicleRegistration",
+                "clientNumber",
+                "registrationExpiryDate",
+                "insured",
+                "make",
+                "model",
+                "colour",
+                "seats",
+                "startDate",
+                "endDate",
+                "costMultiplier");
+
+        searchFilter.setValue("vehicleRegistration");
+
+        searchFilter.getSelectionModel().selectedItemProperty().addListener((observableValue, stringSingleSelectionModel, t1) ->
+        {
+            searchQuery.clear();
+
+            switch(searchFilter.getSelectionModel().getSelectedItem())
+            {
+                case "vehicleRegistration" -> searchQuery.setPromptText("ABC123 EC or CUSTOM MP etc");
+                case "clientNumber" -> searchQuery.setPromptText("1");
+                case "registrationExpiryDate", "startDate", "endDate" -> searchQuery.setPromptText("YYYY/MM/DD or YYYY-MM-DD");
+                case "insured" -> searchQuery.setPromptText("Yes or No");
+                case "make" -> searchQuery.setPromptText("Volkswagen or BMW etc");
+                case "model" -> searchQuery.setPromptText("Polo or 530i etc");
+                case "colour" -> searchQuery.setPromptText("Red or Colour,Colour etc");
+                case "seats" -> searchQuery.setPromptText("2");
+                case "costMultiplier" -> searchQuery.setPromptText("0.0");
+            }
+        });
+
         if(loginController.thisUser.isAdmin())
             addVehicle.setVisible(false);
 
@@ -94,7 +131,7 @@ public class manageVehiclesController implements Initializable
     }
 
     @FXML
-    protected void buttonClicked(MouseEvent mouseEvent) throws IOException
+    protected void buttonClicked(MouseEvent mouseEvent) throws IOException, SQLException
     {
         if(mouseEvent.getButton() == MouseButton.PRIMARY)
         {
@@ -113,8 +150,9 @@ public class manageVehiclesController implements Initializable
             }
         }
     }
-    private void onSearch()
+    private void onSearch() throws SQLException
     {
-        //searchQuery
+        ObservableList<Vehicle> filteredList = Vehicle.searchQuery(searchFilter.getSelectionModel().getSelectedItem(), searchQuery.getText());
+        vehicleTable.setItems(filteredList);
     }
 }

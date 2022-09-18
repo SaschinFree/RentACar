@@ -4,31 +4,38 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class managePaymentsController implements Initializable
 {
-    public TableColumn<Client, Integer> clientID;
-    public TableColumn<Client, String> firstName;
-    public TableColumn<Client, String> surname;
-    public TableColumn<Client, String> contactNumber;
-    public TableColumn<Client, String> email;
-    public TableColumn<Client, String> companyName;
-    public TableColumn<Client, Integer> moneyOwed;
+    @FXML
+    protected ChoiceBox<String> searchFilter;
     @FXML
     protected TextField searchQuery;
     @FXML
     protected Button search;
+    @FXML
+    protected TableColumn<Client, Integer> clientID;
+    @FXML
+    protected TableColumn<Client, String> firstName;
+    @FXML
+    protected TableColumn<Client, String> surname;
+    @FXML
+    protected TableColumn<Client, String> contactNumber;
+    @FXML
+    protected TableColumn<Client, String> email;
+    @FXML
+    protected TableColumn<Client, String> companyName;
+    @FXML
+    protected TableColumn<Client, Integer> moneyOwed;
     @FXML
     protected Button back;
     @FXML
@@ -53,6 +60,33 @@ public class managePaymentsController implements Initializable
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
+        searchFilter.getItems().addAll(
+                "clientID",
+                "firstName",
+                "surname",
+                "contactNumber",
+                "email",
+                "companyName",
+                "moneyOwed");
+
+        searchFilter.setValue("clientID");
+
+        searchFilter.getSelectionModel().selectedItemProperty().addListener((observableValue, stringSingleSelectionModel, t1) ->
+        {
+            searchQuery.clear();
+
+            switch(searchFilter.getSelectionModel().getSelectedItem())
+            {
+                case "clientID" -> searchQuery.setPromptText("1234567898765");
+                case "firstName" -> searchQuery.setPromptText("John");
+                case "surname" -> searchQuery.setPromptText("Doe");
+                case "contactNumber" -> searchQuery.setPromptText("0123456789");
+                case "email" -> searchQuery.setPromptText("johndoe@gmail.com");
+                case "companyName" -> searchQuery.setPromptText("Uber or Private");
+                case "moneyOwed" -> searchQuery.setPromptText("0.0");
+            }
+        });
+
         clientPaid = false;
 
         payClient.setVisible(false);
@@ -82,7 +116,7 @@ public class managePaymentsController implements Initializable
     }
 
     @FXML
-    protected void buttonClicked(MouseEvent mouseEvent) throws IOException
+    protected void buttonClicked(MouseEvent mouseEvent) throws IOException, SQLException
     {
         if(mouseEvent.getButton() == MouseButton.PRIMARY)
         {
@@ -109,8 +143,16 @@ public class managePaymentsController implements Initializable
             }
         }
     }
-    private void onSearch()
+    private void onSearch() throws SQLException
     {
-        //searchQuery
+        ObservableList<Client> filteredList = Client.searchQuery(searchFilter.getSelectionModel().getSelectedItem(), searchQuery.getText());
+
+        for(Client thisClient : filteredList)
+        {
+            if(thisClient.getMoneyOwed() > 0)
+                filteredClients.add(thisClient);
+        }
+
+        queryTable.setItems(filteredClients);
     }
 }

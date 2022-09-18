@@ -1,5 +1,6 @@
 package za.nmu.wrrv.rent;
 
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -10,12 +11,17 @@ import javafx.scene.input.MouseEvent;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Date;
+import java.sql.SQLException;
 import java.util.ResourceBundle;
 
 public class manageClientsController implements Initializable
 {
     @FXML
+    protected ChoiceBox<String> searchFilter;
+    @FXML
     protected TextField searchQuery;
+    @FXML
+    protected Button search;
     @FXML
     protected TableColumn<Client, Integer> clientNumber;
     @FXML
@@ -57,6 +63,47 @@ public class manageClientsController implements Initializable
     @Override
     public void initialize(URL url, ResourceBundle rb)
     {
+        searchFilter.getItems().addAll(
+                "clientNumber",
+                "clientID",
+                "firstName",
+                "surname",
+                "contactNumber",
+                "email",
+                "licenceExpiryDate",
+                "streetNumber",
+                "streetName",
+                "suburb",
+                "city",
+                "postalCode",
+                "companyName",
+                "moneyOwed");
+
+        searchFilter.setValue("clientNumber");
+
+        searchFilter.getSelectionModel().selectedItemProperty().addListener((observableValue, stringSingleSelectionModel, t1) ->
+        {
+            searchQuery.clear();
+
+            switch(searchFilter.getSelectionModel().getSelectedItem())
+            {
+                case "clientNumber" -> searchQuery.setPromptText("1");
+                case "clientID" -> searchQuery.setPromptText("1234567898765");
+                case "firstName" -> searchQuery.setPromptText("John");
+                case "surname" -> searchQuery.setPromptText("Doe");
+                case "contactNumber" -> searchQuery.setPromptText("0123456789");
+                case "email" -> searchQuery.setPromptText("johndoe@gmail.com");
+                case "licenceExpiryDate" -> searchQuery.setPromptText("YYYY/MM/DD or YYYY-MM-DD");
+                case "streetNumber" -> searchQuery.setPromptText("52");
+                case "streetName" -> searchQuery.setPromptText("King Edward Street");
+                case "suburb" -> searchQuery.setPromptText("Newton Park");
+                case "city" -> searchQuery.setPromptText("Gqeberha");
+                case "postalCode" -> searchQuery.setPromptText("6045");
+                case "companyName" -> searchQuery.setPromptText("Uber or Private");
+                case "moneyOwed" -> searchQuery.setPromptText("0.0");
+            }
+        });
+
         if(loginController.thisUser.isAdmin())
             addClient.setVisible(false);
 
@@ -97,7 +144,7 @@ public class manageClientsController implements Initializable
         }
     }
     @FXML
-    protected void buttonClicked(MouseEvent mouseEvent) throws IOException
+    protected void buttonClicked(MouseEvent mouseEvent) throws IOException, SQLException
     {
         if(mouseEvent.getButton() == MouseButton.PRIMARY)
         {
@@ -117,8 +164,9 @@ public class manageClientsController implements Initializable
             }
         }
     }
-    private void onSearch()
+    private void onSearch() throws SQLException
     {
-        //searchQuery
+        ObservableList<Client> filteredList = Client.searchQuery(searchFilter.getSelectionModel().getSelectedItem(), searchQuery.getText());
+        clientTable.setItems(filteredList);
     }
 }

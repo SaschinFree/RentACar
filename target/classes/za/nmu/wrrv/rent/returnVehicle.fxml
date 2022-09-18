@@ -8,6 +8,7 @@
    <children>
       <HBox alignment="CENTER_RIGHT" prefHeight="46.0" prefWidth="600.0" spacing="5.0" style="-fx-background-color: #8d918d;">
          <children>
+            <ChoiceBox fx:id="searchFilter" prefWidth="150.0" />
             <TextField fx:id="searchQuery" promptText="Search" />
             <Button fx:id="search" mnemonicParsing="false" onMouseClicked="#buttonClicked" style="-fx-background-color: #3B2F2F;" text="Search" textFill="WHITE">
                <HBox.margin>
