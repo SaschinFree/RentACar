@@ -84,7 +84,7 @@ public class Booking
             sql = "SELECT * FROM Booking WHERE " + tableColumn + " = \'" + Date.valueOf(searchQuery) + "\'";
         else
         {
-            if(searchQuery.equals("Yes") | searchQuery.equals("No"))
+            if(searchQuery.equals("Yes") | searchQuery.equals("No") | searchQuery.contains("."))
                 sql = "SELECT * FROM Booking WHERE " + tableColumn + " = " + searchQuery + "";
             else
                 sql = "SELECT * FROM Booking WHERE " + tableColumn + " LIKE \'" + searchQuery + "\'";

@@ -123,7 +123,12 @@ public class Client
         if(searchQuery.contains("-"))
             sql = "SELECT * FROM Client WHERE " + tableColumn + " = \'" + Date.valueOf(searchQuery) + "\'";
         else
-            sql = "SELECT * FROM Client WHERE " + tableColumn + " LIKE \'" + searchQuery + "\'";
+        {
+            if(searchQuery.contains("."))
+                sql = "SELECT * FROM Client WHERE " + tableColumn + " = " + searchQuery + "";
+            else
+                sql = "SELECT * FROM Client WHERE " + tableColumn + " LIKE \'" + searchQuery + "\'";
+        }
 
         ResultSet result = RentACar.statement.executeQuery(sql);
 

@@ -1,11 +1,9 @@
 package za.nmu.wrrv.rent;
 
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -18,6 +16,8 @@ import java.util.ResourceBundle;
 
 public class manageBookingsController implements Initializable
 {
+    @FXML
+    protected ChoiceBox<String> searchFilter;
     @FXML
     protected TableColumn<Booking, Integer> bookingNumber;
     @FXML
@@ -54,6 +54,34 @@ public class manageBookingsController implements Initializable
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
+        searchFilter.getItems().addAll(
+                "bookingNumber",
+                "clientNumber",
+                "vehicleRegistration",
+                "startDate",
+                "endDate",
+                "cost",
+                "companyCommission",
+                "ownerCommission",
+                "isBeingRented",
+                "hasPaid");
+
+        searchFilter.setValue("bookingNumber");
+
+        searchFilter.getSelectionModel().selectedItemProperty().addListener((observableValue, stringSingleSelectionModel, t1) ->
+        {
+            searchQuery.clear();
+
+            switch(searchFilter.getSelectionModel().getSelectedItem())
+            {
+                case "bookingNumber", "clientNumber" -> searchQuery.setPromptText("1");
+                case "vehicleRegistration" -> searchQuery.setPromptText("ABC123 EC or CUSTOM MP etc");
+                case "startDate", "endDate" -> searchQuery.setPromptText("YYYY/MM/DD");
+                case "cost", "companyCommission", "ownerCommission" -> searchQuery.setPromptText("0.0");
+                case "isBeingRented", "hasPaid" -> searchQuery.setPromptText("Yes or No");
+            }
+        });
+
         if(loginController.thisUser.isAdmin())
             createBooking.setVisible(false);
 
@@ -104,9 +132,10 @@ public class manageBookingsController implements Initializable
         }
     }
 
-    private void onSearch()
+    private void onSearch() throws SQLException
     {
-        //searchQuery
+        ObservableList<Booking> filteredList = Booking.searchQuery(searchFilter.getSelectionModel().getSelectedItem(), searchQuery.getText());
+        bookingTable.setItems(filteredList);
     }
     private void onCancel() throws SQLException
     {

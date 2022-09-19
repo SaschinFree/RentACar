@@ -90,7 +90,7 @@
       </HBox>
       <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="335.0" prefHeight="100.0" prefWidth="200.0">
          <children>
-            <Label prefWidth="190.0" text="Money Owed">
+            <Label prefWidth="200.0" text="Money Owed">
                <font>
                   <Font size="16.0" />
                </font>
@@ -112,7 +112,7 @@
       </HBox>
       <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0">
          <children>
-            <Label prefWidth="190.0" text="Amount">
+            <Label prefWidth="200.0" text="Amount">
                <font>
                   <Font size="16.0" />
                </font>

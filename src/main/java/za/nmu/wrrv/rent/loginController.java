@@ -31,13 +31,14 @@ public class loginController
     @FXML
     protected void onLogin(MouseEvent mouseEvent) throws SQLException
     {
-        String username = user.getText();
-        String password = pass.getText();
-        thisUser = User.getUser(username);
 
         if(mouseEvent.getButton() == MouseButton.PRIMARY)
         {
             Alert alert;
+
+            String username = user.getText();
+            String password = pass.getText();
+            thisUser = User.getUser(username);
 
             if(thisUser == null)
             {
@@ -75,16 +76,7 @@ public class loginController
             pass.clear();
             alert.showAndWait();
             if(baseController.isLoggedOn)
-            {
-                if(thisUser.isAdmin())
-                    baseController.userLoggedOn = "adminMenu";
-                else
-                    baseController.userLoggedOn = "clerkMenu";
-
-                baseController.nextScene(baseController.userLoggedOn);
-
                 closeStage();
-            }
         }
     }
     private void closeStage()

@@ -8,6 +8,7 @@
    <children>
       <HBox alignment="CENTER_RIGHT" prefHeight="46.0" prefWidth="600.0" spacing="5.0" style="-fx-background-color: #8d918d;">
          <children>
+            <ChoiceBox fx:id="searchFilter" prefWidth="150.0" />
             <TextField fx:id="searchQuery" promptText="Search" />
             <Button fx:id="search" mnemonicParsing="false" onMouseClicked="#buttonClicked" style="-fx-background-color: #3B2F2F;" text="Search" textFill="WHITE">
                <HBox.margin>
@@ -26,8 +27,8 @@
                   <TableColumn fx:id="cost" prefWidth="100.0" text="Booking Cost (R)" />
                   <TableColumn fx:id="companyCommission" prefWidth="150.0" text="Company Commission (R)" />
                   <TableColumn fx:id="ownerCommission" prefWidth="150.0" text="Owner Commission (R)" />
-                  <TableColumn fx:id="isBeingRented" prefWidth="150.0" text="Vehicle Rented Out" />
-                  <TableColumn fx:id="hasPaid" prefWidth="100.0" text="Booking Paid" />
+                  <TableColumn fx:id="isBeingRented" prefWidth="200.0" text="Vehicle Is Being Rented Out" />
+                  <TableColumn fx:id="hasPaid" prefWidth="150.0" text="Booking Has Been Paid" />
               </columns>
             </TableView>
             <HBox prefHeight="115.0" prefWidth="200.0">

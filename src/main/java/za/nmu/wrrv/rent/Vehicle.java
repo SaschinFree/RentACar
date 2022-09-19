@@ -89,7 +89,7 @@ public class Vehicle
             sql = "SELECT * FROM Vehicle WHERE " + tableColumn + " = \'" + Date.valueOf(searchQuery) + "\'";
         else
         {
-            if(searchQuery.equals("Yes") | searchQuery.equals("No"))
+            if(searchQuery.equals("Yes") | searchQuery.equals("No") | searchQuery.contains("."))
                 sql = "SELECT * FROM Vehicle WHERE " + tableColumn + " = " + searchQuery + "";
             else
                 sql = "SELECT * FROM Vehicle WHERE " + tableColumn + " LIKE \'" + searchQuery + "\'";

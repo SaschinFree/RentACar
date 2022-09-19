@@ -73,7 +73,7 @@ public class baseController implements Initializable
                 disconnectToDB();
 
                 isLoggedOn = false;
-                userLoggedOn = "";
+                userLoggedOn = null;
 
                 logged.setVisible(false);
                 user.setVisible(false);
@@ -118,11 +118,19 @@ public class baseController implements Initializable
                     logged.setVisible(true);
 
                     if(loginController.thisUser.isAdmin())
+                    {
                         user.setText("Admin");
+                        userLoggedOn = "adminMenu";
+                    }
                     else
+                    {
                         user.setText("Clerk");
+                        userLoggedOn = "clerkMenu";
+                    }
 
                     user.setVisible(true);
+
+                    nextScene(userLoggedOn);
                 }
             }
             else

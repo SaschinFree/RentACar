@@ -93,7 +93,7 @@ public class manageClientsController implements Initializable
                 case "surname" -> searchQuery.setPromptText("Doe");
                 case "contactNumber" -> searchQuery.setPromptText("0123456789");
                 case "email" -> searchQuery.setPromptText("johndoe@gmail.com");
-                case "licenceExpiryDate" -> searchQuery.setPromptText("YYYY/MM/DD or YYYY-MM-DD");
+                case "licenceExpiryDate" -> searchQuery.setPromptText("YYYY/MM/DD");
                 case "streetNumber" -> searchQuery.setPromptText("52");
                 case "streetName" -> searchQuery.setPromptText("King Edward Street");
                 case "suburb" -> searchQuery.setPromptText("Newton Park");

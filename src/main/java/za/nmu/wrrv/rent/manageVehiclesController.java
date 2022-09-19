@@ -82,7 +82,7 @@ public class manageVehiclesController implements Initializable
             {
                 case "vehicleRegistration" -> searchQuery.setPromptText("ABC123 EC or CUSTOM MP etc");
                 case "clientNumber" -> searchQuery.setPromptText("1");
-                case "registrationExpiryDate", "startDate", "endDate" -> searchQuery.setPromptText("YYYY/MM/DD or YYYY-MM-DD");
+                case "registrationExpiryDate", "startDate", "endDate" -> searchQuery.setPromptText("YYYY/MM/DD");
                 case "insured" -> searchQuery.setPromptText("Yes or No");
                 case "make" -> searchQuery.setPromptText("Volkswagen or BMW etc");
                 case "model" -> searchQuery.setPromptText("Polo or 530i etc");
