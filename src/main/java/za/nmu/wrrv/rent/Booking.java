@@ -81,9 +81,14 @@ public class Booking
 
         searchQuery = searchQuery.replace("/", "-");
         if(searchQuery.contains("-"))
-            sql = "SELECT * FROM Client WHERE " + tableColumn + " = \'" + Date.valueOf(searchQuery) + "\'";
+            sql = "SELECT * FROM Booking WHERE " + tableColumn + " = \'" + Date.valueOf(searchQuery) + "\'";
         else
-            sql = "SELECT * FROM Client WHERE " + tableColumn + " LIKE \'" + searchQuery + "\'";
+        {
+            if(searchQuery.equals("Yes") | searchQuery.equals("No"))
+                sql = "SELECT * FROM Booking WHERE " + tableColumn + " = " + searchQuery + "";
+            else
+                sql = "SELECT * FROM Booking WHERE " + tableColumn + " LIKE \'" + searchQuery + "\'";
+        }
 
         ResultSet result = RentACar.statement.executeQuery(sql);
 

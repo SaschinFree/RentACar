@@ -88,7 +88,12 @@ public class Vehicle
         if(searchQuery.contains("-"))
             sql = "SELECT * FROM Vehicle WHERE " + tableColumn + " = \'" + Date.valueOf(searchQuery) + "\'";
         else
-            sql = "SELECT * FROM Vehicle WHERE " + tableColumn + " LIKE \'" + searchQuery + "\'";
+        {
+            if(searchQuery.equals("Yes") | searchQuery.equals("No"))
+                sql = "SELECT * FROM Vehicle WHERE " + tableColumn + " = " + searchQuery + "";
+            else
+                sql = "SELECT * FROM Vehicle WHERE " + tableColumn + " LIKE \'" + searchQuery + "\'";
+        }
 
         ResultSet result = RentACar.statement.executeQuery(sql);
 
