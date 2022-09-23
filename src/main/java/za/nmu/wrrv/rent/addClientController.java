@@ -6,6 +6,7 @@ import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
+import javafx.util.StringConverter;
 
 import java.net.URL;
 import java.sql.Date;
@@ -58,6 +59,9 @@ public class addClientController implements Initializable
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
+        dob.setConverter(baseController.dateConverter);
+        licenceExpiryDate.setConverter(baseController.dateConverter);
+
         gender.getItems().addAll("Male", "Female");
         nationality.getItems().addAll("South African", "Other");
 
@@ -90,6 +94,7 @@ public class addClientController implements Initializable
             String clientID = "";
 
             String clientDOB = dob.getEditor().getText();
+
             clientDOB = clientDOB.replace("/", "");
 
             if(!baseController.dateCheck(dob, clientDOB))
@@ -204,7 +209,7 @@ public class addClientController implements Initializable
                     }
 
                     String insertClient = "INSERT INTO Client " +
-                            "(clientNumber, clientID, firstName, surname, contactNumber, email, licenceExpiryDate, streetNumber, streetName, suburb, city, postalCode, companyName, moneyOwed) " +
+                            "(clientNumber, clientID, firstName, surname, contactNumber, email, licenceExpiryDate, streetNumber, streetName, suburb, city, postalCode, companyName, moneyOwed, active) " +
                             "VALUES (\'" + baseController.clients.size() + 1 + "\',\'" + clientID + "\',\'" + fName + "\',\'" + sName + "\',\'" + number + "\',\'" + email + "\',\'" + licence + "\',\'" + strNum + "\',\'" + strName + "\',\'" + sub + "\',\'" + city + "\',\'" + postCode + "\',\'" + compName + "\',\'" + 0 + "\', Yes)";
                     RentACar.statement.executeUpdate(insertClient);
 

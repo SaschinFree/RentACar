@@ -29,7 +29,7 @@ public class manageVehiclesController implements Initializable
     @FXML
     protected TableColumn<Vehicle, Date> registrationExpiryDate;
     @FXML
-    protected TableColumn<Vehicle, Boolean> insured;
+    protected TableColumn<Vehicle, String> insured;
     @FXML
     protected TableColumn<Vehicle, String> make;
     @FXML

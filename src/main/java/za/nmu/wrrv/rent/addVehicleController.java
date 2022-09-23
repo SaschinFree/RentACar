@@ -53,6 +53,10 @@ public class addVehicleController implements Initializable
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
+        registrationExpirationDate.setConverter(baseController.dateConverter);
+        vehicleStartDate.setConverter(baseController.dateConverter);
+        vehicleEndDate.setConverter(baseController.dateConverter);
+
         plateExtension.getItems().addAll("WP", "ZN", "MP", "EC", "L", "GP", "NC", "FS", "NW");
         plateExtension.setValue("EC");
 
@@ -134,6 +138,11 @@ public class addVehicleController implements Initializable
 
 
             boolean insured = vehicleInsurance.selectedProperty().getValue();
+
+            String isInsured = "No";
+            if(insured)
+                isInsured = "Yes";
+
             String make = vehicleMake.getText();
             String model = vehicleModel.getText();
             String colour = vehicleColour.getText();
@@ -163,7 +172,7 @@ public class addVehicleController implements Initializable
                             "VALUES (\'"+ regNum +"\',\'"+ clientNumber +"\',\'"+ regExp +"\',\'"+ insured +"\',\'"+ make +"\',\'"+ model +"\',\'"+ colour +"\',\'"+ seats +"\',\'"+ start +"\',\'"+ end +"\',\'"+ costMulti +"\')";
                     RentACar.statement.executeUpdate(sql);
 
-                    Vehicle newVehicle = new Vehicle(regNum, clientNumber, regExp, insured, make, model, colour, seats, start, end, costMulti);
+                    Vehicle newVehicle = new Vehicle(regNum, clientNumber, regExp, isInsured, make, model, colour, seats, start, end, costMulti);
                     Vehicle.vehicleList.add(newVehicle);
 
                     closeStage();

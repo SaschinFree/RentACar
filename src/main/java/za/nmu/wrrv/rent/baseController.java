@@ -13,11 +13,16 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.StringConverter;
 
 import java.io.IOException;
 import java.net.URL;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 
 public class baseController implements Initializable
@@ -36,6 +41,25 @@ public class baseController implements Initializable
     protected static boolean isLoggedOn = false;
     protected static String userLoggedOn;
 
+    protected static final DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+    protected static final StringConverter<LocalDate> dateConverter = new StringConverter<>() {
+        @Override
+        public String toString(LocalDate localDate)
+        {
+            if(localDate  != null)
+                return dateFormat.format(localDate);
+            return "";
+        }
+
+        @Override
+        public LocalDate fromString(String s)
+        {
+            if(s != null && !s.isEmpty())
+                return LocalDate.parse(s,dateFormat);
+            return null;
+        }
+    };
+
     protected static final char[] symbolArray = new char[33];
     protected static final char[] letterArray = new char[52];
     protected static final char[] numberArray = new char[10];
@@ -49,8 +73,6 @@ public class baseController implements Initializable
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
-        connectToDB();
-
         mainReference = main;
         logged.setVisible(false);
         user.setVisible(false);
@@ -70,10 +92,14 @@ public class baseController implements Initializable
             {
                 main.setCenter(null);
 
-                disconnectToDB();
-
                 isLoggedOn = false;
                 userLoggedOn = null;
+
+                clients = null;
+                vehicles = null;
+                bookings = null;
+                settings = null;
+                payments = null;
 
                 logged.setVisible(false);
                 user.setVisible(false);
@@ -94,9 +120,6 @@ public class baseController implements Initializable
     @FXML
     protected void loginClicked(MouseEvent mouseEvent) throws IOException
     {
-        if(!connectToDB())
-            connectToDB();
-
         if(mouseEvent.getButton() == MouseButton.PRIMARY)
         {
             if(!isLoggedOn)
@@ -183,32 +206,6 @@ public class baseController implements Initializable
             numberArray[start] = (char) i;
             start++;
         }
-    }
-
-    private boolean connectToDB()
-    {
-        try
-        {
-            Class.forName("net.ucanaccess.jdbc.UcanaccessDriver");
-            RentACar.connection = DriverManager.getConnection("jdbc:ucanaccess://RentACar.accdb");
-            RentACar.statement = RentACar.connection.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
-
-            return true;
-        }
-        catch (Exception e)
-        {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setHeaderText("Database Connection Failed");
-            alert.setContentText(e.getMessage());
-            alert.showAndWait();
-
-            return false;
-        }
-    }
-    private void disconnectToDB()
-    {
-        RentACar.connection = null;
-        RentACar.statement = null;
     }
 
     protected static boolean dateCheck(DatePicker thisDate, String thisDateString)

@@ -19,11 +19,11 @@ public class Booking
     private final DoubleProperty cost = new SimpleDoubleProperty();
     private final DoubleProperty companyCommission = new SimpleDoubleProperty();
     private final DoubleProperty ownerCommission = new SimpleDoubleProperty();
-    private final BooleanProperty isBeingRented = new SimpleBooleanProperty();
-    private final BooleanProperty hasPaid = new SimpleBooleanProperty();
+    private final StringProperty isBeingRented = new SimpleStringProperty();
+    private final StringProperty hasPaid = new SimpleStringProperty();
     private final BooleanProperty active = new SimpleBooleanProperty();
 
-    public Booking(int bookingNumber, int clientNumber, String vehicleRegistration, Date startDate, Date endDate, double cost, double companyCommission, double ownerCommission, boolean isBeingRented, boolean hasPaid)
+    public Booking(int bookingNumber, int clientNumber, String vehicleRegistration, Date startDate, Date endDate, double cost, double companyCommission, double ownerCommission, String isBeingRented, String hasPaid)
     {
         this.bookingNumber.set(bookingNumber);
         this.clientNumber.set(clientNumber);
@@ -53,7 +53,16 @@ public class Booking
             int thisCompanyCommission = result.getInt("companyCommission");
             int thisOwnerCommission = result.getInt("ownerCommission");
             boolean thisBeingRented = result.getBoolean("isBeingRented");
+
+            String rented = "No";
+            if(thisBeingRented)
+                rented = "Yes";
+
             boolean thisPaid = result.getBoolean("hasPaid");
+
+            String paid = "No";
+            if(thisPaid)
+                paid = "Yes";
 
             boolean thisActive = result.getBoolean("active");
 
@@ -68,8 +77,8 @@ public class Booking
                 thisCost,
                 thisCompanyCommission,
                 thisOwnerCommission,
-                thisBeingRented,
-                thisPaid));
+                rented,
+                paid));
             }
         }
         return bookingList;
@@ -103,7 +112,16 @@ public class Booking
             int thisCompanyCommission = result.getInt("companyCommission");
             int thisOwnerCommission = result.getInt("ownerCommission");
             boolean thisBeingRented = result.getBoolean("isBeingRented");
+
+            String rented = "No";
+            if(thisBeingRented)
+                rented = "Yes";
+
             boolean thisPaid = result.getBoolean("hasPaid");
+
+            String paid = "No";
+            if(thisPaid)
+                paid = "Yes";
 
             boolean thisActive = result.getBoolean("active");
 
@@ -118,8 +136,8 @@ public class Booking
                         thisCost,
                         thisCompanyCommission,
                         thisOwnerCommission,
-                        thisBeingRented,
-                        thisPaid));
+                        rented,
+                        paid));
             }
         }
         return thisList;
@@ -208,23 +226,23 @@ public class Booking
         this.ownerCommission.set(ownerCommission);
     }
 
-    public boolean isIsBeingRented() {
+    public String isIsBeingRented() {
         return isBeingRented.get();
     }
-    public BooleanProperty isBeingRentedProperty() {
+    public StringProperty isBeingRentedProperty() {
         return isBeingRented;
     }
-    public void setIsBeingRented(boolean isBeingRented) {
+    public void setIsBeingRented(String isBeingRented) {
         this.isBeingRented.set(isBeingRented);
     }
 
-    public boolean isHasPaid() {
+    public String isHasPaid() {
         return hasPaid.get();
     }
-    public BooleanProperty hasPaidProperty() {
+    public StringProperty hasPaidProperty() {
         return hasPaid;
     }
-    public void setHasPaid(boolean hasPaid) {
+    public void setHasPaid(String hasPaid) {
         this.hasPaid.set(hasPaid);
     }
 

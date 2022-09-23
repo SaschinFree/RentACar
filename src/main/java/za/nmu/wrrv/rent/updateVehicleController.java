@@ -49,6 +49,10 @@ public class updateVehicleController implements Initializable
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
+        registrationExpirationDate.setConverter(baseController.dateConverter);
+        vehicleStartDate.setConverter(baseController.dateConverter);
+        vehicleEndDate.setConverter(baseController.dateConverter);
+
         clientNumber.textProperty().bind(manageVehiclesController.thisVehicle.clientNumberProperty().asString());
         registrationNumber.textProperty().bind(manageVehiclesController.thisVehicle.vehicleRegistrationProperty());
         vehicleMake.textProperty().bind(manageVehiclesController.thisVehicle.makeProperty());
@@ -60,7 +64,12 @@ public class updateVehicleController implements Initializable
         vehicleEndDate.setValue(LocalDate.parse(manageVehiclesController.thisVehicle.getEndDate().toString()));
 
         vehicleColour.setText(manageVehiclesController.thisVehicle.getColour());
-        vehicleInsurance.setSelected(manageVehiclesController.thisVehicle.isInsured());
+
+        String isInsured = manageVehiclesController.thisVehicle.isInsured();
+        if(isInsured.equals("Yes"))
+            vehicleInsurance.setSelected(true);
+        else
+            vehicleInsurance.setSelected(false);
         costMultiplier.setText(String.valueOf(manageVehiclesController.thisVehicle.getCostMultiplier()));
     }
 
@@ -99,6 +108,11 @@ public class updateVehicleController implements Initializable
                 regExpString = regExpString.replace("/", "-");
 
                 boolean insured = vehicleInsurance.selectedProperty().getValue();
+
+                String isInsured = "No";
+                if(insured)
+                    isInsured = "Yes";
+
                 String colour = vehicleColour.getText();
 
                 String startDateString = vehicleStartDate.getEditor().getText();
@@ -125,7 +139,7 @@ public class updateVehicleController implements Initializable
                         RentACar.statement.executeUpdate(sql);
 
                         manageVehiclesController.thisVehicle.setRegistrationExpiryDate(regExp);
-                        manageVehiclesController.thisVehicle.setInsured(insured);
+                        manageVehiclesController.thisVehicle.setInsured(isInsured);
                         manageVehiclesController.thisVehicle.setColour(colour);
                         manageVehiclesController.thisVehicle.setStartDate(start);
                         manageVehiclesController.thisVehicle.setEndDate(end);

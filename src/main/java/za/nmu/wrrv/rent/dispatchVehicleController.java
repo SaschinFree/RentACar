@@ -42,7 +42,7 @@ public class dispatchVehicleController implements Initializable
     {
         for(Booking thisBooking : baseController.bookings)
         {
-            if(thisBooking.isActive() & thisBooking.getStartDate().after(Date.valueOf(LocalDate.now())) & !thisBooking.isIsBeingRented())
+            if(thisBooking.isActive() & thisBooking.getStartDate().after(Date.valueOf(LocalDate.now())) && thisBooking.isIsBeingRented().equals("No"))
                 filteredBookings.add(thisBooking);
         }
     }
@@ -66,7 +66,7 @@ public class dispatchVehicleController implements Initializable
             switch(searchFilter.getSelectionModel().getSelectedItem())
             {
                 case "vehicleRegistration" -> searchQuery.setPromptText("ABC123 EC or CUSTOM MP etc");
-                case "startDate", "endDate" -> searchQuery.setPromptText("YYYY/MM/DD or YYYY-MM-DD");
+                case "startDate", "endDate" -> searchQuery.setPromptText("YYYY/MM/DD");
             }
         });
 
@@ -115,7 +115,7 @@ public class dispatchVehicleController implements Initializable
 
         for(Booking thisBooking : filteredList)
         {
-            if(thisBooking.isActive() & thisBooking.getStartDate().after(Date.valueOf(LocalDate.now())) & !thisBooking.isIsBeingRented())
+            if(thisBooking.isActive() & thisBooking.getStartDate().after(Date.valueOf(LocalDate.now())) && thisBooking.isIsBeingRented().equals("No"))
                 filteredBookings.add(thisBooking);
         }
 
@@ -126,6 +126,6 @@ public class dispatchVehicleController implements Initializable
         String dispatch = "UPDATE Booking SET isBeingRented = Yes WHERE vehicleRegistration = \'" + thisBooking.getVehicleRegistration() + "\'";
         RentACar.statement.executeUpdate(dispatch);
 
-        thisBooking.setIsBeingRented(true);
+        thisBooking.setIsBeingRented("Yes");
     }
 }

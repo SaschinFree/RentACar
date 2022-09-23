@@ -14,7 +14,7 @@ public class Vehicle
     private StringProperty vehicleRegistration = new SimpleStringProperty();
     private IntegerProperty clientNumber = new SimpleIntegerProperty();
     private Property<Date> registrationExpiryDate = new SimpleObjectProperty<>();
-    private BooleanProperty insured = new SimpleBooleanProperty();
+    private StringProperty insured = new SimpleStringProperty();
     private StringProperty make = new SimpleStringProperty();
     private StringProperty model = new SimpleStringProperty();
     private StringProperty colour = new SimpleStringProperty();
@@ -24,7 +24,7 @@ public class Vehicle
     private DoubleProperty costMultiplier = new SimpleDoubleProperty();
     private BooleanProperty active = new SimpleBooleanProperty();
 
-    public Vehicle(String vehicleRegistration, int clientNumber, Date registrationExpiryDate, boolean insured, String make, String model, String colour, int seats, Date startDate, Date endDate, double costMultiplier)
+    public Vehicle(String vehicleRegistration, int clientNumber, Date registrationExpiryDate, String insured, String make, String model, String colour, int seats, Date startDate, Date endDate, double costMultiplier)
     {
         this.vehicleRegistration.set(vehicleRegistration);
         this.clientNumber.set(clientNumber);
@@ -51,6 +51,11 @@ public class Vehicle
             int thisClientNumber = result.getInt("clientNumber");
             Date thisRegistrationExpiryDate = result.getDate("registrationExpiryDate");
             boolean thisInsured = result.getBoolean("insured");
+
+            String isInsured = "No";
+            if(thisInsured)
+                isInsured = "Yes";
+
             String thisMake = result.getString("make");
             String thisModel = result.getString("model");
             String thisColour = result.getString("colour");
@@ -67,7 +72,7 @@ public class Vehicle
                         thisVehicleRegistration,
                         thisClientNumber,
                         thisRegistrationExpiryDate,
-                        thisInsured,
+                        isInsured,
                         thisMake,
                         thisModel,
                         thisColour,
@@ -103,6 +108,11 @@ public class Vehicle
             int thisClientNumber = result.getInt("clientNumber");
             Date thisRegistrationExpiryDate = result.getDate("registrationExpiryDate");
             boolean thisInsured = result.getBoolean("insured");
+
+            String isInsured = "No";
+            if(thisInsured)
+                isInsured = "Yes";
+
             String thisMake = result.getString("make");
             String thisModel = result.getString("model");
             String thisColour = result.getString("colour");
@@ -119,7 +129,7 @@ public class Vehicle
                         thisVehicleRegistration,
                         thisClientNumber,
                         thisRegistrationExpiryDate,
-                        thisInsured,
+                        isInsured,
                         thisMake,
                         thisModel,
                         thisColour,
@@ -162,13 +172,13 @@ public class Vehicle
         this.registrationExpiryDate.setValue(registrationExpiryDate);
     }
 
-    public boolean isInsured() {
+    public String isInsured() {
         return insured.get();
     }
-    public BooleanProperty insuredProperty() {
+    public StringProperty insuredProperty() {
         return insured;
     }
-    public void setInsured(boolean insured) {
+    public void setInsured(String insured) {
         this.insured.set(insured);
     }
 
