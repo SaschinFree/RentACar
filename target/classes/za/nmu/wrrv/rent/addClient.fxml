@@ -23,26 +23,6 @@
          <children>
             <VBox>
                <children>
-                  <HBox alignment="CENTER_LEFT" prefHeight="100.0">
-                     <children>
-                        <Label prefWidth="200.0" text="Date Of Birth">
-                           <font>
-                              <Font size="16.0" />
-                           </font>
-                        </Label>
-                        <DatePicker fx:id="dob" promptText="YYYY/MM/DD" />
-                     </children>
-                  </HBox>
-                  <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="10.0" prefHeight="100.0">
-                     <children>
-                        <Label prefWidth="200.0" text="Gender">
-                           <font>
-                              <Font size="16.0" />
-                           </font>
-                        </Label>
-                        <ChoiceBox fx:id="gender" prefWidth="150.0" />
-                     </children>
-                  </HBox>
                   <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="75.0" prefHeight="100.0">
                      <children>
                         <Label prefWidth="200.0" text="Nationality">
@@ -50,7 +30,22 @@
                               <Font size="16.0" />
                            </font>
                         </Label>
-                        <ChoiceBox fx:id="nationality" prefWidth="150.0" />
+                        <RadioButton fx:id="nationalityZA" mnemonicParsing="false" onMouseClicked="#natSelected" text="South African">
+                           <padding>
+                              <Insets right="15.0" />
+                           </padding>
+                        </RadioButton>
+                        <RadioButton fx:id="nationalityOther" layoutX="210.0" layoutY="40.0" mnemonicParsing="false" onMouseClicked="#natSelected" text="Other" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER_LEFT" prefHeight="100.0">
+                     <children>
+                        <Label prefWidth="200.0" text="Client ID">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="clientID" />
                      </children>
                   </HBox>
                   <HBox alignment="CENTER_LEFT" prefHeight="100.0">
@@ -93,11 +88,7 @@
                         <TextField fx:id="email" promptText="johndoe@gmail.com" />
                      </children>
                   </HBox>
-               </children>
-            </VBox>
-            <VBox>
-               <children>
-                  <HBox alignment="CENTER_LEFT" prefHeight="65.0">
+                  <HBox alignment="CENTER_LEFT" prefHeight="100.0">
                      <children>
                         <Label prefWidth="200.0" text="Licence Expiry Date">
                            <font>
@@ -107,6 +98,10 @@
                         <DatePicker fx:id="licenceExpiryDate" promptText="YYYY/MM/DD" />
                      </children>
                   </HBox>
+               </children>
+            </VBox>
+            <VBox>
+               <children>
                   <HBox alignment="CENTER_LEFT" prefHeight="65.0">
                      <children>
                         <Label prefWidth="200.0" text="Street Number">
@@ -157,7 +152,8 @@
                         <TextField fx:id="postalCode" promptText="6045" />
                      </children>
                   </HBox>
-                  <HBox alignment="CENTER_LEFT" layoutX="30.0" layoutY="314.0" prefHeight="65.0">
+                  <Label prefHeight="66.0" />
+                  <HBox alignment="CENTER_LEFT" layoutX="30.0" layoutY="314.0" prefHeight="66.0">
                      <children>
                         <Label prefWidth="185.0" text="Company Name">
                            <font>

@@ -35,15 +35,9 @@ public class manageVehiclesController implements Initializable
     @FXML
     protected TableColumn<Vehicle, String> model;
     @FXML
-    protected TableColumn<Vehicle, String> colour;
-    @FXML
-    protected TableColumn<Vehicle, Integer> seats;
-    @FXML
     protected TableColumn<Vehicle, Date> startDate;
     @FXML
     protected TableColumn<Vehicle, Date> endDate;
-    @FXML
-    protected TableColumn<Vehicle, Double> costMultiplier;
     @FXML
     protected Button addVehicle;
     @FXML
@@ -69,10 +63,7 @@ public class manageVehiclesController implements Initializable
                 "colour",
                 "seats",
                 "startDate",
-                "endDate",
-                "costMultiplier");
-
-        searchFilter.setValue("vehicleRegistration");
+                "endDate");
 
         searchFilter.getSelectionModel().selectedItemProperty().addListener((observableValue, stringSingleSelectionModel, t1) ->
         {
@@ -88,7 +79,6 @@ public class manageVehiclesController implements Initializable
                 case "model" -> searchQuery.setPromptText("Polo or 530i etc");
                 case "colour" -> searchQuery.setPromptText("Red or Colour,Colour etc");
                 case "seats" -> searchQuery.setPromptText("2");
-                case "costMultiplier" -> searchQuery.setPromptText("0.0");
             }
         });
 
@@ -107,11 +97,8 @@ public class manageVehiclesController implements Initializable
         insured.setCellValueFactory(new PropertyValueFactory<>("insured"));
         make.setCellValueFactory(new PropertyValueFactory<>("make"));
         model.setCellValueFactory(new PropertyValueFactory<>("model"));
-        colour.setCellValueFactory(new PropertyValueFactory<>("colour"));
-        seats.setCellValueFactory(new PropertyValueFactory<>("seats"));
         startDate.setCellValueFactory(new PropertyValueFactory<>("startDate"));
         endDate.setCellValueFactory(new PropertyValueFactory<>("endDate"));
-        costMultiplier.setCellValueFactory(new PropertyValueFactory<>("costMultiplier"));
 
         vehicleTable.setItems(baseController.vehicles);
     }

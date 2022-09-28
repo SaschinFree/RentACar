@@ -17,10 +17,7 @@ import javafx.util.StringConverter;
 
 import java.io.IOException;
 import java.net.URL;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
@@ -70,6 +67,21 @@ public class baseController implements Initializable
     protected static ObservableList<Settings> settings;
     protected static ObservableList<Payment> payments;
 
+    static
+    {
+        try
+        {
+            baseController.clients = Client.getClients();
+            baseController.vehicles = Vehicle.getVehicles();
+            baseController.bookings = Booking.getBookings();
+            baseController.settings = Settings.getSettings();
+            baseController.payments = Payment.getPayments();
+        } catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
@@ -94,12 +106,6 @@ public class baseController implements Initializable
 
                 isLoggedOn = false;
                 userLoggedOn = null;
-
-                clients = null;
-                vehicles = null;
-                bookings = null;
-                settings = null;
-                payments = null;
 
                 logged.setVisible(false);
                 user.setVisible(false);

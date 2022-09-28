@@ -1,8 +1,6 @@
 package za.nmu.wrrv.rent;
 
 import javafx.beans.property.*;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;

@@ -27,11 +27,6 @@
                   <TableColumn fx:id="contactNumber" prefWidth="100.0" text="Contact Number" />
                   <TableColumn fx:id="email" prefWidth="75.0" text="Email" />
                   <TableColumn fx:id="licenceExpiryDate" prefWidth="150.0" text="Licence Expiry Date" />
-                  <TableColumn fx:id="streetNumber" prefWidth="100.0" text="Street Number" />
-                  <TableColumn fx:id="streetName" prefWidth="75.0" text="Street Name" />
-                  <TableColumn fx:id="suburb" prefWidth="75.0" text="Suburb" />
-                  <TableColumn fx:id="city" prefWidth="75.0" text="City" />
-                  <TableColumn fx:id="postalCode" prefWidth="75.0" text="Postal Code" />
                   <TableColumn fx:id="companyName" prefWidth="100.0" text="Company Name" />
                   <TableColumn fx:id="moneyOwed" prefWidth="100.0" text="Money Owed (R)" />
               </columns>

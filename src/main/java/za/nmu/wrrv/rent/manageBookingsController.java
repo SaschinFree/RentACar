@@ -31,10 +31,6 @@ public class manageBookingsController implements Initializable
     @FXML
     protected TableColumn<Booking, Integer> cost;
     @FXML
-    protected TableColumn<Booking, Integer> companyCommission;
-    @FXML
-    protected TableColumn<Booking, Integer> ownerCommission;
-    @FXML
     protected TableColumn<Booking, Boolean> isBeingRented;
     @FXML
     protected TableColumn<Booking, Boolean> hasPaid;
@@ -61,12 +57,8 @@ public class manageBookingsController implements Initializable
                 "startDate",
                 "endDate",
                 "cost",
-                "companyCommission",
-                "ownerCommission",
                 "isBeingRented",
                 "hasPaid");
-
-        searchFilter.setValue("bookingNumber");
 
         searchFilter.getSelectionModel().selectedItemProperty().addListener((observableValue, stringSingleSelectionModel, t1) ->
         {
@@ -77,7 +69,7 @@ public class manageBookingsController implements Initializable
                 case "bookingNumber", "clientNumber" -> searchQuery.setPromptText("1");
                 case "vehicleRegistration" -> searchQuery.setPromptText("ABC123 EC or CUSTOM MP etc");
                 case "startDate", "endDate" -> searchQuery.setPromptText("YYYY/MM/DD");
-                case "cost", "companyCommission", "ownerCommission" -> searchQuery.setPromptText("0.0");
+                case "cost" -> searchQuery.setPromptText("0.0");
                 case "isBeingRented", "hasPaid" -> searchQuery.setPromptText("Yes or No");
             }
         });
@@ -95,8 +87,6 @@ public class manageBookingsController implements Initializable
         startDate.setCellValueFactory(new PropertyValueFactory<>("startDate"));
         endDate.setCellValueFactory(new PropertyValueFactory<>("endDate"));
         cost.setCellValueFactory(new PropertyValueFactory<>("cost"));
-        companyCommission.setCellValueFactory(new PropertyValueFactory<>("companyCommission"));
-        ownerCommission.setCellValueFactory(new PropertyValueFactory<>("ownerCommission"));
         isBeingRented.setCellValueFactory(new PropertyValueFactory<>("isBeingRented"));
         hasPaid.setCellValueFactory(new PropertyValueFactory<>("hasPaid"));
 

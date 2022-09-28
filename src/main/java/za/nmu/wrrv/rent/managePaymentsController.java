@@ -69,8 +69,6 @@ public class managePaymentsController implements Initializable
                 "companyName",
                 "moneyOwed");
 
-        searchFilter.setValue("clientID");
-
         searchFilter.getSelectionModel().selectedItemProperty().addListener((observableValue, stringSingleSelectionModel, t1) ->
         {
             searchQuery.clear();

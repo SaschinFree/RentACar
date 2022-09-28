@@ -25,10 +25,8 @@
                   <TableColumn fx:id="startDate" prefWidth="75.0" text="Start Date" />
                   <TableColumn fx:id="endDate" prefWidth="75.0" text="End Date" />
                   <TableColumn fx:id="cost" prefWidth="100.0" text="Booking Cost (R)" />
-                  <TableColumn fx:id="companyCommission" prefWidth="150.0" text="Company Commission (R)" />
-                  <TableColumn fx:id="ownerCommission" prefWidth="150.0" text="Owner Commission (R)" />
-                  <TableColumn fx:id="isBeingRented" prefWidth="200.0" text="Vehicle Is Being Rented Out" />
-                  <TableColumn fx:id="hasPaid" prefWidth="150.0" text="Booking Has Been Paid" />
+                  <TableColumn fx:id="isBeingRented" prefWidth="150.0" text="Vehicle Rented Out" />
+                  <TableColumn fx:id="hasPaid" prefWidth="100.0" text="Booking Paid" />
               </columns>
             </TableView>
             <HBox prefHeight="115.0" prefWidth="200.0">

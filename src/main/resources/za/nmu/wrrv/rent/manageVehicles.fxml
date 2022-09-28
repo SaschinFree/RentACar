@@ -28,11 +28,8 @@
                   <TableColumn fx:id="insured" prefWidth="75.0" text="Insured" />
                   <TableColumn fx:id="make" prefWidth="75.0" text="Make" />
                   <TableColumn fx:id="model" prefWidth="75.0" text="Model" />
-                  <TableColumn fx:id="colour" prefWidth="75.0" text="Colour" />
-                  <TableColumn fx:id="seats" prefWidth="75.0" text="Seats" />
                   <TableColumn fx:id="startDate" prefWidth="75.0" text="Start Date" />
                   <TableColumn fx:id="endDate" prefWidth="75.0" text="End Date" />
-                  <TableColumn fx:id="costMultiplier" prefWidth="100.0" text="Cost Multiplier" />
               </columns>
             </TableView>
             <HBox prefHeight="115.0" prefWidth="906.0">

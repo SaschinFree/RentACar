@@ -27,9 +27,6 @@ public class Client
     private final DoubleProperty moneyOwed = new SimpleDoubleProperty();
     private final BooleanProperty active = new SimpleBooleanProperty();
 
-    protected static String lastMale = "0";
-    protected static String lastFemale = "0";
-
     public Client(int clientNumber, String clientID, String firstName, String surname, String contactNumber, String email, Date licenceExpiryDate, int streetNumber, String streetName, String suburb, String city, int postalCode, String companyName, double moneyOwed)
     {
         this.clientNumber.set(clientNumber);
@@ -75,26 +72,6 @@ public class Client
 
             if(thisActive)
             {
-                switch (thisClientID.charAt(6))
-                {
-                    case '0', '1', '2', '3', '4' ->
-                            {
-                                String female = "";
-                                for (int i = 6; i < 10; i++)
-                                    female = female.concat(String.valueOf(thisClientID.charAt(i)));
-                                if (Integer.parseInt(female) > Integer.parseInt(lastFemale))
-                                    lastFemale = female;
-                            }
-                    case '5', '6', '7', '8', '9' ->
-                            {
-                                String male = "";
-                                for (int i = 6; i < 10; i++)
-                                    male = male.concat(String.valueOf(thisClientID.charAt(i)));
-                                if (Integer.parseInt(male) > Integer.parseInt(lastMale))
-                                    lastMale = male;
-                            }
-                }
-
                 clientList.add(new Client(
                         thisClientNumber,
                         thisClientID,

@@ -5,8 +5,6 @@ import javafx.scene.control.Button;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 
-import java.sql.SQLException;
-
 public class adminController
 {
     @FXML
@@ -21,21 +19,6 @@ public class adminController
     protected Button generateReport;
     @FXML
     protected Button managePayments;
-
-    static
-    {
-        try
-        {
-            baseController.clients = Client.getClients();
-            baseController.vehicles = Vehicle.getVehicles();
-            baseController.bookings = Booking.getBookings();
-            baseController.settings = Settings.getSettings();
-            baseController.payments = Payment.getPayments();
-        } catch (SQLException e)
-        {
-            e.printStackTrace();
-        }
-    }
 
     @FXML
     protected void buttonClicked(MouseEvent mouseEvent)

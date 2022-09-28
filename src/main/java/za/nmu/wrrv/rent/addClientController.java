@@ -6,7 +6,6 @@ import javafx.scene.control.*;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
-import javafx.util.StringConverter;
 
 import java.net.URL;
 import java.sql.Date;
@@ -18,11 +17,11 @@ import java.util.ResourceBundle;
 public class addClientController implements Initializable
 {
     @FXML
-    protected DatePicker dob;
+    protected RadioButton nationalityZA;
     @FXML
-    protected ChoiceBox<String> gender;
+    protected RadioButton nationalityOther;
     @FXML
-    protected ChoiceBox<String> nationality;
+    protected TextField clientID;
     @FXML
     protected TextField firstName;
     @FXML
@@ -54,21 +53,37 @@ public class addClientController implements Initializable
 
     private final Alert alert = new Alert(Alert.AlertType.ERROR);
     private String errorMessage;
-    private String lastDigit;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
-        dob.setConverter(baseController.dateConverter);
         licenceExpiryDate.setConverter(baseController.dateConverter);
 
-        gender.getItems().addAll("Male", "Female");
-        nationality.getItems().addAll("South African", "Other");
-
-        gender.setValue("Male");
-        nationality.setValue("South African");
-
+        clientID.setVisible(false);
         companyName.setVisible(false);
+    }
+    @FXML
+    protected void natSelected(MouseEvent mouseEvent)
+    {
+        if(mouseEvent.getButton() == MouseButton.PRIMARY)
+        {
+            RadioButton thisRadioButton = (RadioButton) mouseEvent.getSource();
+            String buttonId = thisRadioButton.getId();
+            switch(buttonId)
+            {
+                case "nationalityZA" ->
+                        {
+                            nationalityOther.setSelected(false);
+                            clientID.setPromptText("ID Number");
+                        }
+                case "nationalityOther" ->
+                        {
+                            nationalityZA.setSelected(false);
+                            clientID.setPromptText("Passport Number");
+                        }
+            }
+            clientID.setVisible(true);
+        }
     }
     @FXML
     protected void compSelected(MouseEvent mouseEvent)
@@ -91,48 +106,7 @@ public class addClientController implements Initializable
     {
         if(mouseEvent.getButton() == MouseButton.PRIMARY)
         {
-            String clientID = "";
-
-            String clientDOB = dob.getEditor().getText();
-
-            clientDOB = clientDOB.replace("/", "");
-
-            if(!baseController.dateCheck(dob, clientDOB))
-            {
-                alert.setHeaderText("Date is in incorrect format");
-                alert.showAndWait();
-
-                mouseEvent.consume();
-            }
-            else
-            {
-                clientDOB = clientDOB.substring(2);
-                clientID = clientID.concat(clientDOB);
-            }
-
-            switch (gender.getSelectionModel().getSelectedItem())
-            {
-                case "Male" ->
-                        {
-                            int latestMale = Integer.parseInt(Client.lastMale) + 1;
-                            if(latestMale > 9999)
-                                latestMale = 5000;
-                            clientID = clientID.concat(String.valueOf(latestMale));
-                        }
-                case "Female" ->
-                        {
-                            int latestFemale = Integer.parseInt(Client.lastFemale) + 1;
-                            if(latestFemale > 4999)
-                                latestFemale = 0;
-                            clientID = clientID.concat(String.valueOf(latestFemale));
-                        }
-            }
-            switch (nationality.getSelectionModel().getSelectedItem())
-            {
-                case "South African" -> clientID = clientID.concat("0");
-                case "Other" -> clientID = clientID.concat("1");
-            }
-            clientID = clientID.concat("8");
+            String clientID = this.clientID.getText();
 
             String fName =  firstName.getText();
             String sName = surname.getText();
@@ -154,14 +128,12 @@ public class addClientController implements Initializable
             if(isCompany.selectedProperty().getValue())
                 compName = companyName.getText();
 
-            String clientCheck = "SELECT clientID FROM Client WHERE contactNumber = \'" + number + "\'";
+            String clientCheck = "SELECT clientID FROM Client WHERE clientID = \'" + clientID + "\'";
             ResultSet result = RentACar.statement.executeQuery(clientCheck);
 
             if(result.next())
             {
-                dob.setValue(null);
-                gender.setValue(null);
-                nationality.setValue(null);
+                this.clientID.clear();
 
                 firstName.clear();
                 surname.clear();
@@ -184,14 +156,11 @@ public class addClientController implements Initializable
                 mouseEvent.consume();
             }
 
-            luhnChecksumDigit(clientID);
-            clientID = clientID.concat(lastDigit);
-
             if(baseController.dateCheck(licenceExpiryDate, licenceString))
             {
                 Date licence = Date.valueOf(licenceString);
 
-                if(emptyChecks(fName, sName, number, email, licence, strNumString, strName, sub, city, postCodeString) & errorChecks(fName, sName, number, email, licence, Integer.parseInt(strNumString), strName, sub, city, Integer.parseInt(postCodeString)))
+                if(emptyChecks(clientID, fName, sName, number, email, licence, strNumString, strName, sub, city, postCodeString) & errorChecks(clientID, fName, sName, number, email, licence, Integer.parseInt(strNumString), strName, sub, city, Integer.parseInt(postCodeString)))
                 {
                     int strNum = Integer.parseInt(strNumString);
                     int postCode = Integer.parseInt(postCodeString);
@@ -213,23 +182,8 @@ public class addClientController implements Initializable
                             "VALUES (\'" + baseController.clients.size() + 1 + "\',\'" + clientID + "\',\'" + fName + "\',\'" + sName + "\',\'" + number + "\',\'" + email + "\',\'" + licence + "\',\'" + strNum + "\',\'" + strName + "\',\'" + sub + "\',\'" + city + "\',\'" + postCode + "\',\'" + compName + "\',\'" + 0 + "\', Yes)";
                     RentACar.statement.executeUpdate(insertClient);
 
-                    baseController.clients.add(new Client(baseController.clients.size() + 1, clientID, fName, sName, number, email, licence, strNum, strName, sub, city, postCode, compName, 0));
-
-                    switch (gender.getSelectionModel().getSelectedItem())
-                    {
-                        case "Male" ->
-                                {
-                                    int latestMale = Integer.parseInt(Client.lastMale) + 1;
-                                    if(latestMale > 9999)
-                                        Client.lastMale = "5000";
-                                }
-                        case "Female" ->
-                                {
-                                    int latestFemale = Integer.parseInt(Client.lastFemale) + 1;
-                                    if (latestFemale > 4999)
-                                        Client.lastFemale = "0000";
-                                }
-                    }
+                    Client thisClient = new Client(baseController.clients.size() + 1, clientID, fName, sName, number, email, licence, strNum, strName, sub, city, postCode, compName, 0);
+                    baseController.clients.add(thisClient);
 
                     closeStage();
                 }
@@ -246,41 +200,14 @@ public class addClientController implements Initializable
             }
         }
     }
-    private void luhnChecksumDigit(String clientID)
+    private boolean emptyChecks(String clientID, String fName, String sName, String number, String email, Date licence, String strNum, String strName, String sub, String city, String postCode)
     {
-        for(int i = 0 ; i < 10; i++)
+        if(clientID.isEmpty())
         {
-            String addedInt = clientID + i;
-            int[] digits = new int[13];
-            for(int j = 12; j >= 0 ; j--)
-            {
-                int thisInt = Integer.parseInt(String.valueOf(addedInt.charAt(j)));
-                if(j % 2 == 0)
-                    digits[j] = thisInt;
-                else
-                {
-                    int result = thisInt * 2;
-                    String resultString = String.valueOf(result);
-                    while(resultString.length() > 1)
-                    {
-                        result = Integer.parseInt(String.valueOf(resultString.charAt(0))) + Integer.parseInt(String.valueOf(resultString.charAt(1)));
-                        resultString = String.valueOf(result);
-                    }
-                    digits[j] = result;
-                }
-            }
-            int sum = 0;
-            for(int digit : digits)
-                sum +=digit;
-            if(sum % 10 == 0)
-            {
-                lastDigit = String.valueOf(i);
-                break;
-            }
+            errorMessage = "Client ID is empty";
+            this.clientID.clear();
+            return false;
         }
-    }
-    private boolean emptyChecks(String fName, String sName, String number, String email, Date licence, String strNum, String strName, String sub, String city, String postCode)
-    {
         if(fName.isEmpty())
         {
             errorMessage = "First Name is empty";
@@ -353,8 +280,14 @@ public class addClientController implements Initializable
 
         return true;
     }
-    private boolean errorChecks(String fName, String sName, String number, String email, Date licence, int strNum, String strName, String sub, String city, int postCode)
+    private boolean errorChecks(String clientID, String fName, String sName, String number, String email, Date licence, int strNum, String strName, String sub, String city, int postCode)
     {
+        if(!baseController.symbolCheck(clientID))
+        {
+            errorMessage = "Client ID is in the incorrect format";
+            this.clientID.clear();
+            return false;
+        }
         if(!baseController.errorValidationCheck(baseController.numberArray, fName) | !baseController.symbolCheck(fName, '-'))
         {
             errorMessage = "First Name is in the incorrect format";
