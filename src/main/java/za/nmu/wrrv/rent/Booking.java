@@ -35,7 +35,6 @@ public class Booking
         this.ownerCommission.set(ownerCommission);
         this.isBeingRented.set(isBeingRented);
         this.hasPaid.set(hasPaid);
-        active.set(true);
     }
     public static ObservableList<Booking> getBookings() throws SQLException
     {
@@ -68,17 +67,10 @@ public class Booking
 
             if(thisActive)
             {
-                bookingList.add(new Booking(
-                thisBookingNumber,
-                thisClientNumber,
-                thisVehicleRegistration,
-                thisStartDate,
-                thisEndDate,
-                thisCost,
-                thisCompanyCommission,
-                thisOwnerCommission,
-                rented,
-                paid));
+                Booking thisBooking = new Booking(thisBookingNumber, thisClientNumber, thisVehicleRegistration, thisStartDate, thisEndDate, thisCost, thisCompanyCommission, thisOwnerCommission, rented, paid);
+                bookingList.add(thisBooking);
+
+                thisBooking.setActive(true);
             }
         }
         return bookingList;
@@ -127,17 +119,10 @@ public class Booking
 
             if(thisActive)
             {
-                thisList.add(new Booking(
-                        thisBookingNumber,
-                        thisClientNumber,
-                        thisVehicleRegistration,
-                        thisStartDate,
-                        thisEndDate,
-                        thisCost,
-                        thisCompanyCommission,
-                        thisOwnerCommission,
-                        rented,
-                        paid));
+                Booking thisBooking = new Booking(thisBookingNumber, thisClientNumber, thisVehicleRegistration, thisStartDate, thisEndDate, thisCost, thisCompanyCommission, thisOwnerCommission, rented, paid);
+                thisList.add(thisBooking);
+
+                thisBooking.setActive(true);
             }
         }
         return thisList;

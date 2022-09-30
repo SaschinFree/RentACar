@@ -39,9 +39,9 @@ public class manageBookingsController implements Initializable
     @FXML
     protected Button search;
     @FXML
-    protected Button createBooking;
+    protected Button addBooking;
     @FXML
-    protected Button cancelBooking;
+    protected Button updateBooking;
     @FXML
     protected TableView<Booking> bookingTable;
 
@@ -75,9 +75,9 @@ public class manageBookingsController implements Initializable
         });
 
         if(loginController.thisUser.isAdmin())
-            createBooking.setVisible(false);
+            addBooking.setVisible(false);
 
-        cancelBooking.setVisible(false);
+        updateBooking.setVisible(false);
 
         bookingTable.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
 
@@ -101,7 +101,7 @@ public class manageBookingsController implements Initializable
             {
                 thisBooking = bookingTable.getSelectionModel().getSelectedItem();
                 if(thisBooking != null)
-                    cancelBooking.setVisible(true);
+                    updateBooking.setVisible(true);
             }
         }
     }
@@ -115,8 +115,8 @@ public class manageBookingsController implements Initializable
             switch(buttonId)
             {
                 case "search" -> onSearch();
-                case "createBooking" -> baseController.newScreen("createBooking", "Create A Booking");
-                case "cancelBooking" -> onCancel();
+                case "addBooking" -> baseController.newScreen("addBooking", "Add A Booking");
+                case "updateBooking" -> baseController.newScreen("updateBooking", "Update A Booking");
                 case "back" -> baseController.nextScene(baseController.userLoggedOn);
             }
         }
@@ -126,12 +126,5 @@ public class manageBookingsController implements Initializable
     {
         ObservableList<Booking> filteredList = Booking.searchQuery(searchFilter.getSelectionModel().getSelectedItem(), searchQuery.getText());
         bookingTable.setItems(filteredList);
-    }
-    private void onCancel() throws SQLException
-    {
-        String cancelBooking = "UPDATE Booking SET active = No WHERE bookingNumber = \'" + thisBooking.getBookingNumber() + "\'";
-        RentACar.statement.executeUpdate(cancelBooking);
-        thisBooking.setActive(false);
-        baseController.bookings.removeAll(thisBooking);
     }
 }

@@ -9,19 +9,14 @@ import javafx.stage.Stage;
 
 import java.net.URL;
 import java.sql.Date;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ResourceBundle;
 
-public class addClientController implements Initializable
+public class updateClientController implements Initializable
 {
     @FXML
-    protected RadioButton nationalityZA;
-    @FXML
-    protected RadioButton nationalityOther;
-    @FXML
-    protected TextField clientID;
+    protected Label clientID;
     @FXML
     protected TextField firstName;
     @FXML
@@ -47,9 +42,11 @@ public class addClientController implements Initializable
     @FXML
     protected TextField companyName;
     @FXML
+    protected CheckBox isDelete;
+    @FXML
     protected Button cancel;
     @FXML
-    protected Button addClient;
+    protected Button updateClient;
 
     private final Alert alert = new Alert(Alert.AlertType.ERROR);
     private String errorMessage;
@@ -59,31 +56,25 @@ public class addClientController implements Initializable
     {
         licenceExpiryDate.setConverter(baseController.dateConverter);
 
-        clientID.setVisible(false);
-        companyName.setVisible(false);
-    }
-    @FXML
-    protected void natSelected(MouseEvent mouseEvent)
-    {
-        if(mouseEvent.getButton() == MouseButton.PRIMARY)
+        clientID.textProperty().bind(manageClientsController.thisClient.clientIDProperty());
+        firstName.textProperty().bind(manageClientsController.thisClient.firstNameProperty());
+        surname.textProperty().bind(manageClientsController.thisClient.surnameProperty());
+        contactNumber.textProperty().bind(manageClientsController.thisClient.contactNumberProperty());
+        email.textProperty().bind(manageClientsController.thisClient.emailProperty());
+        licenceExpiryDate.setValue(manageClientsController.thisClient.getLicenceExpiryDate().toLocalDate());
+        streetNumber.textProperty().bind(manageClientsController.thisClient.streetNumberProperty().asString());
+        streetName.textProperty().bind(manageClientsController.thisClient.streetNameProperty());
+        suburb.textProperty().bind(manageClientsController.thisClient.suburbProperty());
+        city.textProperty().bind(manageClientsController.thisClient.cityProperty());
+        postalCode.textProperty().bind(manageClientsController.thisClient.postalCodeProperty().asString());
+
+        if(!manageClientsController.thisClient.getCompanyName().equals("Private"))
         {
-            RadioButton thisRadioButton = (RadioButton) mouseEvent.getSource();
-            String buttonId = thisRadioButton.getId();
-            switch(buttonId)
-            {
-                case "nationalityZA" ->
-                        {
-                            nationalityOther.setSelected(false);
-                            clientID.setPromptText("ID Number");
-                        }
-                case "nationalityOther" ->
-                        {
-                            nationalityZA.setSelected(false);
-                            clientID.setPromptText("Passport Number");
-                        }
-            }
-            clientID.setVisible(true);
+            isCompany.setSelected(true);
+            companyName.textProperty().bind(manageClientsController.thisClient.companyNameProperty());
         }
+        else
+            companyName.setVisible(false);
     }
     @FXML
     protected void compSelected(MouseEvent mouseEvent)
@@ -101,76 +92,57 @@ public class addClientController implements Initializable
             Button thisButton = (Button) mouseEvent.getSource();
             String buttonId = thisButton.getId();
 
-            switch (buttonId)
+            switch(buttonId)
             {
                 case "cancel" -> closeStage();
-                case "addClient" -> onAdd();
+                case "updateClient" -> onUpdate();
             }
         }
     }
-    private void onAdd() throws SQLException
+    private void onUpdate() throws SQLException
     {
-        String clientID = this.clientID.getText();
-
-        String fName =  firstName.getText();
-        String sName = surname.getText();
-        String number = contactNumber.getText();
-        String email = this.email.getText();
-
-        String licenceString = licenceExpiryDate.getEditor().getText();
-        licenceString = licenceString.replace("/", "-");
-
-
-        String strNumString = streetNumber.getText();
-        String strName = streetName.getText();
-        String sub = suburb.getText();
-        String city = this.city.getText();
-        String postCodeString = postalCode.getText();
-
-        String compName = "Private";
-
-        if(isCompany.selectedProperty().getValue())
-            compName = companyName.getText();
-
-        String clientCheck = "SELECT clientID FROM Client WHERE clientID = \'" + clientID + "\'";
-        ResultSet result = RentACar.statement.executeQuery(clientCheck);
-
-        if(result.next())
+        if(isDelete.selectedProperty().getValue())
         {
-            this.clientID.clear();
+            String deleteClient = "UPDATE Client SET active = No WHERE clientID = \'" + manageClientsController.thisClient.getClientID() + "\'";
+            RentACar.statement.executeUpdate(deleteClient);
 
-            firstName.clear();
-            surname.clear();
-            contactNumber.clear();
-            this.email.clear();
-            licenceExpiryDate.setValue(null);
-            streetNumber.clear();
-            streetName.clear();
-            suburb.clear();
-            this.city.clear();
-            postalCode.clear();
-
-            companyName.clear();
-            isCompany.setSelected(false);
-            companyName.setVisible(false);
-
-            alert.setHeaderText("Client ID: This client already exists in the table");
-            alert.showAndWait();
+            manageClientsController.thisClient.setActive(false);
+            baseController.clients.removeAll(manageClientsController.thisClient);
         }
         else
         {
+            String fName =  firstName.getText();
+            String sName = surname.getText();
+            String number = contactNumber.getText();
+            String email = this.email.getText();
+
+            String licenceString = licenceExpiryDate.getEditor().getText();
+            licenceString = licenceString.replace("/", "-");
+
+
+            String strNumString = streetNumber.getText();
+            String strName = streetName.getText();
+            String sub = suburb.getText();
+            String city = this.city.getText();
+            String postCodeString = postalCode.getText();
+
+            String compName = "Private";
+
+            if(isCompany.selectedProperty().getValue())
+                compName = companyName.getText();
+
             if(baseController.dateCheck(licenceExpiryDate, licenceString))
             {
                 Date licence = Date.valueOf(licenceString);
 
-                if(emptyChecks(clientID, fName, sName, number, email, licence, strNumString, strName, sub, city, postCodeString) && errorChecks(clientID, fName, sName, number, email, licence, Integer.parseInt(strNumString), strName, sub, city, Integer.parseInt(postCodeString)))
+                if(emptyChecks(fName, sName, number, email, licence, strNumString, strName, sub, city, postCodeString) & errorChecks(fName, sName, number, email, licence, Integer.parseInt(strNumString), strName, sub, city, Integer.parseInt(postCodeString)))
                 {
                     int strNum = Integer.parseInt(strNumString);
                     int postCode = Integer.parseInt(postCodeString);
 
                     if(isCompany.selectedProperty().getValue())
                     {
-                        if(!baseController.errorValidationCheck(baseController.numberArray, compName) && !baseController.symbolCheck(compName))
+                        if(!baseController.errorValidationCheck(baseController.numberArray, compName) & !baseController.symbolCheck(compName))
                         {
                             companyName.clear();
                             alert.setHeaderText("Company Name is in the incorrect format");
@@ -178,13 +150,13 @@ public class addClientController implements Initializable
                         }
                         else
                         {
-                            addClient(clientID, fName, sName, number, email, licence, strNum, strName, sub, city, postCode, compName);
+                            updateClient(fName, sName, number, email, licence, strNum, strName, sub, city, postCode, compName);
                             closeStage();
                         }
                     }
                     else
                     {
-                        addClient(clientID, fName, sName, number, email, licence, strNum, strName, sub, city, postCode, compName);
+                        updateClient(fName, sName, number, email, licence, strNum, strName, sub, city, postCode, compName);
                         closeStage();
                     }
                 }
@@ -201,31 +173,27 @@ public class addClientController implements Initializable
             }
         }
     }
-    private void addClient(String clientID, String fName, String sName, String number, String email, Date licence, int strNum, String strName, String sub, String city, int postCode, String compName) throws SQLException
+    private void updateClient(String fName, String sName, String number, String email, Date licence, int strNum, String strName, String sub, String city, int postCode, String compName) throws SQLException
     {
-        String insertClient = "INSERT INTO Client " +
-                "(clientID, firstName, surname, contactNumber, email, licenceExpiryDate, streetNumber, streetName, suburb, city, postalCode, companyName, moneyOwed, active) " +
-                "VALUES (\'" + clientID + "\',\'" + fName + "\',\'" + sName + "\',\'" + number + "\',\'" + email + "\',\'" + licence + "\',\'" + strNum + "\',\'" + strName + "\',\'" + sub + "\',\'" + city + "\',\'" + postCode + "\',\'" + compName + "\',\'" + 0 + "\', Yes)";
-        RentACar.statement.executeUpdate(insertClient);
+        String updateClient = "UPDATE Client " +
+                "SET firstName = \'" + fName + "\', surname = \'" + sName + "\', contactNumber = \'" + number + "\', email = \'" + email + "\', licenceExpiryDate = \'" + licence + "\', streetNumber = \'" + strNum + "\', streetName = \'" + strName + "\', suburb = \'" + sub + "\', city = \'" + city + "\', postalCode = \'" + postCode + "\', companyName = \'" + compName + "\'" +
+                "WHERE clientID = \'" + manageClientsController.thisClient.getClientID() + "\'";
+        RentACar.statement.executeUpdate(updateClient);
 
-        String getID = "SELECT clientNumber FROM Client WHERE clientID = \'" + clientID + "\'";
-        ResultSet anotherResult = RentACar.statement.executeQuery(getID);
-
-        int clientNumber = 0;
-        if(anotherResult.next())
-            clientNumber = anotherResult.getInt("clientNumber");
-
-        Client thisClient = new Client(clientNumber, clientID, fName, sName, number, email, licence, strNum, strName, sub, city, postCode, compName, 0);
-        baseController.clients.add(thisClient);
+        manageClientsController.thisClient.setFirstName(fName);
+        manageClientsController.thisClient.setSurname(sName);
+        manageClientsController.thisClient.setContactNumber(number);
+        manageClientsController.thisClient.setEmail(email);
+        manageClientsController.thisClient.setLicenceExpiryDate(licence);
+        manageClientsController.thisClient.setStreetNumber(strNum);
+        manageClientsController.thisClient.setStreetName(strName);
+        manageClientsController.thisClient.setSuburb(sub);
+        manageClientsController.thisClient.setCity(city);
+        manageClientsController.thisClient.setPostalCode(postCode);
+        manageClientsController.thisClient.setCompanyName(compName);
     }
-    private boolean emptyChecks(String clientID, String fName, String sName, String number, String email, Date licence, String strNum, String strName, String sub, String city, String postCode)
+    private boolean emptyChecks(String fName, String sName, String number, String email, Date licence, String strNum, String strName, String sub, String city, String postCode)
     {
-        if(clientID.isEmpty())
-        {
-            errorMessage = "Client ID is empty";
-            this.clientID.clear();
-            return false;
-        }
         if(fName.isEmpty())
         {
             errorMessage = "First Name is empty";
@@ -298,14 +266,8 @@ public class addClientController implements Initializable
 
         return true;
     }
-    private boolean errorChecks(String clientID, String fName, String sName, String number, String email, Date licence, int strNum, String strName, String sub, String city, int postCode)
+    private boolean errorChecks(String fName, String sName, String number, String email, Date licence, int strNum, String strName, String sub, String city, int postCode)
     {
-        if(!baseController.symbolCheck(clientID))
-        {
-            errorMessage = "Client ID is in the incorrect format";
-            this.clientID.clear();
-            return false;
-        }
         if(!baseController.errorValidationCheck(baseController.numberArray, fName) | !baseController.symbolCheck(fName, '-'))
         {
             errorMessage = "First Name is in the incorrect format";

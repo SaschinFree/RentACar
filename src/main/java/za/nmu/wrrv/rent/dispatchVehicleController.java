@@ -42,7 +42,7 @@ public class dispatchVehicleController implements Initializable
     {
         for(Booking thisBooking : baseController.bookings)
         {
-            if(thisBooking.isActive() & thisBooking.getStartDate().after(Date.valueOf(LocalDate.now())) && thisBooking.isIsBeingRented().equals("No"))
+            if(thisBooking.isActive() && (thisBooking.getStartDate().equals(Date.valueOf(LocalDate.now())) || thisBooking.getStartDate().after(Date.valueOf(LocalDate.now()))) && thisBooking.isIsBeingRented().equals("No"))
                 filteredBookings.add(thisBooking);
         }
     }
@@ -123,9 +123,22 @@ public class dispatchVehicleController implements Initializable
     }
     private void onDispatch() throws SQLException
     {
-        String dispatch = "UPDATE Booking SET isBeingRented = Yes WHERE vehicleRegistration = \'" + thisBooking.getVehicleRegistration() + "\'";
+        String dispatch = "UPDATE Booking SET isBeingRented = Yes WHERE vehicleRegistration = \'" + thisBooking.getVehicleRegistration() + "\' AND startDate = \'" + thisBooking.getStartDate() + "\' AND endDate = \'" + thisBooking.getEndDate() + "\'";
         RentACar.statement.executeUpdate(dispatch);
 
         thisBooking.setIsBeingRented("Yes");
+        filteredBookings.removeAll(thisBooking);
+
+        String updateClient = "UPDATE Client SET moneyOwed = \'" + thisBooking.getOwnerCommission() + "\' WHERE clientNumber = \'" + thisBooking.getClientNumber() + "\'";
+        RentACar.statement.executeUpdate(updateClient);
+
+        for(Client thisClient : baseController.clients)
+        {
+            if(thisClient.getClientNumber() == thisBooking.getClientNumber())
+            {
+                thisClient.setMoneyOwed(thisBooking.getOwnerCommission());
+                break;
+            }
+        }
     }
 }

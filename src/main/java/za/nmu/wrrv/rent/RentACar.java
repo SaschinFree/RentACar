@@ -15,9 +15,7 @@ public class RentACar extends Application
     protected static Stage mainStage;
     protected static Alert alert;
 
-    public static void main(String[] args) {
-        launch();
-    }
+    public static void main(String[] args) {launch();}
 
     @Override
     public void start(Stage stage) throws IOException

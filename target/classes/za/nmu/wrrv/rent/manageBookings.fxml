@@ -31,9 +31,9 @@
             </TableView>
             <HBox prefHeight="115.0" prefWidth="200.0">
                <children>
-                  <Button fx:id="createBooking" mnemonicParsing="false" onMouseClicked="#buttonClicked" style="-fx-background-color: #3B2F2F;" text="Create Booking" textFill="WHITE" />
-                  <Label prefHeight="17.0" prefWidth="708.0" />
-                  <Button fx:id="cancelBooking" mnemonicParsing="false" onMouseClicked="#buttonClicked" style="-fx-background-color: #3B2F2F;" text="Cancel Booking" textFill="WHITE" />
+                  <Button fx:id="addBooking" mnemonicParsing="false" onMouseClicked="#buttonClicked" style="-fx-background-color: #3B2F2F;" text="Add Booking" textFill="WHITE" />
+                  <Label prefHeight="17.0" prefWidth="720.0" />
+                  <Button fx:id="updateBooking" mnemonicParsing="false" onMouseClicked="#buttonClicked" style="-fx-background-color: #3B2F2F;" text="Update Booking" textFill="WHITE" />
                </children></HBox>
             <Button fx:id="back" mnemonicParsing="false" onMouseClicked="#buttonClicked" style="-fx-background-color: #3B2F2F;" text="Back" textFill="WHITE" />
          </children>

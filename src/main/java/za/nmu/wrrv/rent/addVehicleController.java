@@ -102,40 +102,42 @@ public class addVehicleController implements Initializable
 
         addVehicle.setVisible(false);
     }
-
     @FXML
-    protected void onCancel(MouseEvent mouseEvent)
+    protected void buttonClicked(MouseEvent mouseEvent) throws SQLException
     {
         if(mouseEvent.getButton() == MouseButton.PRIMARY)
         {
-            closeStage();
+            Button thisButton = (Button) mouseEvent.getSource();
+            String buttonId = thisButton.getId();
+
+            switch (buttonId)
+            {
+                case "cancel" -> closeStage();
+                case "addVehicle" -> onAdd();
+            }
         }
     }
 
-    @FXML
-    protected void onAdd(MouseEvent mouseEvent) throws SQLException
+
+    private void onAdd() throws SQLException
     {
-        if(mouseEvent.getButton() == MouseButton.PRIMARY)
+        String regNum = registrationNumber.getText().toUpperCase() + " " + plateExtension.getSelectionModel().getSelectedItem();
+
+        String registrationCheck = "SELECT vehicleRegistration FROM Vehicle WHERE vehicleRegistration = \'" + regNum + "\'";
+        ResultSet result = RentACar.statement.executeQuery(registrationCheck);
+
+        if(result.next())
         {
-            String regNum = registrationNumber.getText().toUpperCase() + " " + plateExtension.getSelectionModel().getSelectedItem();
-
-            String registrationCheck = "SELECT vehicleRegistration FROM Vehicle WHERE vehicleRegistration = \'" + regNum + "\'";
-            ResultSet result = RentACar.statement.executeQuery(registrationCheck);
-
-            if(result.next())
-            {
-                registrationNumber.clear();
-                alert.setHeaderText("Registration Number: This vehicle already exists in the table");
-                alert.showAndWait();
-
-                mouseEvent.consume();
-            }
-
+            registrationNumber.clear();
+            alert.setHeaderText("Registration Number: This vehicle already exists in the table");
+            alert.showAndWait();
+        }
+        else
+        {
             int clientNumber =  this.clientNumber.getSelectionModel().getSelectedItem();
 
             String regExpString = registrationExpirationDate.getEditor().getText();
             regExpString = regExpString.replace("/", "-");
-
 
             boolean insured = vehicleInsurance.selectedProperty().getValue();
 
@@ -157,19 +159,19 @@ public class addVehicleController implements Initializable
 
             String costMultiString = costMultiplier.getText();
 
-            if(baseController.dateCheck(registrationExpirationDate, regExpString) & baseController.dateCheck(vehicleStartDate, startDateString) & baseController.dateCheck(vehicleEndDate, endDateString))
+            if(baseController.dateCheck(registrationExpirationDate, regExpString) && baseController.dateCheck(vehicleStartDate, startDateString) && baseController.dateCheck(vehicleEndDate, endDateString))
             {
                 Date regExp = Date.valueOf(regExpString);
                 Date start = Date.valueOf(startDateString);
                 Date end = Date.valueOf(endDateString);
 
-                if(emptyChecks(regExp, make, colour, start, end, costMultiString) & errorChecks(regExp, make, colour, start, end, costMultiString))
+                if(emptyChecks(regExp, make, colour, start, end, costMultiString) && errorChecks(regExp, make, colour, start, end, costMultiString))
                 {
                     double costMulti = Double.parseDouble(costMultiString);
 
                     String sql = "INSERT INTO Vehicle " +
-                            "(vehicleRegistration, clientNumber, registrationExpiryDate, insured, make, model, colour, seats, startDate, endDate, costMultiplier)" +
-                            "VALUES (\'"+ regNum +"\',\'"+ clientNumber +"\',\'"+ regExp +"\',\'"+ insured +"\',\'"+ make +"\',\'"+ model +"\',\'"+ colour +"\',\'"+ seats +"\',\'"+ start +"\',\'"+ end +"\',\'"+ costMulti +"\')";
+                            "(vehicleRegistration, clientNumber, registrationExpiryDate, insured, make, model, colour, seats, startDate, endDate, costMultiplier, active)" +
+                            "VALUES (\'"+ regNum +"\',\'"+ clientNumber +"\',\'"+ regExp +"\',\'"+ insured +"\',\'"+ make +"\',\'"+ model +"\',\'"+ colour +"\',\'"+ seats +"\',\'"+ start +"\',\'"+ end +"\',\'"+ costMulti +"\', Yes)";
                     RentACar.statement.executeUpdate(sql);
 
                     Vehicle newVehicle = new Vehicle(regNum, clientNumber, regExp, isInsured, make, model, colour, seats, start, end, costMulti);

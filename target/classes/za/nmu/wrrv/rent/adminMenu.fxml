@@ -21,11 +21,11 @@
                <font>
                   <Font size="16.0" />
                </font></Button>
-            <Button fx:id="manageBookings" mnemonicParsing="false" onMouseClicked="#buttonClicked" prefHeight="120.0" prefWidth="180.0" style="-fx-background-color: #3B2F2F;" text="View Bookings" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+            <Button fx:id="manageVehicles" mnemonicParsing="false" onMouseClicked="#buttonClicked" prefHeight="120.0" prefWidth="180.0" style="-fx-background-color: #3B2F2F;" text="View Vehicles" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                <font>
                   <Font size="16.0" />
                </font></Button>
-            <Button fx:id="manageVehicles" mnemonicParsing="false" onMouseClicked="#buttonClicked" prefHeight="120.0" prefWidth="180.0" style="-fx-background-color: #3B2F2F;" text="View Vehicles" textFill="WHITE" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+            <Button fx:id="manageBookings" mnemonicParsing="false" onMouseClicked="#buttonClicked" prefHeight="120.0" prefWidth="180.0" style="-fx-background-color: #3B2F2F;" text="View Bookings" textFill="WHITE" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                <font>
                   <Font size="16.0" />
                </font></Button>

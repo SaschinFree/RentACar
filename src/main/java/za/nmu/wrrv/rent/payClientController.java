@@ -47,49 +47,53 @@ public class payClientController implements Initializable
     }
 
     @FXML
-    protected void onCancel(MouseEvent mouseEvent)
+    protected void buttonClicked(MouseEvent mouseEvent) throws SQLException
     {
         if(mouseEvent.getButton() == MouseButton.PRIMARY)
         {
-            closeStage();
+            Button thisButton = (Button) mouseEvent.getSource();
+            String buttonId = thisButton.getId();
+
+            switch (buttonId)
+            {
+                case "cancel" -> closeStage();
+                case "payClient" -> onPay();
+            }
         }
     }
-    @FXML
-    protected void onPay(MouseEvent mouseEvent) throws SQLException
+
+    private void onPay() throws SQLException
     {
-        if(mouseEvent.getButton() == MouseButton.PRIMARY)
+        String thisAmount = amountPaid.getText();
+        if(emptyCheck(thisAmount) & errorCheck(thisAmount) & valueCheck(Double.parseDouble(thisAmount), Double.parseDouble(clientMoneyOwed.getText())))
         {
-            String thisAmount = amountPaid.getText();
-            if(emptyCheck(thisAmount) & errorCheck(thisAmount) & valueCheck(Double.parseDouble(thisAmount), Double.parseDouble(clientMoneyOwed.getText())))
-            {
-                double amount = Double.parseDouble(thisAmount);
-                double remainder = Double.parseDouble(clientMoneyOwed.getText()) - amount;
+            double amount = Double.parseDouble(thisAmount);
+            double remainder = Double.parseDouble(clientMoneyOwed.getText()) - amount;
 
-                String updateClient = "UPDATE Client " +
-                        "SET moneyOwed = \'" + remainder + "\' " +
-                        "WHERE clientID = \'" + clientID.getText() + "\'";
-                RentACar.statement.executeUpdate(updateClient);
+            String updateClient = "UPDATE Client " +
+                    "SET moneyOwed = \'" + remainder + "\' " +
+                    "WHERE clientID = \'" + clientID.getText() + "\'";
+            RentACar.statement.executeUpdate(updateClient);
 
-                managePaymentsController.thisClient.setMoneyOwed(Double.parseDouble(clientMoneyOwed.getText()) - amount);
-                managePaymentsController.clientPaid = true;
+            managePaymentsController.thisClient.setMoneyOwed(Double.parseDouble(clientMoneyOwed.getText()) - amount);
+            managePaymentsController.clientPaid = true;
 
-                int paymentID = baseController.payments.size() + 1;
-                int clientNumber = managePaymentsController.thisClient.getClientNumber();
-                Date payDate = Date.valueOf(LocalDate.now());
+            int paymentID = baseController.payments.size() + 1;
+            int clientNumber = managePaymentsController.thisClient.getClientNumber();
+            Date payDate = Date.valueOf(LocalDate.now());
 
-                String updatePayment = "INSERT INTO Payments (paymentID, clientNumber, amount, payDate)" +
-                        "VALUES (\'" + paymentID + "\', \'" + clientNumber + "\', \'" + amount + "\', \'" + payDate + "\')";
-                RentACar.statement.executeUpdate(updatePayment);
+            String updatePayment = "INSERT INTO Payments (paymentID, clientNumber, amount, payDate)" +
+                    "VALUES (\'" + paymentID + "\', \'" + clientNumber + "\', \'" + amount + "\', \'" + payDate + "\')";
+            RentACar.statement.executeUpdate(updatePayment);
 
-                baseController.payments.add(new Payment(paymentID, clientNumber, amount, payDate));
+            baseController.payments.add(new Payment(paymentID, clientNumber, amount, payDate));
 
-                closeStage();
-            }
-            else
-            {
-                alert.setHeaderText(errorMessage);
-                alert.showAndWait();
-            }
+            closeStage();
+        }
+        else
+        {
+            alert.setHeaderText(errorMessage);
+            alert.showAndWait();
         }
     }
     private boolean emptyCheck(String thisAmount)

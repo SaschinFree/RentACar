@@ -42,7 +42,7 @@ public class returnVehicleController implements Initializable
     {
         for(Booking thisBooking : baseController.bookings)
         {
-            if(thisBooking.isActive() & thisBooking.getEndDate().before(Date.valueOf(LocalDate.now())) && thisBooking.isIsBeingRented().equals("Yes"))
+            if(thisBooking.isActive() && (thisBooking.getEndDate().equals(Date.valueOf(LocalDate.now())) || thisBooking.getEndDate().after(Date.valueOf(LocalDate.now()))) && thisBooking.isIsBeingRented().equals("Yes"))
                 filteredBookings.add(thisBooking);
         }
     }
@@ -123,7 +123,7 @@ public class returnVehicleController implements Initializable
     }
     private void onReturn() throws SQLException
     {
-        String dispatch = "UPDATE Booking SET isBeingRented = No WHERE vehicleRegistration = \'" + thisBooking.getVehicleRegistration() + "\'";
+        String dispatch = "UPDATE Booking SET active = No AND isBeingRented = No WHERE vehicleRegistration = \'" + thisBooking.getVehicleRegistration() + "\'";
         RentACar.statement.executeUpdate(dispatch);
 
         thisBooking.setIsBeingRented("No");

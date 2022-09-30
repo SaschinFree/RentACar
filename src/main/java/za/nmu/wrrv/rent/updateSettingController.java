@@ -1,9 +1,9 @@
 package za.nmu.wrrv.rent;
 
-
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.input.MouseButton;
@@ -20,6 +20,10 @@ public class updateSettingController implements Initializable
     protected Label settingName;
     @FXML
     protected TextField settingValue;
+    @FXML
+    protected Button cancel;
+    @FXML
+    protected Button updateSetting;
 
     private final Alert alert = new Alert(Alert.AlertType.ERROR);
 
@@ -31,31 +35,36 @@ public class updateSettingController implements Initializable
     }
 
     @FXML
-    protected void onCancel(MouseEvent mouseEvent)
-    {
-        if(mouseEvent.getButton() == MouseButton.PRIMARY)
-            closeStage();
-    }
-
-    @FXML
-    protected void onUpdate(MouseEvent mouseEvent) throws SQLException
+    protected void buttonClicked(MouseEvent mouseEvent) throws SQLException
     {
         if(mouseEvent.getButton() == MouseButton.PRIMARY)
         {
-            String thisValue = settingValue.getText();
-            if(!baseController.errorValidationCheck(baseController.letterArray, thisValue) | !baseController.symbolCheck(thisValue, '.'))
+            Button thisButton = (Button) mouseEvent.getSource();
+            String buttonId = thisButton.getId();
+
+            switch (buttonId)
             {
-                settingValue.clear();
-                alert.setHeaderText(thisValue + " is not a number");
-                alert.showAndWait();
+                case "cancel" -> closeStage();
+                case "updateSetting" -> onUpdate();
             }
-            else
-            {
-                String sql = "UPDATE Settings SET settingValue = \'" + Double.parseDouble(thisValue) + "\' WHERE settingID = \'" + settingName.getText() + "\'";
-                RentACar.statement.executeUpdate(sql);
-                manageSettingsController.thisSetting.setSettingValue(Double.parseDouble(thisValue));
-                closeStage();
-            }
+        }
+    }
+
+    private void onUpdate() throws SQLException
+    {
+        String thisValue = settingValue.getText();
+        if(!baseController.errorValidationCheck(baseController.letterArray, thisValue) | !baseController.symbolCheck(thisValue, '.'))
+        {
+            settingValue.clear();
+            alert.setHeaderText(thisValue + " is not a number");
+            alert.showAndWait();
+        }
+        else
+        {
+            String sql = "UPDATE Settings SET settingValue = \'" + Double.parseDouble(thisValue) + "\' WHERE settingID = \'" + settingName.getText() + "\'";
+            RentACar.statement.executeUpdate(sql);
+            manageSettingsController.thisSetting.setSettingValue(Double.parseDouble(thisValue));
+            closeStage();
         }
     }
     private void closeStage()

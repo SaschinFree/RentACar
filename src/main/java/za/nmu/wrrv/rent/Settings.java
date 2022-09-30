@@ -35,6 +35,20 @@ public class Settings
         }
         return settingsList;
     }
+    public static Settings getSetting(String settingName) throws SQLException
+    {
+        String sql = "SELECT * FROM Settings WHERE settingName = \'" + settingName + "\'";
+        ResultSet result = RentACar.statement.executeQuery(sql);
+
+        if(result.next())
+        {
+            String thisSettingName = result.getString("settingName");
+            double thisSettingValue = result.getDouble("settingValue");
+
+            return new Settings(thisSettingName, thisSettingValue);
+        }
+        return null;
+    }
 
     public String getSettingName()
     {

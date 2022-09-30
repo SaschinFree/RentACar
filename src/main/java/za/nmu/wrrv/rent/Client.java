@@ -43,7 +43,6 @@ public class Client
         this.postalCode.set(postalCode);
         this.companyName.set(companyName);
         this.moneyOwed.set(moneyOwed);
-        active.set(true);
     }
 
     public static ObservableList<Client> getClients() throws SQLException
@@ -72,21 +71,10 @@ public class Client
 
             if(thisActive)
             {
-                clientList.add(new Client(
-                        thisClientNumber,
-                        thisClientID,
-                        thisFirstName,
-                        thisSurname,
-                        thisContactNumber,
-                        thisEmail,
-                        thisLicenceExpiryDate,
-                        thisStreetNumber,
-                        thisStreetName,
-                        thisSuburb,
-                        thisCity,
-                        thisPostalCode,
-                        thisCompanyName,
-                        thisMoneyOwed));
+                Client thisClient = new Client(thisClientNumber, thisClientID, thisFirstName, thisSurname, thisContactNumber, thisEmail, thisLicenceExpiryDate, thisStreetNumber, thisStreetName, thisSuburb, thisCity, thisPostalCode, thisCompanyName, thisMoneyOwed);
+                clientList.add(thisClient);
+
+                thisClient.setActive(true);
             }
         }
         return clientList;
@@ -130,21 +118,10 @@ public class Client
 
             if(thisActive)
             {
-                thisList.add(new Client(
-                        thisClientNumber,
-                        thisClientID,
-                        thisFirstName,
-                        thisSurname,
-                        thisContactNumber,
-                        thisEmail,
-                        thisLicenceExpiryDate,
-                        thisStreetNumber,
-                        thisStreetName,
-                        thisSuburb,
-                        thisCity,
-                        thisPostalCode,
-                        thisCompanyName,
-                        thisMoneyOwed));
+                Client thisClient = new Client(thisClientNumber, thisClientID, thisFirstName, thisSurname, thisContactNumber, thisEmail, thisLicenceExpiryDate, thisStreetNumber, thisStreetName, thisSuburb, thisCity, thisPostalCode, thisCompanyName, thisMoneyOwed);
+                thisList.add(thisClient);
+
+                thisClient.setActive(true);
             }
         }
         return thisList;

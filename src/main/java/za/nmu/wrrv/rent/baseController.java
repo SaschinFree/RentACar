@@ -39,7 +39,8 @@ public class baseController implements Initializable
     protected static String userLoggedOn;
 
     protected static final DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy/MM/dd");
-    protected static final StringConverter<LocalDate> dateConverter = new StringConverter<>() {
+    protected static final StringConverter<LocalDate> dateConverter = new StringConverter<>()
+    {
         @Override
         public String toString(LocalDate localDate)
         {

@@ -39,9 +39,11 @@ public class updateVehicleController implements Initializable
     @FXML
     protected TextField costMultiplier;
     @FXML
-    protected CheckBox disableVehicle;
+    protected CheckBox deleteVehicle;
     @FXML
     protected Button cancel;
+    @FXML
+    protected Button updateVehicle;
 
     private final Alert alert = new Alert(Alert.AlertType.ERROR);
     private String errorMessage;
@@ -66,98 +68,98 @@ public class updateVehicleController implements Initializable
         vehicleColour.setText(manageVehiclesController.thisVehicle.getColour());
 
         String isInsured = manageVehiclesController.thisVehicle.isInsured();
-        if(isInsured.equals("Yes"))
-            vehicleInsurance.setSelected(true);
-        else
-            vehicleInsurance.setSelected(false);
+        vehicleInsurance.setSelected(isInsured.equals("Yes"));
         costMultiplier.setText(String.valueOf(manageVehiclesController.thisVehicle.getCostMultiplier()));
     }
 
     @FXML
-    protected void onCancel(MouseEvent mouseEvent)
+    protected void buttonClicked(MouseEvent mouseEvent) throws SQLException
     {
         if(mouseEvent.getButton() == MouseButton.PRIMARY)
         {
-            closeStage();
+            Button thisButton = (Button) mouseEvent.getSource();
+            String buttonId = thisButton.getId();
+
+            switch (buttonId)
+            {
+                case "cancel" -> closeStage();
+                case "updateVehicle" -> onUpdate();
+            }
         }
     }
 
-    @FXML
-    protected void onUpdate(MouseEvent mouseEvent) throws SQLException
+    private void onUpdate() throws SQLException
     {
-        if(mouseEvent.getButton() == MouseButton.PRIMARY)
+        if(deleteVehicle.selectedProperty().getValue())
         {
-            if(disableVehicle.selectedProperty().getValue())
+            String updateDisable = "UPDATE Vehicle SET active = false WHERE vehicleRegistration = \'" + manageVehiclesController.thisVehicle.getVehicleRegistration() + "\'";
+            RentACar.statement.executeUpdate(updateDisable);
+
+            manageVehiclesController.thisVehicle.setActive(false);
+            Vehicle.vehicleList.removeAll(manageVehiclesController.thisVehicle);
+
+
+            Alert newAlert = new Alert(Alert.AlertType.INFORMATION);
+            newAlert.setHeaderText("Vehicle removed");
+            newAlert.showAndWait();
+
+            closeStage();
+        }
+        else
+        {
+            String regExpString = registrationExpirationDate.getEditor().getText();
+            regExpString = regExpString.replace("/", "-");
+
+            boolean insured = vehicleInsurance.selectedProperty().getValue();
+
+            String isInsured = "No";
+            if(insured)
+                isInsured = "Yes";
+
+            String colour = vehicleColour.getText();
+
+            String startDateString = vehicleStartDate.getEditor().getText();
+            startDateString = startDateString.replace("/", "-");
+
+            String endDateString = vehicleEndDate.getEditor().getText();
+            endDateString = endDateString.replace("/", "-");
+
+            String costMultiString = costMultiplier.getText();
+
+            if(baseController.dateCheck(registrationExpirationDate, regExpString) & baseController.dateCheck(vehicleStartDate, startDateString) & baseController.dateCheck(vehicleEndDate, endDateString))
             {
-                String updateDisable = "UPDATE Vehicle SET active = false WHERE vehicleRegistration = \'" + manageVehiclesController.thisVehicle.getVehicleRegistration() + "\'";
-                RentACar.statement.executeUpdate(updateDisable);
+                Date regExp = Date.valueOf(regExpString);
+                Date start = Date.valueOf(startDateString);
+                Date end = Date.valueOf(endDateString);
 
-                manageVehiclesController.thisVehicle.setActive(false);
-                Vehicle.vehicleList.removeAll(manageVehiclesController.thisVehicle);
-
-
-                Alert newAlert = new Alert(Alert.AlertType.INFORMATION);
-                newAlert.setHeaderText("Vehicle removed");
-                newAlert.showAndWait();
-
-                closeStage();
-            }
-            else
-            {
-                String regExpString = registrationExpirationDate.getEditor().getText();
-                regExpString = regExpString.replace("/", "-");
-
-                boolean insured = vehicleInsurance.selectedProperty().getValue();
-
-                String isInsured = "No";
-                if(insured)
-                    isInsured = "Yes";
-
-                String colour = vehicleColour.getText();
-
-                String startDateString = vehicleStartDate.getEditor().getText();
-                startDateString = startDateString.replace("/", "-");
-
-                String endDateString = vehicleEndDate.getEditor().getText();
-                endDateString = endDateString.replace("/", "-");
-
-                String costMultiString = costMultiplier.getText();
-
-                if(baseController.dateCheck(registrationExpirationDate, regExpString) & baseController.dateCheck(vehicleStartDate, startDateString) & baseController.dateCheck(vehicleEndDate, endDateString))
+                if(emptyChecks(regExp, colour, start, end, costMultiString) & errorChecks(regExp, colour, start, end, costMultiString))
                 {
-                    Date regExp = Date.valueOf(regExpString);
-                    Date start = Date.valueOf(startDateString);
-                    Date end = Date.valueOf(endDateString);
+                    double costMulti = Double.parseDouble(costMultiString);
 
-                    if(emptyChecks(regExp, colour, start, end, costMultiString) & errorChecks(regExp, colour, start, end, costMultiString))
-                    {
-                        double costMulti = Double.parseDouble(costMultiString);
+                    String sql = "UPDATE Vehicle " +
+                            "SET registrationExpiryDate = \'" + regExp + "\', insured = \'" + insured + "\', colour = \'" + colour + "\', startDate = \'" + start + "\', endDate = \'" + end + "\', costMultiplier = \'" + costMulti + "\'" +
+                            "WHERE vehicleRegistration = \'" + registrationNumber.getText() + "\'";
+                    RentACar.statement.executeUpdate(sql);
 
-                        String sql = "UPDATE Vehicle " +
-                                "SET registrationExpiryDate = \'" + regExp + "\', insured = \'" + insured + "\', colour = \'" + colour + "\', startDate = \'" + start + "\', endDate = \'" + end + "\', costMultiplier = \'" + costMulti + "\'" +
-                                "WHERE vehicleRegistration = \'" + registrationNumber.getText() + "\'";
-                        RentACar.statement.executeUpdate(sql);
+                    manageVehiclesController.thisVehicle.setRegistrationExpiryDate(regExp);
+                    manageVehiclesController.thisVehicle.setInsured(isInsured);
+                    manageVehiclesController.thisVehicle.setColour(colour);
+                    manageVehiclesController.thisVehicle.setStartDate(start);
+                    manageVehiclesController.thisVehicle.setEndDate(end);
+                    manageVehiclesController.thisVehicle.setCostMultiplier(costMulti);
 
-                        manageVehiclesController.thisVehicle.setRegistrationExpiryDate(regExp);
-                        manageVehiclesController.thisVehicle.setInsured(isInsured);
-                        manageVehiclesController.thisVehicle.setColour(colour);
-                        manageVehiclesController.thisVehicle.setStartDate(start);
-                        manageVehiclesController.thisVehicle.setEndDate(end);
-                        manageVehiclesController.thisVehicle.setCostMultiplier(costMulti);
-
-                        closeStage();
-                    }
-                    else
-                    {
-                        alert.setHeaderText(errorMessage);
-                        alert.showAndWait();
-                    }
+                    closeStage();
                 }
                 else
                 {
-                    alert.setHeaderText("Date is in incorrect format");
+                    alert.setHeaderText(errorMessage);
                     alert.showAndWait();
                 }
+            }
+            else
+            {
+                alert.setHeaderText("Date is in incorrect format");
+                alert.showAndWait();
             }
         }
     }

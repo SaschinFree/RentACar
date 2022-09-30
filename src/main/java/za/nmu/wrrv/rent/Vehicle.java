@@ -37,7 +37,6 @@ public class Vehicle
         this.startDate.setValue(startDate);
         this.endDate.setValue(endDate);
         this.costMultiplier.set(costMultiplier);
-        active.set(true);
     }
 
     public static ObservableList<Vehicle> getVehicles() throws SQLException
@@ -68,18 +67,10 @@ public class Vehicle
 
             if(thisActive)
             {
-                vehicleList.add( new Vehicle(
-                        thisVehicleRegistration,
-                        thisClientNumber,
-                        thisRegistrationExpiryDate,
-                        isInsured,
-                        thisMake,
-                        thisModel,
-                        thisColour,
-                        thisSeats,
-                        thisStartDate,
-                        thisEndDate,
-                        thisCostMultiplier));
+                Vehicle thisVehicle = new Vehicle(thisVehicleRegistration, thisClientNumber, thisRegistrationExpiryDate, isInsured, thisMake, thisModel, thisColour, thisSeats, thisStartDate, thisEndDate, thisCostMultiplier);
+                vehicleList.add(thisVehicle);
+
+                thisVehicle.active.set(true);
             }
         }
         return vehicleList;
@@ -125,18 +116,10 @@ public class Vehicle
 
             if(thisActive)
             {
-                thisList.add( new Vehicle(
-                        thisVehicleRegistration,
-                        thisClientNumber,
-                        thisRegistrationExpiryDate,
-                        isInsured,
-                        thisMake,
-                        thisModel,
-                        thisColour,
-                        thisSeats,
-                        thisStartDate,
-                        thisEndDate,
-                        thisCostMultiplier));
+                Vehicle thisVehicle = new Vehicle(thisVehicleRegistration, thisClientNumber, thisRegistrationExpiryDate, isInsured, thisMake, thisModel, thisColour, thisSeats, thisStartDate, thisEndDate, thisCostMultiplier);
+                thisList.add(thisVehicle);
+
+                thisVehicle.setActive(true);
             }
         }
         return thisList;

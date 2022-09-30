@@ -6,7 +6,7 @@
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: #CDD7EC;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="za.nmu.wrrv.rent.addVehicleController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: #CDD7EC;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="za.nmu.wrrv.rent.updateClientController">
    <children>
       <Label prefHeight="100.0" text="Rent A Car">
          <padding>
@@ -25,136 +25,148 @@
                <children>
                   <HBox alignment="CENTER_LEFT" prefHeight="100.0">
                      <children>
-                        <Label prefWidth="200.0" text="Client Number">
+                        <Label prefWidth="200.0" text="Client ID">
                            <font>
                               <Font size="16.0" />
                            </font>
                         </Label>
-                        <ChoiceBox fx:id="clientNumber" prefWidth="150.0" />
+                        <Label fx:id="clientID" text="clientID" textFill="#8d918d">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
                      </children>
                   </HBox>
                   <HBox alignment="CENTER_LEFT" prefHeight="100.0">
                      <children>
-                        <Label prefWidth="200.0" text="Registration Number">
+                        <Label prefWidth="200.0" text="First Name">
                            <font>
                               <Font size="16.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="registrationNumber" promptText="ABC123 or CUSTOM" />
-                        <ChoiceBox fx:id="plateExtension" prefWidth="50.0" />
+                        <TextField fx:id="firstName" promptText="John" />
                      </children>
                   </HBox>
                   <HBox alignment="CENTER_LEFT" prefHeight="100.0">
                      <children>
-                        <Label prefWidth="200.0" text="Registration Expiration Date">
+                        <Label prefWidth="200.0" text="Surname">
                            <font>
                               <Font size="16.0" />
                            </font>
                         </Label>
-                        <DatePicker fx:id="registrationExpirationDate" promptText="YYYY/MM/DD" />
+                        <TextField fx:id="surname" promptText="Doe" />
                      </children>
                   </HBox>
                   <HBox alignment="CENTER_LEFT" prefHeight="100.0">
                      <children>
-                        <Label prefWidth="200.0" text="Vehicle is Insured">
+                        <Label prefWidth="200.0" text="Contact Number">
                            <font>
                               <Font size="16.0" />
                            </font>
                         </Label>
-                        <CheckBox fx:id="vehicleInsurance" mnemonicParsing="false" />
-                     </children>
-                  </HBox>
-                  <Label text="Availability Period" textFill="#8d918d">
-                     <font>
-                        <Font name="System Italic" size="16.0" />
-                     </font>
-                     <VBox.margin>
-                        <Insets />
-                     </VBox.margin>
-                  </Label>
-                  <HBox alignment="CENTER_LEFT" prefHeight="100.0">
-                     <children>
-                        <Label prefWidth="200.0" text="Start Date">
-                           <font>
-                              <Font size="16.0" />
-                           </font>
-                        </Label>
-                        <DatePicker fx:id="vehicleStartDate" promptText="YYYY/MM/DD" />
+                        <TextField fx:id="contactNumber" promptText="0123456789" />
                      </children>
                   </HBox>
                   <HBox alignment="CENTER_LEFT" prefHeight="100.0">
                      <children>
-                        <Label prefWidth="200.0" text="End Date">
+                        <Label prefWidth="200.0" text="Email Address">
                            <font>
                               <Font size="16.0" />
                            </font>
                         </Label>
-                        <DatePicker fx:id="vehicleEndDate" promptText="YYYY/MM/DD" />
-                     </children>
-                  </HBox>
-               </children>
-            </VBox>
-            <VBox>
-               <children>
-                  <HBox alignment="CENTER_LEFT" prefHeight="100.0">
-                     <children>
-                        <Label prefWidth="200.0" text="Make">
-                           <font>
-                              <Font size="16.0" />
-                           </font>
-                        </Label>
-                        <TextField fx:id="vehicleMake" promptText="Volkswagen or BMW" />
+                        <TextField fx:id="email" promptText="johndoe@gmail.com" />
                      </children>
                   </HBox>
                   <HBox alignment="CENTER_LEFT" prefHeight="100.0">
                      <children>
-                        <Label prefWidth="200.0" text="Model">
+                        <Label prefWidth="200.0" text="Licence Expiry Date">
                            <font>
                               <Font size="16.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="vehicleModel" promptText="Polo or 530i" />
+                        <DatePicker fx:id="licenceExpiryDate" promptText="YYYY/MM/DD" />
                      </children>
                   </HBox>
-                  <HBox alignment="CENTER_LEFT" prefHeight="100.0">
-                     <children>
-                        <Label prefWidth="200.0" text="Seats">
-                           <font>
-                              <Font size="16.0" />
-                           </font>
-                        </Label>
-                        <Spinner fx:id="vehicleSeats" editable="true" />
-                     </children>
-                  </HBox>
-                  <HBox alignment="CENTER_LEFT" prefHeight="100.0">
-                     <children>
-                        <Label prefWidth="200.0" text="Colour">
-                           <font>
-                              <Font size="16.0" />
-                           </font>
-                        </Label>
-                        <TextField fx:id="vehicleColour" promptText="Red or Colour,Colour etc" />
-                     </children>
-                  </HBox>
-                  <Label prefHeight="25.0">
-                     <VBox.margin>
-                        <Insets right="10.0" />
-                     </VBox.margin>
+                  <Label prefHeight="100.0">
                      <font>
                         <Font size="16.0" />
                      </font>
                   </Label>
-                  <HBox alignment="CENTER_LEFT" prefHeight="100.0">
+               </children>
+            </VBox>
+            <VBox>
+               <children>
+                  <HBox alignment="CENTER_LEFT" prefHeight="65.0">
                      <children>
-                        <Label prefWidth="200.0" text="Cost Multiplier">
+                        <Label prefWidth="200.0" text="Street Number">
                            <font>
                               <Font size="16.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="costMultiplier" promptText="0.0" />
+                        <TextField fx:id="streetNumber" promptText="52" />
                      </children>
                   </HBox>
-                  <Label prefHeight="100.0" />
+                  <HBox alignment="CENTER_LEFT" prefHeight="65.0">
+                     <children>
+                        <Label prefWidth="200.0" text="Street Name">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="streetName" promptText="King Edward Street" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER_LEFT" prefHeight="65.0">
+                     <children>
+                        <Label prefWidth="200.0" text="Suburb">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="suburb" promptText="Newton Park" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER_LEFT" prefHeight="65.0">
+                     <children>
+                        <Label prefWidth="200.0" text="City">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="city" promptText="Gqeberha" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER_LEFT" prefHeight="65.0">
+                     <children>
+                        <Label prefWidth="200.0" text="Postal Code">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="postalCode" promptText="6045" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER_LEFT" layoutX="30.0" layoutY="314.0" prefHeight="66.0">
+                     <children>
+                        <Label prefWidth="185.0" text="Company Name">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                        <CheckBox fx:id="isCompany" mnemonicParsing="false" onMouseClicked="#compSelected" />
+                        <TextField fx:id="companyName" promptText="Uber or NMU etc" />
+                     </children>
+                  </HBox>
+                  <HBox alignment="CENTER_LEFT" prefHeight="66.0">
+                     <children>
+                        <Label prefWidth="200.0" text="Delete Client">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                        <CheckBox fx:id="isDelete" mnemonicParsing="false" />
+                     </children>
+                  </HBox>
                </children>
                <padding>
                   <Insets left="20.0" />
@@ -168,7 +180,7 @@
       <HBox alignment="BOTTOM_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="50.0">
          <children>
             <Button fx:id="cancel" mnemonicParsing="false" onMouseClicked="#buttonClicked" style="-fx-background-color: #3B2F2F;" text="Cancel" textFill="WHITE" />
-            <Button fx:id="addVehicle" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onMouseClicked="#buttonClicked" style="-fx-background-color: #3B2F2F;" text="Add Vehicle" textFill="WHITE">
+            <Button fx:id="updateClient" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onMouseClicked="#buttonClicked" style="-fx-background-color: #3B2F2F;" text="Update Client" textFill="WHITE">
                <HBox.margin>
                   <Insets />
                </HBox.margin>
