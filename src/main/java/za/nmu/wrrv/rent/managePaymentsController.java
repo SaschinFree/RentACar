@@ -45,21 +45,22 @@ public class managePaymentsController implements Initializable
 
     protected static ObservableList<Client> filteredClients = FXCollections.observableArrayList();
 
-    static
-    {
-        for(Client thisClient : baseController.clients)
-        {
-            if(thisClient.getMoneyOwed() > 0)
-                filteredClients.add(thisClient);
-        }
-    }
-
     protected static Client thisClient;
     protected static boolean clientPaid;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
+
+        try
+        {
+            filteredClients = Client.searchQuery("active", "Yes", "AND moneyOwed > 0");
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+
         searchFilter.getItems().addAll(
                 "clientID",
                 "firstName",
@@ -68,6 +69,7 @@ public class managePaymentsController implements Initializable
                 "email",
                 "companyName",
                 "moneyOwed");
+        searchFilter.setValue("clientID");
 
         searchFilter.getSelectionModel().selectedItemProperty().addListener((observableValue, stringSingleSelectionModel, t1) ->
         {
@@ -100,6 +102,7 @@ public class managePaymentsController implements Initializable
         moneyOwed.setCellValueFactory(new PropertyValueFactory<>("moneyOwed"));
 
         queryTable.setItems(filteredClients);
+        search.setTooltip(baseController.searchTip);
     }
 
     @FXML
@@ -143,16 +146,12 @@ public class managePaymentsController implements Initializable
     }
     private void onSearch() throws SQLException
     {
-        ObservableList<Client> filteredList = Client.searchQuery(searchFilter.getSelectionModel().getSelectedItem(), searchQuery.getText());
-
-        filteredClients = FXCollections.observableArrayList();
-
-        for(Client thisClient : filteredList)
+        if(searchQuery.getText().isEmpty())
+            queryTable.setItems(filteredClients);
+        else
         {
-            if(thisClient.getMoneyOwed() > 0)
-                filteredClients.add(thisClient);
+            ObservableList<Client> filteredList = Client.searchQuery(searchFilter.getSelectionModel().getSelectedItem(), searchQuery.getText(), "AND moneyOwed > 0");
+            queryTable.setItems(filteredList);
         }
-
-        queryTable.setItems(filteredClients);
     }
 }

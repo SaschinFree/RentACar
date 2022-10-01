@@ -1,5 +1,7 @@
 package za.nmu.wrrv.rent;
 
+import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -11,7 +13,9 @@ import javafx.scene.input.MouseEvent;
 
 import java.net.URL;
 import java.sql.Date;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.Duration;
 import java.time.LocalDate;
 import java.util.ResourceBundle;
 
@@ -38,20 +42,19 @@ public class returnVehicleController implements Initializable
 
     protected static ObservableList<Booking> filteredBookings = FXCollections.observableArrayList();
 
-    static
-    {
-        for(Booking thisBooking : baseController.bookings)
-        {
-            if(thisBooking.isActive() && (thisBooking.getEndDate().equals(Date.valueOf(LocalDate.now())) || thisBooking.getEndDate().after(Date.valueOf(LocalDate.now()))) && thisBooking.isIsBeingRented().equals("Yes"))
-                filteredBookings.add(thisBooking);
-        }
-    }
-
     protected static Booking thisBooking;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
+        try
+        {
+            filteredBookings = Booking.searchQuery("isBeingRented", "Yes", "");
+        } catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+
         searchFilter.getItems().addAll(
                 "vehicleRegistration",
                 "startDate",
@@ -79,6 +82,7 @@ public class returnVehicleController implements Initializable
         bookingEnd.setCellValueFactory(new PropertyValueFactory<>("endDate"));
 
         filteredTable.setItems(filteredBookings);
+        search.setTooltip(baseController.searchTip);
     }
 
     @FXML
@@ -109,22 +113,51 @@ public class returnVehicleController implements Initializable
     }
     private void onSearch() throws SQLException
     {
-        ObservableList<Booking> filteredList = Booking.searchQuery(searchFilter.getSelectionModel().getSelectedItem(), searchQuery.getText());
-
-        filteredBookings = FXCollections.observableArrayList();
-
-        for(Booking thisBooking : filteredList)
+        if(searchQuery.getText().isEmpty())
+            filteredTable.setItems(filteredBookings);
+        else
         {
-            if(thisBooking.isActive() & thisBooking.getEndDate().before(Date.valueOf(LocalDate.now())) && thisBooking.isIsBeingRented().equals("Yes"))
-                filteredBookings.add(thisBooking);
+            ObservableList<Booking> filteredList = Booking.searchQuery(searchFilter.getSelectionModel().getSelectedItem(), searchQuery.getText(), "AND isBeingRented = Yes");
+            filteredTable.setItems(filteredList);
         }
-
-        filteredTable.setItems(filteredBookings);
     }
     private void onReturn() throws SQLException
     {
-        String dispatch = "UPDATE Booking SET active = No AND isBeingRented = No WHERE vehicleRegistration = \'" + thisBooking.getVehicleRegistration() + "\'";
-        RentACar.statement.executeUpdate(dispatch);
+        String returnVehicle = "UPDATE Booking SET active = No AND isBeingRented = No WHERE vehicleRegistration = \'" + thisBooking.getVehicleRegistration() + "\'";
+        RentACar.statement.executeUpdate(returnVehicle);
+
+        if(thisBooking.getEndDate().after(Date.valueOf(LocalDate.now())))
+        {
+            Duration difference = Duration.between(LocalDate.now().atStartOfDay(), thisBooking.getEndDate().toLocalDate().atStartOfDay());
+            double days = Double.parseDouble(String.valueOf(difference.toDays()) + 1);
+
+            double flatRate = 0;
+            Settings thisSetting = Settings.getSetting("Daily Rental Cost");
+
+            if(thisSetting != null)
+                flatRate = thisSetting.getSettingValue();
+
+            ObservableList<Vehicle> thisVehicle = Vehicle.searchQuery("vehicleRegistration", thisBooking.getVehicleRegistration(), "");
+            Vehicle vehicle = thisVehicle.get(0);
+
+            double costMulti = vehicle.getCostMultiplier();
+
+            double extraMoneyOwed = flatRate*days*costMulti;
+
+            String updateClient = "UPDATE Client SET moneyOwed = moneyOwed + " + extraMoneyOwed + " WHERE clientNumber = \'" + vehicle.getClientNumber() + "\' AND active = Yes";
+            RentACar.statement.executeUpdate(updateClient);
+
+            ObservableList<Client> thisClient = Client.searchQuery("clientNumber", String.valueOf(vehicle.getClientNumber()), "");
+            Client updatedClient = thisClient.get(0);
+
+            Client placeHolder = manageClientsController.thisClient;
+
+            manageClientsController.thisClient = updatedClient;
+
+            manageClientsController.thisClient.setMoneyOwed(manageClientsController.thisClient.getMoneyOwed() + extraMoneyOwed);
+
+            manageClientsController.thisClient = placeHolder;
+        }
 
         thisBooking.setIsBeingRented("No");
         thisBooking.setActive(false);

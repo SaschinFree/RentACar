@@ -208,7 +208,7 @@ public class addBookingController implements Initializable
             clientVehicleTable.setItems(baseController.clients);
         else
         {
-            ObservableList<Client> filteredClients = Client.searchQuery("clientNumber", clientSearchQuery.getText());
+            ObservableList<Client> filteredClients = Client.searchQuery("clientNumber", clientSearchQuery.getText(), "");
             clientVehicleTable.setItems(filteredClients);
         }
     }

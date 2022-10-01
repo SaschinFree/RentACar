@@ -11,6 +11,7 @@ import javafx.scene.input.MouseEvent;
 
 import java.net.URL;
 import java.sql.Date;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ResourceBundle;
@@ -38,20 +39,20 @@ public class dispatchVehicleController implements Initializable
 
     protected static ObservableList<Booking> filteredBookings = FXCollections.observableArrayList();
 
-    static
-    {
-        for(Booking thisBooking : baseController.bookings)
-        {
-            if(thisBooking.isActive() && (thisBooking.getStartDate().equals(Date.valueOf(LocalDate.now())) || thisBooking.getStartDate().after(Date.valueOf(LocalDate.now()))) && thisBooking.isIsBeingRented().equals("No"))
-                filteredBookings.add(thisBooking);
-        }
-    }
-
     protected static Booking thisBooking;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
+        try
+        {
+            filteredBookings = Booking.searchQuery("startDate", String.valueOf(LocalDate.now()), "AND isBeingRented = No");
+        }
+        catch (SQLException e)
+        {
+            e.printStackTrace();
+        }
+
         searchFilter.getItems().addAll(
                 "vehicleRegistration",
                 "startDate",
@@ -65,7 +66,7 @@ public class dispatchVehicleController implements Initializable
 
             switch(searchFilter.getSelectionModel().getSelectedItem())
             {
-                case "vehicleRegistration" -> searchQuery.setPromptText("ABC123 EC or CUSTOM MP etc");
+                case "vehicleRegistration" -> searchQuery.setPromptText("ABC123 EC or CUSTOM MP");
                 case "startDate", "endDate" -> searchQuery.setPromptText("YYYY/MM/DD");
             }
         });
@@ -79,6 +80,7 @@ public class dispatchVehicleController implements Initializable
         bookingEnd.setCellValueFactory(new PropertyValueFactory<>("endDate"));
 
         filteredTable.setItems(filteredBookings);
+        search.setTooltip(baseController.searchTip);
     }
 
     @FXML
@@ -109,17 +111,13 @@ public class dispatchVehicleController implements Initializable
     }
     private void onSearch() throws SQLException
     {
-        ObservableList<Booking> filteredList = Booking.searchQuery(searchFilter.getSelectionModel().getSelectedItem(), searchQuery.getText());
-
-        filteredBookings = FXCollections.observableArrayList();
-
-        for(Booking thisBooking : filteredList)
+        if(searchQuery.getText().isEmpty())
+            filteredTable.setItems(filteredBookings);
+        else
         {
-            if(thisBooking.isActive() & thisBooking.getStartDate().after(Date.valueOf(LocalDate.now())) && thisBooking.isIsBeingRented().equals("No"))
-                filteredBookings.add(thisBooking);
+            ObservableList<Booking> filteredList = Booking.searchQuery(searchFilter.getSelectionModel().getSelectedItem(), searchQuery.getText(), "AND isBeingRented = No");
+            filteredTable.setItems(filteredList);
         }
-
-        filteredTable.setItems(filteredBookings);
     }
     private void onDispatch() throws SQLException
     {
@@ -129,14 +127,17 @@ public class dispatchVehicleController implements Initializable
         thisBooking.setIsBeingRented("Yes");
         filteredBookings.removeAll(thisBooking);
 
-        String updateClient = "UPDATE Client SET moneyOwed = \'" + thisBooking.getOwnerCommission() + "\' WHERE clientNumber = \'" + thisBooking.getClientNumber() + "\'";
+        ObservableList<Vehicle> clientVehicle = Vehicle.searchQuery("vehicleRegistration", String.valueOf(thisBooking.getVehicleRegistration()), "");
+        Vehicle thisVehicle = clientVehicle.get(0);
+
+        String updateClient = "UPDATE Client SET moneyOwed = \'" + thisBooking.getOwnerCommission() + "\' WHERE clientNumber = \'" + thisVehicle.getClientNumber() + "\'";
         RentACar.statement.executeUpdate(updateClient);
 
         for(Client thisClient : baseController.clients)
         {
-            if(thisClient.getClientNumber() == thisBooking.getClientNumber())
+            if(thisClient.getClientNumber() == thisVehicle.getClientNumber())
             {
-                thisClient.setMoneyOwed(thisBooking.getOwnerCommission());
+                thisClient.setMoneyOwed(thisClient.getMoneyOwed() + thisBooking.getOwnerCommission());
                 break;
             }
         }

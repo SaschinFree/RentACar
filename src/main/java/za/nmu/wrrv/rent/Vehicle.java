@@ -75,20 +75,20 @@ public class Vehicle
         }
         return vehicleList;
     }
-    public static ObservableList<Vehicle> searchQuery(String tableColumn, String searchQuery) throws SQLException
+    public static ObservableList<Vehicle> searchQuery(String tableColumn, String searchQuery, String extraParameter) throws SQLException
     {
         ObservableList<Vehicle> thisList = FXCollections.observableArrayList();
         String sql;
 
         searchQuery = searchQuery.replace("/", "-");
         if(searchQuery.contains("-"))
-            sql = "SELECT * FROM Vehicle WHERE " + tableColumn + " = \'" + Date.valueOf(searchQuery) + "\'";
+            sql = "SELECT * FROM Vehicle WHERE " + tableColumn + " = \'" + Date.valueOf(searchQuery) + "\' " + extraParameter + "";
         else
         {
-            if(searchQuery.equals("Yes") | searchQuery.equals("No") | searchQuery.contains("."))
-                sql = "SELECT * FROM Vehicle WHERE " + tableColumn + " = " + searchQuery + "";
+            if(searchQuery.equals(".") || searchQuery.equals("Yes") || searchQuery.contains("No"))
+                sql = "SELECT * FROM Vehicle WHERE " + tableColumn + " = " + searchQuery + " " + extraParameter + "";
             else
-                sql = "SELECT * FROM Vehicle WHERE " + tableColumn + " LIKE \'" + searchQuery + "\'";
+                sql = "SELECT * FROM Vehicle WHERE " + tableColumn + " LIKE \'" + searchQuery + "\' " + extraParameter + "";
         }
 
         ResultSet result = RentACar.statement.executeQuery(sql);

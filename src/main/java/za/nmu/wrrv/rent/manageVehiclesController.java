@@ -64,6 +64,7 @@ public class manageVehiclesController implements Initializable
                 "seats",
                 "startDate",
                 "endDate");
+        searchFilter.setValue("vehicleRegistration");
 
         searchFilter.getSelectionModel().selectedItemProperty().addListener((observableValue, stringSingleSelectionModel, t1) ->
         {
@@ -101,6 +102,7 @@ public class manageVehiclesController implements Initializable
         endDate.setCellValueFactory(new PropertyValueFactory<>("endDate"));
 
         vehicleTable.setItems(baseController.vehicles);
+        search.setTooltip(baseController.searchTip);
     }
 
     @FXML
@@ -139,7 +141,12 @@ public class manageVehiclesController implements Initializable
     }
     private void onSearch() throws SQLException
     {
-        ObservableList<Vehicle> filteredList = Vehicle.searchQuery(searchFilter.getSelectionModel().getSelectedItem(), searchQuery.getText());
-        vehicleTable.setItems(filteredList);
+        if(searchQuery.getText().isEmpty())
+            vehicleTable.setItems(baseController.vehicles);
+        else
+        {
+            ObservableList<Vehicle> filteredList = Vehicle.searchQuery(searchFilter.getSelectionModel().getSelectedItem(), searchQuery.getText(), "");
+            vehicleTable.setItems(filteredList);
+        }
     }
 }

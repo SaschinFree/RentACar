@@ -1,6 +1,5 @@
 package za.nmu.wrrv.rent;
 
-
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -27,7 +26,7 @@ public class baseController implements Initializable
     @FXML
     protected BorderPane main;
     @FXML
-    protected Button logout;
+    protected Button login;
     @FXML
     protected Label logged;
     @FXML
@@ -62,6 +61,8 @@ public class baseController implements Initializable
     protected static final char[] letterArray = new char[52];
     protected static final char[] numberArray = new char[10];
 
+    protected static Tooltip searchTip = new Tooltip("To clear your filter, empty the search query and click search");
+
     protected static ObservableList<Client> clients;
     protected static ObservableList<Vehicle> vehicles;
     protected static ObservableList<Booking> bookings;
@@ -94,82 +95,77 @@ public class baseController implements Initializable
         setLetterArray();
         setNumberArray();
     }
-
     @FXML
-    protected void logoutClicked(MouseEvent mouseEvent)
+    protected void buttonClicked(MouseEvent mouseEvent) throws IOException
     {
         if(mouseEvent.getButton() == MouseButton.PRIMARY)
         {
-            Alert alert;
-            if(isLoggedOn)
+            String buttonId = ((Button) mouseEvent.getSource()).getId();
+
+            switch (buttonId)
             {
-                main.setCenter(null);
-
-                isLoggedOn = false;
-                userLoggedOn = null;
-
-                logged.setVisible(false);
-                user.setVisible(false);
-
-                alert = new Alert(AlertType.INFORMATION);
-                alert.setTitle("Successful");
-                alert.setHeaderText("Logout successful");
+                case "login" -> onLogin();
+                case "logout" -> onLogout();
             }
-            else
-            {
-                alert = new Alert(AlertType.ERROR);
-                alert.setTitle("Error");
-                alert.setHeaderText("User is not logged in");
-            }
-            alert.showAndWait();
         }
     }
-    @FXML
-    protected void loginClicked(MouseEvent mouseEvent) throws IOException
+
+    private void onLogout()
     {
-        if(mouseEvent.getButton() == MouseButton.PRIMARY)
+        Alert alert;
+
+        main.setCenter(null);
+
+        isLoggedOn = false;
+        userLoggedOn = null;
+
+        logged.setVisible(false);
+        user.setVisible(false);
+
+        alert = new Alert(AlertType.INFORMATION);
+        alert.setTitle("Successful");
+        alert.setHeaderText("Logout successful");
+
+        login.setText("Login");
+        login.setId("login");
+
+        alert.showAndWait();
+    }
+    private void onLogin() throws IOException
+    {
+        FXMLLoader loginLoader = new FXMLLoader(RentACar.class.getResource("login.fxml"));
+        Scene loginScene = new Scene(loginLoader.load());
+        Stage loginStage = new Stage();
+
+        loginStage.setScene(loginScene);
+        loginStage.setTitle("Login");
+        loginStage.setResizable(false);
+        loginStage.initModality(Modality.WINDOW_MODAL);
+        loginStage.initOwner(RentACar.mainStage);
+
+        loginStage.showAndWait();
+
+        if(isLoggedOn)
         {
-            if(!isLoggedOn)
+            logged.setVisible(true);
+
+            if(loginController.thisUser.isAdmin())
             {
-                FXMLLoader loginLoader = new FXMLLoader(RentACar.class.getResource("login.fxml"));
-                Scene loginScene = new Scene(loginLoader.load());
-                Stage loginStage = new Stage();
-
-                loginStage.setScene(loginScene);
-                loginStage.setTitle("Login");
-                loginStage.setResizable(false);
-                loginStage.initModality(Modality.WINDOW_MODAL);
-                loginStage.initOwner(RentACar.mainStage);
-
-                loginStage.showAndWait();
-
-                if(isLoggedOn)
-                {
-                    logged.setVisible(true);
-
-                    if(loginController.thisUser.isAdmin())
-                    {
-                        user.setText("Admin");
-                        userLoggedOn = "adminMenu";
-                    }
-                    else
-                    {
-                        user.setText("Clerk");
-                        userLoggedOn = "clerkMenu";
-                    }
-
-                    user.setVisible(true);
-
-                    nextScene(userLoggedOn);
-                }
+                user.setText("Admin");
+                userLoggedOn = "adminMenu";
             }
             else
             {
-                Alert alert = new Alert(AlertType.ERROR);
-                alert.setTitle("Error");
-                alert.setHeaderText("User is already logged in");
-                alert.showAndWait();
+                user.setText("Clerk");
+                userLoggedOn = "clerkMenu";
             }
+
+            user.setVisible(true);
+
+            login.setText("Logout");
+            login.setId("logout");
+
+            nextScene(userLoggedOn);
         }
     }
 

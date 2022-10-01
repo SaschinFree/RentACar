@@ -79,20 +79,20 @@ public class Client
         }
         return clientList;
     }
-    public static ObservableList<Client> searchQuery(String tableColumn, String searchQuery) throws SQLException
+    public static ObservableList<Client> searchQuery(String tableColumn, String searchQuery, String extraParameter) throws SQLException
     {
         ObservableList<Client> thisList = FXCollections.observableArrayList();
         String sql;
 
         searchQuery = searchQuery.replace("/", "-");
         if(searchQuery.contains("-"))
-            sql = "SELECT * FROM Client WHERE " + tableColumn + " = \'" + Date.valueOf(searchQuery) + "\'";
+            sql = "SELECT * FROM Client WHERE " + tableColumn + " = \'" + Date.valueOf(searchQuery) + "\' " + extraParameter + "";
         else
         {
-            if(searchQuery.contains("."))
-                sql = "SELECT * FROM Client WHERE " + tableColumn + " = " + searchQuery + "";
+            if(searchQuery.contains(".") || searchQuery.contains("Yes") || searchQuery.contains("No"))
+                sql = "SELECT * FROM Client WHERE " + tableColumn + " = " + searchQuery + " " + extraParameter  + "";
             else
-                sql = "SELECT * FROM Client WHERE " + tableColumn + " LIKE \'" + searchQuery + "\'";
+                sql = "SELECT * FROM Client WHERE " + tableColumn + " LIKE \'" + searchQuery + "\' " + extraParameter + "";
         }
 
         ResultSet result = RentACar.statement.executeQuery(sql);

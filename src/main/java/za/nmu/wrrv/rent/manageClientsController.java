@@ -63,6 +63,7 @@ public class manageClientsController implements Initializable
                 "licenceExpiryDate",
                 "companyName",
                 "moneyOwed");
+        searchFilter.setValue("clientNumber");
 
         searchFilter.getSelectionModel().selectedItemProperty().addListener((observableValue, stringSingleSelectionModel, t1) ->
         {
@@ -102,6 +103,7 @@ public class manageClientsController implements Initializable
         moneyOwed.setCellValueFactory(new PropertyValueFactory<>("moneyOwed"));
 
         clientTable.setItems(baseController.clients);
+        search.setTooltip(baseController.searchTip);
     }
     @FXML
     protected void clientSelected(MouseEvent mouseEvent)
@@ -139,7 +141,12 @@ public class manageClientsController implements Initializable
     }
     private void onSearch() throws SQLException
     {
-        ObservableList<Client> filteredList = Client.searchQuery(searchFilter.getSelectionModel().getSelectedItem(), searchQuery.getText());
-        clientTable.setItems(filteredList);
+        if(searchQuery.getText().isEmpty())
+            clientTable.setItems(baseController.clients);
+        else
+        {
+            ObservableList<Client> filteredList = Client.searchQuery(searchFilter.getSelectionModel().getSelectedItem(), searchQuery.getText(), "");
+            clientTable.setItems(filteredList);
+        }
     }
 }

@@ -59,6 +59,7 @@ public class manageBookingsController implements Initializable
                 "cost",
                 "isBeingRented",
                 "hasPaid");
+        searchFilter.setValue("bookingNumber");
 
         searchFilter.getSelectionModel().selectedItemProperty().addListener((observableValue, stringSingleSelectionModel, t1) ->
         {
@@ -91,6 +92,7 @@ public class manageBookingsController implements Initializable
         hasPaid.setCellValueFactory(new PropertyValueFactory<>("hasPaid"));
 
         bookingTable.setItems(baseController.bookings);
+        search.setTooltip(baseController.searchTip);
     }
     @FXML
     protected void bookingSelected(MouseEvent mouseEvent)
@@ -124,7 +126,12 @@ public class manageBookingsController implements Initializable
 
     private void onSearch() throws SQLException
     {
-        ObservableList<Booking> filteredList = Booking.searchQuery(searchFilter.getSelectionModel().getSelectedItem(), searchQuery.getText());
-        bookingTable.setItems(filteredList);
+        if(searchQuery.getText().isEmpty())
+            bookingTable.setItems(baseController.bookings);
+        else
+        {
+            ObservableList<Booking> filteredList = Booking.searchQuery(searchFilter.getSelectionModel().getSelectedItem(), searchQuery.getText(), "");
+            bookingTable.setItems(filteredList);
+        }
     }
 }
