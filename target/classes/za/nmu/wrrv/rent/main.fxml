@@ -10,42 +10,50 @@
    <top>
       <VBox prefHeight="153.0" prefWidth="916.0" BorderPane.alignment="CENTER">
          <children>
-            <HBox prefHeight="180.0" prefWidth="916.0" spacing="20.0">
+            <HBox prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <Label prefHeight="88.0" prefWidth="709.0" text="Rent A Car">
-                     <font>
-                        <Font name="System Italic" size="60.0" />
-                     </font>
-                  </Label>
-                  <Button fx:id="logout" mnemonicParsing="false" onMouseClicked="#logoutClicked" style="-fx-background-color: #3B2F2F;" text="Logout" textFill="WHITE">
+                  <VBox>
+                     <children>
+                        <HBox alignment="CENTER_LEFT" prefHeight="180.0" prefWidth="759.0" spacing="20.0">
+                           <children>
+                              <Label prefHeight="88.0" prefWidth="759.0" text="Rent A Car">
+                                 <font>
+                                    <Font name="System Italic" size="60.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                           <padding>
+                              <Insets left="25.0" top="10.0" />
+                           </padding>
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" prefHeight="109.0" prefWidth="759.0" spacing="5.0">
+                           <children>
+                              <Label fx:id="logged" text="Logged in as">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="user" layoutX="10.0" layoutY="10.0" text="clerkAdmin" textFill="#8d918d">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                           <padding>
+                              <Insets left="25.0" />
+                           </padding>
+                        </HBox>
+                     </children>
+                  </VBox>
+                  <Button fx:id="login" mnemonicParsing="false" onMouseClicked="#buttonClicked" prefHeight="50.0" prefWidth="92.0" style="-fx-background-color: #3B2F2F;" text="Login" textFill="WHITE">
                      <HBox.margin>
                         <Insets top="40.0" />
-                     </HBox.margin></Button>
-                  <Button mnemonicParsing="false" onMouseClicked="#loginClicked" style="-fx-background-color: #3B2F2F;" text="Login" textFill="WHITE">
-                     <HBox.margin>
-                        <Insets top="40.0" />
-                     </HBox.margin></Button>
-               </children>
-               <padding>
-                  <Insets left="25.0" top="10.0" />
-               </padding>
-            </HBox>
-            <HBox alignment="CENTER_LEFT" prefHeight="109.0" spacing="5.0">
-               <children>
-                  <Label fx:id="logged" text="Logged in as">
+                     </HBox.margin>
                      <font>
                         <Font size="16.0" />
                      </font>
-                  </Label>
-                  <Label fx:id="user" layoutX="10.0" layoutY="10.0" text="clerkAdmin" textFill="#8d918d">
-                     <font>
-                        <Font size="16.0" />
-                     </font>
-                  </Label>
+                  </Button>
                </children>
-               <padding>
-                  <Insets left="25.0" />
-               </padding>
             </HBox>
             <Line endX="911.0" stroke="#8d918d" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeWidth="5.0">
                <VBox.margin>
