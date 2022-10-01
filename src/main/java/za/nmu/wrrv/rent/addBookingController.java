@@ -112,6 +112,7 @@ public class addBookingController implements Initializable
 
         clientNameLabel.setVisible(false);
         clientSurnameLabel.setVisible(false);
+        confirmClient.setVisible(false);
 
         bookingPeriod.setVisible(false);
         start.setVisible(false);
@@ -237,7 +238,7 @@ public class addBookingController implements Initializable
 
         if(baseController.dateCheck(startDate, startString) && baseController.dateCheck(endDate, endString))
         {
-            if(dateEmptyChecks(Date.valueOf(startString), Date.valueOf(endString)) && dateErrorChecks(Date.valueOf(startString), Date.valueOf(endString)))
+            if(dateEmptyChecks(startString, endString) && dateErrorChecks(Date.valueOf(startString), Date.valueOf(endString)))
             {
                 thisStartDate = Date.valueOf(startString);
                 thisEndDate = Date.valueOf(endString);
@@ -249,7 +250,6 @@ public class addBookingController implements Initializable
                 vehicleRegistration.setVisible(true);
                 vehicleSearchQuery.setVisible(true);
                 vehicleSearch.setVisible(true);
-                confirmVehicle.setVisible(true);
 
                 ObservableList<Vehicle> vehicles = replaceTableContents("");
 
@@ -354,15 +354,15 @@ public class addBookingController implements Initializable
         closeStage();
     }
 
-    private boolean dateEmptyChecks(Date startDate, Date endDate)
+    private boolean dateEmptyChecks(String startDate, String endDate)
     {
-        if(startDate.toString().isEmpty())
+        if(startDate.isEmpty())
         {
             errorMessage = "Booking Start Date is empty";
             this.startDate.setValue(null);
             return false;
         }
-        if(endDate.toString().isEmpty())
+        if(endDate.isEmpty())
         {
             errorMessage = "Booking End Date is empty";
             this.endDate.setValue(null);

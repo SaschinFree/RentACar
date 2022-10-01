@@ -106,7 +106,7 @@ public class returnVehicleController implements Initializable
             switch(buttonId)
             {
                 case "search" -> onSearch();
-                case "dispatchVehicle" -> onReturn();
+                case "returnVehicle" -> onReturn();
                 case "back" -> baseController.nextScene(baseController.userLoggedOn);
             }
         }
@@ -161,5 +161,17 @@ public class returnVehicleController implements Initializable
 
         thisBooking.setIsBeingRented("No");
         thisBooking.setActive(false);
+
+        filteredBookings.removeAll(thisBooking);
+
+        for(Booking booking : baseController.bookings)
+        {
+            if(booking.getBookingNumber() == thisBooking.getBookingNumber())
+            {
+                booking.setActive(false);
+                baseController.bookings.removeAll(booking);
+                break;
+            }
+        }
     }
 }

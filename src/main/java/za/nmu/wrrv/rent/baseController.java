@@ -213,7 +213,7 @@ public class baseController implements Initializable
 
     protected static boolean dateCheck(DatePicker thisDate, String thisDateString)
     {
-        if(!errorValidationCheck(letterArray, thisDateString) | !symbolCheck(thisDateString, '-'))
+        if(!errorValidationCheck(letterArray, thisDateString) || !symbolCheck(thisDateString, '-'))
         {
             thisDate.setValue(null);
 

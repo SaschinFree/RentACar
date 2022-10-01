@@ -46,7 +46,7 @@ public class dispatchVehicleController implements Initializable
     {
         try
         {
-            filteredBookings = Booking.searchQuery("startDate", String.valueOf(LocalDate.now()), "AND isBeingRented = No");
+            filteredBookings = Booking.searchQuery("startDate", String.valueOf(LocalDate.now()), "AND isBeingRented = No AND hasPaid = Yes");
         }
         catch (SQLException e)
         {

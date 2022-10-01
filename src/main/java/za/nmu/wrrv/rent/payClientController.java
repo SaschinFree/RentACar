@@ -78,6 +78,15 @@ public class payClientController implements Initializable
             managePaymentsController.thisClient.setMoneyOwed(Double.parseDouble(clientMoneyOwed.getText()) - amount);
             managePaymentsController.clientPaid = true;
 
+            for(Client thisClient : baseController.clients)
+            {
+                if(thisClient.getClientNumber() == managePaymentsController.thisClient.getClientNumber())
+                {
+                    thisClient.setMoneyOwed(managePaymentsController.thisClient.getMoneyOwed());
+                    break;
+                }
+            }
+
             int paymentID = baseController.payments.size() + 1;
             int clientNumber = managePaymentsController.thisClient.getClientNumber();
             Date payDate = Date.valueOf(LocalDate.now());
