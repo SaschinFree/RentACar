@@ -126,10 +126,10 @@ public class returnVehicleController implements Initializable
         String returnVehicle = "UPDATE Booking SET active = No AND isBeingRented = No WHERE vehicleRegistration = \'" + thisBooking.getVehicleRegistration() + "\'";
         RentACar.statement.executeUpdate(returnVehicle);
 
-        if(thisBooking.getEndDate().after(Date.valueOf(LocalDate.now())))
+        if(Date.valueOf(LocalDate.now()).after(thisBooking.getEndDate()))
         {
-            Duration difference = Duration.between(LocalDate.now().atStartOfDay(), thisBooking.getEndDate().toLocalDate().atStartOfDay());
-            double days = Double.parseDouble(String.valueOf(difference.toDays()) + 1);
+            Duration difference = Duration.between(thisBooking.getEndDate().toLocalDate().atStartOfDay(), LocalDate.now().atStartOfDay());
+            double days = Double.parseDouble(String.valueOf(difference.toDays()));
 
             double flatRate = 0;
             Settings thisSetting = Settings.getSetting("Daily Rental Cost");
