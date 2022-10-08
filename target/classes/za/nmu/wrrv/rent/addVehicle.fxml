@@ -6,7 +6,7 @@
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: #CDD7EC;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="za.nmu.wrrv.rent.addVehicleController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#keyClicked" prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: #CDD7EC;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="za.nmu.wrrv.rent.addVehicleController">
    <children>
       <Label prefHeight="100.0" text="Rent A Car">
          <padding>
@@ -178,7 +178,7 @@
             <Insets />
          </VBox.margin>
          <padding>
-            <Insets bottom="5.0" right="5.0" />
+            <Insets bottom="5.0" right="10.0" />
          </padding>
       </HBox>
    </children>
