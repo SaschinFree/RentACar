@@ -5,6 +5,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 
@@ -104,7 +106,6 @@ public class manageVehiclesController implements Initializable
         vehicleTable.setItems(baseController.vehicles);
         search.setTooltip(baseController.searchTip);
     }
-
     @FXML
     protected void vehicleSelected(MouseEvent mouseEvent)
     {
@@ -118,7 +119,6 @@ public class manageVehiclesController implements Initializable
             }
         }
     }
-
     @FXML
     protected void buttonClicked(MouseEvent mouseEvent) throws IOException, SQLException
     {
@@ -139,6 +139,7 @@ public class manageVehiclesController implements Initializable
             }
         }
     }
+
     private void onSearch() throws SQLException
     {
         if(searchQuery.getText().isEmpty())

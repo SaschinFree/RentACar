@@ -3,6 +3,7 @@ package za.nmu.wrrv.rent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
@@ -57,24 +58,33 @@ public class updateClientController implements Initializable
         licenceExpiryDate.setConverter(baseController.dateConverter);
 
         clientID.textProperty().bind(manageClientsController.thisClient.clientIDProperty());
-        firstName.textProperty().bind(manageClientsController.thisClient.firstNameProperty());
-        surname.textProperty().bind(manageClientsController.thisClient.surnameProperty());
-        contactNumber.textProperty().bind(manageClientsController.thisClient.contactNumberProperty());
-        email.textProperty().bind(manageClientsController.thisClient.emailProperty());
+        firstName.setText(manageClientsController.thisClient.getFirstName());
+        surname.setText(manageClientsController.thisClient.getSurname());
+        contactNumber.setText(manageClientsController.thisClient.getContactNumber());
+        email.setText(manageClientsController.thisClient.getEmail());
         licenceExpiryDate.setValue(manageClientsController.thisClient.getLicenceExpiryDate().toLocalDate());
-        streetNumber.textProperty().bind(manageClientsController.thisClient.streetNumberProperty().asString());
-        streetName.textProperty().bind(manageClientsController.thisClient.streetNameProperty());
-        suburb.textProperty().bind(manageClientsController.thisClient.suburbProperty());
-        city.textProperty().bind(manageClientsController.thisClient.cityProperty());
-        postalCode.textProperty().bind(manageClientsController.thisClient.postalCodeProperty().asString());
+        streetNumber.setText(manageClientsController.thisClient.getStreetNumber());
+        streetName.setText(manageClientsController.thisClient.getStreetName());
+        suburb.setText(manageClientsController.thisClient.getSuburb());
+        city.setText(manageClientsController.thisClient.getCity());
+        postalCode.setText(manageClientsController.thisClient.getPostalCode());
 
         if(!manageClientsController.thisClient.getCompanyName().equals("Private"))
         {
             isCompany.setSelected(true);
-            companyName.textProperty().bind(manageClientsController.thisClient.companyNameProperty());
+            companyName.setText(manageClientsController.thisClient.getCompanyName());
         }
         else
             companyName.setVisible(false);
+    }
+    @FXML
+    protected void keyClicked(KeyEvent keyEvent) throws SQLException
+    {
+        switch(keyEvent.getCode())
+        {
+            case ESCAPE -> closeStage();
+            case ENTER -> onUpdate();
+        }
     }
     @FXML
     protected void compSelected(MouseEvent mouseEvent)
@@ -108,6 +118,7 @@ public class updateClientController implements Initializable
 
             manageClientsController.thisClient.setActive(false);
             baseController.clients.removeAll(manageClientsController.thisClient);
+            closeStage();
         }
         else
         {
@@ -120,11 +131,11 @@ public class updateClientController implements Initializable
             licenceString = licenceString.replace("/", "-");
 
 
-            String strNumString = streetNumber.getText();
+            String strNum = streetNumber.getText();
             String strName = streetName.getText();
             String sub = suburb.getText();
             String city = this.city.getText();
-            String postCodeString = postalCode.getText();
+            String postCode = postalCode.getText();
 
             String compName = "Private";
 
@@ -133,12 +144,9 @@ public class updateClientController implements Initializable
 
             if(baseController.dateCheck(licenceExpiryDate, licenceString))
             {
-                Date licence = Date.valueOf(licenceString);
-
-                if(emptyChecks(fName, sName, number, email, licence, strNumString, strName, sub, city, postCodeString) & errorChecks(fName, sName, number, email, licence, Integer.parseInt(strNumString), strName, sub, city, Integer.parseInt(postCodeString)))
+                if(emptyChecks(fName, sName, number, email, licenceString, strNum, strName, sub, city, postCode) & errorChecks(fName, sName, number, email, Date.valueOf(licenceString), strNum, strName, sub, city, postCode))
                 {
-                    int strNum = Integer.parseInt(strNumString);
-                    int postCode = Integer.parseInt(postCodeString);
+                    Date licence = Date.valueOf(licenceString);
 
                     if(isCompany.selectedProperty().getValue())
                     {
@@ -173,7 +181,7 @@ public class updateClientController implements Initializable
             }
         }
     }
-    private void updateClient(String fName, String sName, String number, String email, Date licence, int strNum, String strName, String sub, String city, int postCode, String compName) throws SQLException
+    private void updateClient(String fName, String sName, String number, String email, Date licence, String strNum, String strName, String sub, String city, String postCode, String compName) throws SQLException
     {
         String updateClient = "UPDATE Client " +
                 "SET firstName = \'" + fName + "\', surname = \'" + sName + "\', contactNumber = \'" + number + "\', email = \'" + email + "\', licenceExpiryDate = \'" + licence + "\', streetNumber = \'" + strNum + "\', streetName = \'" + strName + "\', suburb = \'" + sub + "\', city = \'" + city + "\', postalCode = \'" + postCode + "\', companyName = \'" + compName + "\'" +
@@ -192,7 +200,7 @@ public class updateClientController implements Initializable
         manageClientsController.thisClient.setPostalCode(postCode);
         manageClientsController.thisClient.setCompanyName(compName);
     }
-    private boolean emptyChecks(String fName, String sName, String number, String email, Date licence, String strNum, String strName, String sub, String city, String postCode)
+    private boolean emptyChecks(String fName, String sName, String number, String email, String licence, String strNum, String strName, String sub, String city, String postCode)
     {
         if(fName.isEmpty())
         {
@@ -222,7 +230,7 @@ public class updateClientController implements Initializable
             return false;
         }
 
-        if(licence.toString().isEmpty())
+        if(licence.isEmpty())
         {
             errorMessage = "Licence Expiration Date is empty";
             licenceExpiryDate.setValue(null);
@@ -266,7 +274,7 @@ public class updateClientController implements Initializable
 
         return true;
     }
-    private boolean errorChecks(String fName, String sName, String number, String email, Date licence, int strNum, String strName, String sub, String city, int postCode)
+    private boolean errorChecks(String fName, String sName, String number, String email, Date licence, String strNum, String strName, String sub, String city, String postCode)
     {
         if(!baseController.errorValidationCheck(baseController.numberArray, fName) | !baseController.symbolCheck(fName, '-'))
         {
@@ -282,27 +290,21 @@ public class updateClientController implements Initializable
             return false;
         }
 
-        if(number.length() < 10)
+        if(!baseController.errorValidationCheck(baseController.letterArray, number) | !baseController.symbolCheck(number))
         {
-            errorMessage = "Contact Number is too short";
+            errorMessage = "Contact Number is in the incorrect format";
             contactNumber.clear();
             return false;
         }
-        if(number.length() > 10)
+        if(number.length() != 10)
         {
-            errorMessage = "Contact Number is too long";
+            errorMessage = "Contact Number is not 10 digits";
             contactNumber.clear();
             return false;
         }
         if(!number.startsWith("0"))
         {
             errorMessage = "Contact Number should start with a 0";
-            contactNumber.clear();
-            return false;
-        }
-        if(!baseController.errorValidationCheck(baseController.letterArray, number) | !baseController.symbolCheck(number))
-        {
-            errorMessage = "Contact Number is in the incorrect format";
             contactNumber.clear();
             return false;
         }
@@ -327,7 +329,7 @@ public class updateClientController implements Initializable
             return false;
         }
 
-        if(!baseController.errorValidationCheck(baseController.letterArray, String.valueOf(strNum)) | !baseController.symbolCheck(String.valueOf(strNum)))
+        if(!baseController.symbolCheck(String.valueOf(strNum)))
         {
             errorMessage = "Street Number is in the incorrect format";
             streetNumber.clear();

@@ -9,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
@@ -26,7 +27,7 @@ public class addBookingController implements Initializable
     @FXML
     protected Label R;
     @FXML
-    protected Label clientNumberLabel;
+    protected Label clientIDLabel;
     @FXML
     protected TextField clientSearchQuery;
     @FXML
@@ -48,6 +49,10 @@ public class addBookingController implements Initializable
     @FXML
     protected DatePicker endDate;
     @FXML
+    protected Label totalDays;
+    @FXML
+    protected Label days;
+    @FXML
     protected Button confirmPeriod;
     @FXML
     protected Label vehicleRegistration;
@@ -64,7 +69,7 @@ public class addBookingController implements Initializable
     @FXML
     protected TableView clientVehicleTable;
     @FXML
-    protected TableColumn clientNumVehicleReg;
+    protected TableColumn clientIDVehicleReg;
     @FXML
     protected TableColumn clientNameVehicleMake;
     @FXML
@@ -106,7 +111,7 @@ public class addBookingController implements Initializable
         clientVehicleTable.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
         clientVehicleTable.setItems(baseController.clients);
 
-        clientNumVehicleReg.setCellValueFactory(new PropertyValueFactory<>("clientNumber"));
+        clientIDVehicleReg.setCellValueFactory(new PropertyValueFactory<>("clientID"));
         clientNameVehicleMake.setCellValueFactory(new PropertyValueFactory<>("firstName"));
         clientSurnameVehicleModel.setCellValueFactory(new PropertyValueFactory<>("surname"));
 
@@ -119,6 +124,8 @@ public class addBookingController implements Initializable
         startDate.setVisible(false);
         end.setVisible(false);
         endDate.setVisible(false);
+        totalDays.setVisible(false);
+        days.setVisible(false);
         confirmPeriod.setVisible(false);
 
         vehicleRegistration.setVisible(false);
@@ -135,6 +142,19 @@ public class addBookingController implements Initializable
         isPaid.setVisible(false);
 
         addBooking.setVisible(false);
+    }
+    @FXML
+    protected void keyClicked(KeyEvent keyEvent) throws SQLException
+    {
+        switch(keyEvent.getCode())
+        {
+            case ESCAPE -> closeStage();
+            case ENTER ->
+                    {
+                        if(addBooking.isVisible())
+                            onAdd();
+                    }
+        }
     }
     @FXML
     protected void clientVehicleSelected(MouseEvent mouseEvent)
@@ -259,11 +279,11 @@ public class addBookingController implements Initializable
                 bookingPaid.setVisible(true);
                 isPaid.setVisible(true);
 
-                clientNumVehicleReg.setText("Vehicle Registration");
+                clientIDVehicleReg.setText("Vehicle Registration");
                 clientNameVehicleMake.setText("Make");
                 clientSurnameVehicleModel.setText("Model");
 
-                clientNumVehicleReg.setCellValueFactory(new PropertyValueFactory<>("vehicleRegistration"));
+                clientIDVehicleReg.setCellValueFactory(new PropertyValueFactory<>("vehicleRegistration"));
                 clientNameVehicleMake.setCellValueFactory(new PropertyValueFactory<>("make"));
                 clientSurnameVehicleModel.setCellValueFactory(new PropertyValueFactory<>("model"));
 
@@ -278,7 +298,7 @@ public class addBookingController implements Initializable
                 clientVehicleTable.setVisible(true);
 
                 Duration difference = Duration.between(thisStartDate.toLocalDate().atStartOfDay(), thisEndDate.toLocalDate().atStartOfDay());
-                DoubleProperty days = new SimpleDoubleProperty(difference.toDays() + 1);
+                DoubleProperty differenceDays = new SimpleDoubleProperty(difference.toDays() + 1);
 
                 DoubleProperty flatRate = new SimpleDoubleProperty();
                 Settings thisSetting = Settings.getSetting("Daily Rental Cost");
@@ -286,9 +306,13 @@ public class addBookingController implements Initializable
                 if(thisSetting != null)
                     flatRate.set(thisSetting.getSettingValue());
 
-                rateDays.set(flatRate.multiply(days).doubleValue());
+                rateDays.set(flatRate.multiply(differenceDays).doubleValue());
 
+                days.setText(String.valueOf((int) differenceDays.get()));
                 cost.textProperty().bind(StringProperty.stringExpression(rateDays));
+
+                totalDays.setVisible(true);
+                days.setVisible(true);
             }
             else
             {

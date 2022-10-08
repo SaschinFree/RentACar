@@ -6,7 +6,7 @@
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: #CDD7EC;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="za.nmu.wrrv.rent.addBookingController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#keyClicked" prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: #CDD7EC;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="za.nmu.wrrv.rent.addBookingController">
    <children>
       <Label prefHeight="100.0" text="Rent A Car">
          <padding>
@@ -25,12 +25,12 @@
                <children>
                   <HBox alignment="CENTER_LEFT" minWidth="391.0" prefHeight="100.0" prefWidth="391.0">
                      <children>
-                        <Label fx:id="clientNumberLabel" prefWidth="200.0" text="Client Number">
+                        <Label fx:id="clientIDLabel" prefWidth="200.0" text="Client ID">
                            <font>
                               <Font size="16.0" />
                            </font>
                         </Label>
-                        <TextField fx:id="clientSearchQuery" prefWidth="135.0" promptText="1" />
+                        <TextField fx:id="clientSearchQuery" prefWidth="135.0" promptText="1234567898765" />
                         <Button fx:id="clientSearch" mnemonicParsing="false" onMouseClicked="#buttonClicked" style="-fx-background-color: #3B2F2F;" text="Search" textFill="WHITE">
                            <HBox.margin>
                               <Insets left="5.0" />
@@ -82,8 +82,18 @@
                         <DatePicker fx:id="endDate" promptText="YYYY/MM/DD" />
                      </children>
                   </HBox>
-                  <HBox alignment="CENTER_RIGHT" prefHeight="100.0">
+                  <HBox alignment="CENTER_LEFT" prefHeight="100.0">
                      <children>
+                        <Label fx:id="totalDays" prefWidth="200.0" text="Total Days" textFill="#8d918d">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="days" layoutX="203.0" layoutY="21.0" prefWidth="95.0" text="days" textFill="#8d918d">
+                           <font>
+                              <Font size="16.0" />
+                           </font>
+                        </Label>
                         <Button fx:id="confirmPeriod" mnemonicParsing="false" onMouseClicked="#buttonClicked" style="-fx-background-color: #3B2F2F;" text="Confirm Period" textFill="WHITE" />
                      </children>
                   </HBox>
@@ -127,7 +137,7 @@
                <children>
                   <TableView fx:id="clientVehicleTable" onMouseClicked="#clientVehicleSelected" prefHeight="309.0" prefWidth="200.0">
                     <columns>
-                        <TableColumn fx:id="clientNumVehicleReg" prefWidth="150.0" text="Client Number" />
+                        <TableColumn fx:id="clientIDVehicleReg" prefWidth="150.0" text="Client ID" />
                       <TableColumn fx:id="clientNameVehicleMake" prefWidth="75.0" text="Name" />
                       <TableColumn fx:id="clientSurnameVehicleModel" prefWidth="75.0" text="Surname" />
                     </columns>
@@ -187,7 +197,7 @@
             <Insets />
          </VBox.margin>
          <padding>
-            <Insets bottom="5.0" right="5.0" />
+            <Insets bottom="5.0" right="10.0" />
          </padding>
       </HBox>
    </children>

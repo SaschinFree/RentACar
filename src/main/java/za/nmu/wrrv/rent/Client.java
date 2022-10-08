@@ -18,16 +18,16 @@ public class Client
     private final StringProperty contactNumber = new SimpleStringProperty();
     private final StringProperty email = new SimpleStringProperty();
     private final Property<Date> licenceExpiryDate = new SimpleObjectProperty<>();
-    private final IntegerProperty streetNumber = new SimpleIntegerProperty();
+    private final StringProperty streetNumber = new SimpleStringProperty();
     private final StringProperty streetName = new SimpleStringProperty();
     private final StringProperty suburb = new SimpleStringProperty();
     private final StringProperty city = new SimpleStringProperty();
-    private final IntegerProperty postalCode = new SimpleIntegerProperty();
+    private final StringProperty postalCode = new SimpleStringProperty();
     private final StringProperty companyName = new SimpleStringProperty();
     private final DoubleProperty moneyOwed = new SimpleDoubleProperty();
     private final BooleanProperty active = new SimpleBooleanProperty();
 
-    public Client(int clientNumber, String clientID, String firstName, String surname, String contactNumber, String email, Date licenceExpiryDate, int streetNumber, String streetName, String suburb, String city, int postalCode, String companyName, double moneyOwed)
+    public Client(int clientNumber, String clientID, String firstName, String surname, String contactNumber, String email, Date licenceExpiryDate, String streetNumber, String streetName, String suburb, String city, String postalCode, String companyName, double moneyOwed)
     {
         this.clientNumber.set(clientNumber);
         this.clientID.set(clientID);
@@ -59,11 +59,11 @@ public class Client
             String thisContactNumber = result.getString("contactNumber");
             String thisEmail = result.getString("email");
             Date thisLicenceExpiryDate = result.getDate("licenceExpiryDate");
-            int thisStreetNumber = result.getInt("streetNumber");
+            String thisStreetNumber = result.getString("streetNumber");
             String thisStreetName = result.getString("streetName");
             String thisSuburb = result.getString("suburb");
             String thisCity = result.getString("city");
-            int thisPostalCode = result.getInt("postalCode");
+            String thisPostalCode = result.getString("postalCode");
             String thisCompanyName = result.getString("companyName");
             double thisMoneyOwed = result.getDouble("moneyOwed");
 
@@ -89,10 +89,15 @@ public class Client
             sql = "SELECT * FROM Client WHERE " + tableColumn + " = \'" + Date.valueOf(searchQuery) + "\' " + extraParameter + "";
         else
         {
-            if(searchQuery.contains(".") || searchQuery.contains("Yes") || searchQuery.contains("No"))
-                sql = "SELECT * FROM Client WHERE " + tableColumn + " = " + searchQuery + " " + extraParameter  + "";
-            else
+            if(searchQuery.contains("@"))
                 sql = "SELECT * FROM Client WHERE " + tableColumn + " LIKE \'" + searchQuery + "\' " + extraParameter + "";
+            else
+            {
+                if(searchQuery.contains(".") || searchQuery.contains("Yes") || searchQuery.contains("No"))
+                    sql = "SELECT * FROM Client WHERE " + tableColumn + " = " + searchQuery + " " + extraParameter  + "";
+                else
+                    sql = "SELECT * FROM Client WHERE " + tableColumn + " LIKE \'" + "%" + searchQuery + "%" + "\' " + extraParameter + "";
+            }
         }
 
         ResultSet result = RentACar.statement.executeQuery(sql);
@@ -106,11 +111,11 @@ public class Client
             String thisContactNumber = result.getString("contactNumber");
             String thisEmail = result.getString("email");
             Date thisLicenceExpiryDate = result.getDate("licenceExpiryDate");
-            int thisStreetNumber = result.getInt("streetNumber");
+            String thisStreetNumber = result.getString("streetNumber");
             String thisStreetName = result.getString("streetName");
             String thisSuburb = result.getString("suburb");
             String thisCity = result.getString("city");
-            int thisPostalCode = result.getInt("postalCode");
+            String thisPostalCode = result.getString("postalCode");
             String thisCompanyName = result.getString("companyName");
             double thisMoneyOwed = result.getDouble("moneyOwed");
 
@@ -197,13 +202,13 @@ public class Client
         this.licenceExpiryDate.setValue(licenceExpiryDate);
     }
 
-    public int getStreetNumber() {
+    public String getStreetNumber() {
         return streetNumber.get();
     }
-    public IntegerProperty streetNumberProperty() {
+    public StringProperty streetNumberProperty() {
         return streetNumber;
     }
-    public void setStreetNumber(int streetNumber) {
+    public void setStreetNumber(String streetNumber) {
         this.streetNumber.set(streetNumber);
     }
 
@@ -227,13 +232,13 @@ public class Client
         this.suburb.set(suburb);
     }
 
-    public int getPostalCode() {
+    public String getPostalCode() {
         return postalCode.get();
     }
-    public IntegerProperty postalCodeProperty() {
+    public StringProperty postalCodeProperty() {
         return postalCode;
     }
-    public void setPostalCode(int postalCode) {
+    public void setPostalCode(String postalCode) {
         this.postalCode.set(postalCode);
     }
 

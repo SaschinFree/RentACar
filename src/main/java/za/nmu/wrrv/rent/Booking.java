@@ -85,10 +85,12 @@ public class Booking
             sql = "SELECT * FROM Booking WHERE " + tableColumn + " = \'" + Date.valueOf(searchQuery) + "\' " + extraParameter + "";
         else
         {
-            if(searchQuery.equals(".") | searchQuery.equals("Yes") | searchQuery.contains("No"))
+            if(searchQuery.equals("yes") || searchQuery.equals("no"))
+                searchQuery = searchQuery.replace(String.valueOf(searchQuery.charAt(0)), String.valueOf(searchQuery.charAt(0)).toUpperCase());
+            if(searchQuery.equals(".") | searchQuery.equals("Yes") | searchQuery.contains("No")) // problem
                 sql = "SELECT * FROM Booking WHERE " + tableColumn + " = " + searchQuery + " " + extraParameter + "";
             else
-                sql = "SELECT * FROM Booking WHERE " + tableColumn + " LIKE \'" + searchQuery + "\' " + extraParameter + "";
+                sql = "SELECT * FROM Booking WHERE " + tableColumn + " LIKE \'" + "%" + searchQuery + "%" + "\' " + extraParameter + "";
         }
 
         ResultSet result = RentACar.statement.executeQuery(sql);

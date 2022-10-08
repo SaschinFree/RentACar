@@ -3,6 +3,7 @@ package za.nmu.wrrv.rent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
@@ -71,6 +72,15 @@ public class updateVehicleController implements Initializable
         vehicleInsurance.setSelected(isInsured.equals("Yes"));
         costMultiplier.setText(String.valueOf(manageVehiclesController.thisVehicle.getCostMultiplier()));
     }
+    @FXML
+    protected void keyClicked(KeyEvent keyEvent) throws SQLException
+    {
+        switch(keyEvent.getCode())
+        {
+            case ESCAPE -> closeStage();
+            case ENTER -> onUpdate();
+        }
+    }
 
     @FXML
     protected void buttonClicked(MouseEvent mouseEvent) throws SQLException
@@ -128,12 +138,11 @@ public class updateVehicleController implements Initializable
 
             if(baseController.dateCheck(registrationExpirationDate, regExpString) & baseController.dateCheck(vehicleStartDate, startDateString) & baseController.dateCheck(vehicleEndDate, endDateString))
             {
-                Date regExp = Date.valueOf(regExpString);
-                Date start = Date.valueOf(startDateString);
-                Date end = Date.valueOf(endDateString);
-
-                if(emptyChecks(regExp, colour, start, end, costMultiString) & errorChecks(regExp, colour, start, end, costMultiString))
+                if(emptyChecks(regExpString, colour, startDateString, endDateString, costMultiString) & errorChecks(Date.valueOf(regExpString), colour, Date.valueOf(startDateString), Date.valueOf(endDateString), costMultiString))
                 {
+                    Date regExp = Date.valueOf(regExpString);
+                    Date start = Date.valueOf(startDateString);
+                    Date end = Date.valueOf(endDateString);
                     double costMulti = Double.parseDouble(costMultiString);
 
                     String sql = "UPDATE Vehicle " +
@@ -163,9 +172,9 @@ public class updateVehicleController implements Initializable
             }
         }
     }
-    private boolean emptyChecks(Date regExp, String colour, Date start, Date end, String costMulti)
+    private boolean emptyChecks(String regExp, String colour, String start, String end, String costMulti)
     {
-        if(regExp.toString().isEmpty())
+        if(regExp.isEmpty())
         {
             errorMessage = "Registration Expiration Date is empty";
             registrationExpirationDate.setValue(null);
@@ -179,14 +188,14 @@ public class updateVehicleController implements Initializable
             return false;
         }
 
-        if(start.toString().isEmpty())
+        if(start.isEmpty())
         {
             errorMessage = "Rental Start Date is empty";
             vehicleStartDate.setValue(null);
             return false;
         }
 
-        if(end.toString().isEmpty())
+        if(end.isEmpty())
         {
             errorMessage = "Rental End Date is empty";
             vehicleEndDate.setValue(null);

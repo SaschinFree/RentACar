@@ -3,10 +3,10 @@ package za.nmu.wrrv.rent;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.input.*;
 
 import java.io.IOException;
 import java.net.URL;
@@ -22,6 +22,8 @@ public class manageClientsController implements Initializable
     protected TextField searchQuery;
     @FXML
     protected Button search;
+    @FXML
+    protected TableView<Client> clientTable;
     @FXML
     protected TableColumn<Client, Integer> clientNumber;
     @FXML
@@ -45,7 +47,7 @@ public class manageClientsController implements Initializable
     @FXML
     protected Button updateClient;
     @FXML
-    protected TableView<Client> clientTable;
+    protected Button back;
 
     protected static Client thisClient;
     protected static boolean clientUpdated;

@@ -85,10 +85,12 @@ public class Vehicle
             sql = "SELECT * FROM Vehicle WHERE " + tableColumn + " = \'" + Date.valueOf(searchQuery) + "\' " + extraParameter + "";
         else
         {
+            if(searchQuery.equals("yes") || searchQuery.equals("no"))
+                searchQuery = searchQuery.replace(String.valueOf(searchQuery.charAt(0)), String.valueOf(searchQuery.charAt(0)).toUpperCase());
             if(searchQuery.equals(".") || searchQuery.equals("Yes") || searchQuery.contains("No"))
                 sql = "SELECT * FROM Vehicle WHERE " + tableColumn + " = " + searchQuery + " " + extraParameter + "";
             else
-                sql = "SELECT * FROM Vehicle WHERE " + tableColumn + " LIKE \'" + searchQuery + "\' " + extraParameter + "";
+                sql = "SELECT * FROM Vehicle WHERE " + tableColumn + " LIKE \'" + "%" + searchQuery + "%" + "\' " + extraParameter + "";
         }
 
         ResultSet result = RentACar.statement.executeQuery(sql);

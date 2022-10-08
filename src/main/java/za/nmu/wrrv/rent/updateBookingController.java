@@ -5,6 +5,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
@@ -49,6 +50,15 @@ public class updateBookingController implements Initializable
         cost.textProperty().bind(manageBookingsController.thisBooking.costProperty().asString());
 
         isPaid.setSelected(manageBookingsController.thisBooking.isHasPaid().equals("Yes"));
+    }
+    @FXML
+    protected void keyClicked(KeyEvent keyEvent) throws SQLException
+    {
+        switch(keyEvent.getCode())
+        {
+            case ESCAPE -> closeStage();
+            case ENTER -> onUpdate();
+        }
     }
 
     @FXML

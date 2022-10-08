@@ -1,83 +1,102 @@
 package za.nmu.wrrv.rent;
 
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
-import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.input.*;
 import javafx.stage.Stage;
 
+import java.net.URL;
 import java.sql.SQLException;
+import java.util.ResourceBundle;
 
 public class loginController
 {
     @FXML
-    private TextField user;
+    protected TextField user;
     @FXML
-    private PasswordField pass;
+    protected PasswordField pass;
+    @FXML
+    protected Button cancel;
+    @FXML
+    protected Button login;
 
     protected static User thisUser;
 
     @FXML
-    protected void onCancel(MouseEvent mouseEvent)
+    protected void keyClicked(KeyEvent keyEvent) throws SQLException
+    {
+        switch(keyEvent.getCode())
+        {
+            case ESCAPE -> closeStage();
+            case ENTER -> onLogin();
+        }
+    }
+    @FXML
+    protected void buttonClicked(MouseEvent mouseEvent) throws SQLException
     {
         if(mouseEvent.getButton() == MouseButton.PRIMARY)
         {
-            closeStage();
+            Button thisButton = (Button) mouseEvent.getSource();
+            String buttonId = thisButton.getId();
+
+            switch(buttonId)
+            {
+                case "cancel" -> closeStage();
+                case "login" -> onLogin();
+            }
         }
     }
 
-    @FXML
-    protected void onLogin(MouseEvent mouseEvent) throws SQLException
+    private void onLogin() throws SQLException
     {
+        Alert alert;
 
-        if(mouseEvent.getButton() == MouseButton.PRIMARY)
+        String username = user.getText();
+        String password = pass.getText();
+        thisUser = User.getUser(username);
+
+        if(thisUser == null)
         {
-            Alert alert;
+            alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Failed");
+            alert.setHeaderText("Login failed");
 
-            String username = user.getText();
-            String password = pass.getText();
-            thisUser = User.getUser(username);
-
-            if(thisUser == null)
+            if(username.isEmpty())
+                alert.setContentText("Username is empty");
+            else
+                alert.setContentText("Username is incorrect");
+        }
+        else
+        {
+            if(password.equals(thisUser.getPassword()))
+            {
+                alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Success");
+                alert.setHeaderText("Login successful");
+                baseController.isLoggedOn = true;
+            }
+            else
             {
                 alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Failed");
                 alert.setHeaderText("Login failed");
 
-                if(username.isEmpty())
-                    alert.setContentText("Username is empty");
+                if(password.isEmpty())
+                    alert.setContentText("Password is empty");
                 else
-                    alert.setContentText("Username is incorrect");
+                    alert.setContentText("Password is incorrect");
             }
-            else
-            {
-                if(password.equals(thisUser.getPassword()))
-                {
-                    alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Success");
-                    alert.setHeaderText("Login successful");
-                    baseController.isLoggedOn = true;
-                }
-                else
-                {
-                    alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Failed");
-                    alert.setHeaderText("Login failed");
-
-                    if(password.isEmpty())
-                        alert.setContentText("Password is empty");
-                    else
-                        alert.setContentText("Password is incorrect");
-                }
-            }
-            user.clear();
-            pass.clear();
-            alert.showAndWait();
-            if(baseController.isLoggedOn)
-                closeStage();
         }
+        user.clear();
+        pass.clear();
+        alert.showAndWait();
+        if(baseController.isLoggedOn)
+            closeStage();
     }
     private void closeStage()
     {

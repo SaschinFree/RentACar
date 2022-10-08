@@ -124,7 +124,14 @@ public class dispatchVehicleController implements Initializable
         String dispatch = "UPDATE Booking SET isBeingRented = Yes WHERE vehicleRegistration = \'" + thisBooking.getVehicleRegistration() + "\' AND startDate = \'" + thisBooking.getStartDate() + "\' AND endDate = \'" + thisBooking.getEndDate() + "\'";
         RentACar.statement.executeUpdate(dispatch);
 
-        thisBooking.setIsBeingRented("Yes");
+        for(Booking booking : baseController.bookings)
+        {
+            if(booking.getBookingNumber() == thisBooking.getBookingNumber())
+            {
+                booking.setIsBeingRented("Yes");
+                break;
+            }
+        }
         filteredBookings.removeAll(thisBooking);
 
         ObservableList<Vehicle> clientVehicle = Vehicle.searchQuery("vehicleRegistration", String.valueOf(thisBooking.getVehicleRegistration()), "");
