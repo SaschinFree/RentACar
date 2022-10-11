@@ -156,8 +156,8 @@ public class clerkReportController implements Initializable
                             Line lineCopy = new Line();
                             lineCopy.setStartX(line.getStartX());
                             lineCopy.setEndX(line.getEndX());
-                            lineCopy.setStroke(line.getStroke());
                             line.setStrokeWidth(line.getStrokeWidth());
+                            lineCopy.setStroke(line.getStroke());
 
                             if(thisBooking.isHasPaid().equals("Yes"))
                             {
@@ -306,8 +306,8 @@ public class clerkReportController implements Initializable
                                 Line lineCopy = new Line();
                                 lineCopy.setStartX(line.getStartX());
                                 lineCopy.setEndX(line.getEndX());
-                                lineCopy.setStroke(line.getStroke());
                                 line.setStrokeWidth(line.getStrokeWidth());
+                                lineCopy.setStroke(line.getStroke());
 
                                 insideScroll.getChildren().addAll(regBoxCopy, overdueBoxCopy, makeModelBoxCopy, nameSurnameBoxCopy, contactBoxCopy, lineCopy);
 
