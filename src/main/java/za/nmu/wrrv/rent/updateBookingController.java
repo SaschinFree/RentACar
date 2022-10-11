@@ -2,6 +2,7 @@ package za.nmu.wrrv.rent;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
@@ -79,13 +80,32 @@ public class updateBookingController implements Initializable
 
     private void onUpdate() throws SQLException
     {
+        Alert updateCancelBooking = new Alert(Alert.AlertType.INFORMATION);
+        String updateCancel = "";
         if(isCancel.selectedProperty().getValue())
         {
             String sql = "UPDATE Booking SET active = No WHERE bookingNumber = \'" + manageBookingsController.thisBooking.getBookingNumber() + "\'";
             RentACar.statement.executeUpdate(sql);
 
+            if(manageBookingsController.thisBooking.getCost() > 0.0)
+            {
+                Client thisClient = baseController.clients.stream().filter(client -> client.getClientNumber() == manageBookingsController.thisBooking.getClientNumber()).toList().get(0);
+                updateCancelBooking.setContentText(thisClient.getFirstName() + " " + thisClient.getSurname() + " should be refunded: R" + manageBookingsController.thisBooking.getCost());
+                manageBookingsController.thisBooking.setCost(0);
+                for(Booking booking : baseController.bookings)
+                {
+                    if(booking.getBookingNumber() == manageBookingsController.thisBooking.getBookingNumber())
+                    {
+                        booking.setCost(0.0);
+                        break;
+                    }
+                }
+            }
+
             manageBookingsController.thisBooking.setActive(false);
             baseController.bookings.removeAll(manageBookingsController.thisBooking);
+
+            updateCancel = "Cancelled";
         }
         else
         {
@@ -97,8 +117,12 @@ public class updateBookingController implements Initializable
             RentACar.statement.executeUpdate(sql);
 
             manageBookingsController.thisBooking.setHasPaid(hasPaid);
+
+            updateCancel = "Updated";
         }
 
+        updateCancelBooking.setHeaderText("Booking " + updateCancel + " Successfully");
+        updateCancelBooking.showAndWait();
         closeStage();
     }
     private void closeStage()

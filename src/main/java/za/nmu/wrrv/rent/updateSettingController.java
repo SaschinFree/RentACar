@@ -109,6 +109,9 @@ public class updateSettingController implements Initializable
                         }
                     }
 
+                    Alert updateSetting = new Alert(Alert.AlertType.INFORMATION);
+                    updateSetting.setHeaderText("Setting Updated Successfully");
+                    updateSetting.showAndWait();
                     closeStage();
                 }
                 else
@@ -124,6 +127,10 @@ public class updateSettingController implements Initializable
                 String sql = "UPDATE Settings SET settingValue = \'" + value + "\' WHERE settingName = \'" + settingName.getText() + "\'";
                 RentACar.statement.executeUpdate(sql);
                 manageSettingsController.thisSetting.setSettingValue(value);
+
+                Alert updateSetting = new Alert(Alert.AlertType.INFORMATION);
+                updateSetting.setHeaderText("Setting Updated Successfully");
+                updateSetting.showAndWait();
                 closeStage();
             }
         }

@@ -1,7 +1,5 @@
 package za.nmu.wrrv.rent;
 
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.SimpleDoubleProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -13,7 +11,6 @@ import javafx.scene.input.MouseEvent;
 
 import java.net.URL;
 import java.sql.Date;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.Duration;
 import java.time.LocalDate;
@@ -123,41 +120,52 @@ public class returnVehicleController implements Initializable
     }
     private void onReturn() throws SQLException
     {
-        String returnVehicle = "UPDATE Booking SET active = No AND isBeingRented = No WHERE vehicleRegistration = \'" + thisBooking.getVehicleRegistration() + "\'";
-        RentACar.statement.executeUpdate(returnVehicle);
+        String returnV = "UPDATE Booking SET active = No AND isBeingRented = No WHERE vehicleRegistration = \'" + thisBooking.getVehicleRegistration() + "\'";
+        RentACar.statement.executeUpdate(returnV);
 
-//        if(Date.valueOf(LocalDate.now()).after(thisBooking.getEndDate()))
-//        {
-//            Duration difference = Duration.between(thisBooking.getEndDate().toLocalDate().atStartOfDay(), LocalDate.now().atStartOfDay());
-//            double days = Double.parseDouble(String.valueOf(difference.toDays()));
-//
-//            double flatRate = 0;
-//            Settings thisSetting = Settings.getSetting("Daily Rental Cost");
-//
-//            if(thisSetting != null)
-//                flatRate = thisSetting.getSettingValue();
-//
-//            ObservableList<Vehicle> thisVehicle = Vehicle.searchQuery("vehicleRegistration", thisBooking.getVehicleRegistration(), "");
-//            Vehicle vehicle = thisVehicle.get(0);
-//
-//            double costMulti = vehicle.getCostMultiplier();
-//
-//            double extraMoneyOwed = flatRate*days*costMulti;
-//
-//            String updateClient = "UPDATE Client SET moneyOwed = moneyOwed + " + extraMoneyOwed + " WHERE clientNumber = \'" + vehicle.getClientNumber() + "\' AND active = Yes";
-//            RentACar.statement.executeUpdate(updateClient);
-//
-//            ObservableList<Client> thisClient = Client.searchQuery("clientNumber", String.valueOf(vehicle.getClientNumber()), "");
-//            Client updatedClient = thisClient.get(0);
-//
-//            Client placeHolder = manageClientsController.thisClient;
-//
-//            manageClientsController.thisClient = updatedClient;
-//
-//            manageClientsController.thisClient.setMoneyOwed(manageClientsController.thisClient.getMoneyOwed() + extraMoneyOwed);
-//
-//            manageClientsController.thisClient = placeHolder;
-//        }
+        double extraMoneyOwed = 0;
+        boolean overdue = false;
+        double days = 0;
+
+        if(Date.valueOf(LocalDate.now()).after(thisBooking.getEndDate()))
+        {
+            overdue = true;
+
+            Duration difference = Duration.between(thisBooking.getEndDate().toLocalDate().atStartOfDay(), LocalDate.now().atStartOfDay());
+            days = Double.parseDouble(String.valueOf(difference.toDays()));
+
+            double flatRate = 0;
+            Settings thisSetting = Settings.getSetting("Daily Rental Cost");
+
+            if(thisSetting != null)
+                flatRate = thisSetting.getSettingValue();
+
+            ObservableList<Vehicle> thisVehicle = Vehicle.searchQuery("vehicleRegistration", thisBooking.getVehicleRegistration(), "");
+            Vehicle vehicle = thisVehicle.get(0);
+
+            double costMulti = vehicle.getCostMultiplier();
+
+            extraMoneyOwed = flatRate*days*costMulti;
+            double clientMoneyOwed = extraMoneyOwed / 2;
+
+            String updateClient = "UPDATE Client SET moneyOwed = moneyOwed + " + clientMoneyOwed + " WHERE clientNumber = \'" + vehicle.getClientNumber() + "\' AND active = Yes";
+            RentACar.statement.executeUpdate(updateClient);
+
+            ObservableList<Client> thisClient = Client.searchQuery("clientNumber", String.valueOf(vehicle.getClientNumber()), "");
+            Client updatedClient = thisClient.get(0);
+
+            for(Client client : baseController.clients)
+            {
+                if(client.getClientID().equals(updatedClient.getClientID()))
+                {
+                    client.setMoneyOwed(client.getMoneyOwed() + clientMoneyOwed);
+                    break;
+                }
+            }
+
+            String updateBooking = "UPDATE Booking SET cost = cost + " + extraMoneyOwed + " WHERE bookingNumber = \'" + thisBooking.getBookingNumber() + "\' AND active = Yes";
+            RentACar.statement.executeUpdate(updateBooking);
+        }
 
         thisBooking.setIsBeingRented("No");
         thisBooking.setActive(false);
@@ -168,10 +176,24 @@ public class returnVehicleController implements Initializable
         {
             if(booking.getBookingNumber() == thisBooking.getBookingNumber())
             {
+                booking.setCost(booking.getCost() + extraMoneyOwed);
                 booking.setActive(false);
                 baseController.bookings.removeAll(booking);
                 break;
             }
+        }
+
+        Alert returnVehicle = new Alert(Alert.AlertType.INFORMATION);
+        if(overdue)
+        {
+            returnVehicle.setHeaderText("Vehicle Returned From Rental (Overdue)");
+            returnVehicle.setContentText("Vehicle overdue by: " + (int) days + " days\nFine amount: R" + extraMoneyOwed);
+            returnVehicle.showAndWait();
+        }
+        else
+        {
+            returnVehicle.setHeaderText("Vehicle Returned From Rental");
+            returnVehicle.showAndWait();
         }
     }
 }

@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+
+<VBox fx:id="adminBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="420.0" prefWidth="916.0" spacing="10.0" style="-fx-background-color: #CDD7EC;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="za.nmu.wrrv.rent.clerkReportController">
+   <children>
+      <HBox alignment="CENTER_RIGHT" prefHeight="46.0" prefWidth="600.0" spacing="5.0" style="-fx-background-color: #8d918d;">
+         <children>
+            <Label text="Expired Bookings/Overdue Vehicles">
+               <font>
+                  <Font name="System Italic" size="16.0" />
+               </font>
+               <HBox.margin>
+                  <Insets right="430.0" />
+               </HBox.margin>
+            </Label>
+            <RadioButton fx:id="expiredB" mnemonicParsing="false" text="Expired Bookings" />
+            <RadioButton fx:id="overdueV" layoutX="863.0" layoutY="22.0" mnemonicParsing="false" text="Overdue Vehicles" />
+         </children>
+         <padding>
+            <Insets right="5.0" />
+         </padding>
+      </HBox>
+      <VBox prefHeight="376.0" prefWidth="916.0" spacing="10.0" style="-fx-background-color: #8d918d;">
+         <children>
+            <ScrollPane fx:id="scrollPane" prefHeight="450.0" prefWidth="890.0" style="-fx-background-color: #8d918d;">
+               <content>
+                  <VBox fx:id="insideScroll" prefHeight="305.0" prefWidth="890.0" style="-fx-background-color: #8d918d;">
+                     <children>
+                        <HBox fx:id="regBox" prefHeight="50.0" prefWidth="200.0">
+                           <children>
+                              <Label fx:id="regLabel" prefWidth="200.0" text="Vehicle Registration">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="reg" text="Label">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </Label>
+                           </children></HBox>
+                        <HBox fx:id="overdueBox" prefHeight="50.0" prefWidth="200.0">
+                           <children>
+                              <Label fx:id="overdueLabel" prefWidth="200.0" text="Days Overdue">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font></Label>
+                              <Label fx:id="overdue" text="Label">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font></Label>
+                           </children></HBox>
+                        <HBox fx:id="makeModelBox" layoutX="10.0" layoutY="60.0" prefHeight="50.0" prefWidth="200.0">
+                           <children>
+                              <Label fx:id="makeModelLabel" prefWidth="200.0" text="Vehicle Make &amp; Model">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="makeModel" text="Label">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </HBox>
+                        <HBox fx:id="nameSurnameBox" layoutX="10.0" layoutY="110.0" prefHeight="50.0" prefWidth="200.0">
+                           <children>
+                              <Label fx:id="nameSurnameLabel" prefWidth="200.0" text="Client Name &amp; Surname">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="nameSurname" text="Label">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </HBox>
+                        <HBox fx:id="contactBox" layoutX="10.0" layoutY="160.0" prefHeight="50.0" prefWidth="200.0">
+                           <children>
+                              <Label fx:id="contactLabel" prefWidth="200.0" text="Client Contact Details">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="details" text="Label">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </HBox>
+                        <Line fx:id="line" endX="886.0" stroke="#3b2f2f" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeWidth="3.0" />
+                     </children></VBox>
+               </content>
+            </ScrollPane>
+            <VBox alignment="BOTTOM_LEFT" prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <Button fx:id="back" mnemonicParsing="false" onMouseClicked="#buttonClicked" style="-fx-background-color: #3B2F2F;" text="Back" textFill="WHITE" />
+               </children>
+            </VBox>
+         </children>
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </padding>
+      </VBox>
+   </children>
+</VBox>

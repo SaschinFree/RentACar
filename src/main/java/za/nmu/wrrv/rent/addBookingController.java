@@ -375,6 +375,9 @@ public class addBookingController implements Initializable
         Booking thisBooking = new Booking(thisBookingNumber, thisClientNumber, thisVehicleRegistration, thisStartDate, thisEndDate, thisCost, thisCompanyCommission, thisOwnerCommission, "No", thisHasPaid);
         baseController.bookings.add(thisBooking);
 
+        Alert bookingAdded = new Alert(Alert.AlertType.INFORMATION);
+        bookingAdded.setHeaderText("Booking Added Successfully");
+        bookingAdded.showAndWait();
         closeStage();
     }
 

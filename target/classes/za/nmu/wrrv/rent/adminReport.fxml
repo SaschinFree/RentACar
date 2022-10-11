@@ -10,6 +10,14 @@
    <children>
       <HBox alignment="CENTER_RIGHT" prefHeight="46.0" prefWidth="600.0" spacing="5.0" style="-fx-background-color: #8d918d;">
          <children>
+            <Label text="Client Paid History">
+               <font>
+                  <Font name="System Italic" size="16.0" />
+               </font>
+               <HBox.margin>
+                  <Insets right="625.0" />
+               </HBox.margin>
+            </Label>
             <ChoiceBox fx:id="clientFilter" prefWidth="150.0" />
          </children>
          <padding>

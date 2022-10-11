@@ -102,16 +102,16 @@ public class updateVehicleController implements Initializable
     {
         if(deleteVehicle.selectedProperty().getValue())
         {
-            String updateDisable = "UPDATE Vehicle SET active = false WHERE vehicleRegistration = \'" + manageVehiclesController.thisVehicle.getVehicleRegistration() + "\'";
-            RentACar.statement.executeUpdate(updateDisable);
+            String delete = "UPDATE Vehicle SET active = false WHERE vehicleRegistration = \'" + manageVehiclesController.thisVehicle.getVehicleRegistration() + "\'";
+            RentACar.statement.executeUpdate(delete);
 
             manageVehiclesController.thisVehicle.setActive(false);
             Vehicle.vehicleList.removeAll(manageVehiclesController.thisVehicle);
 
 
-            Alert newAlert = new Alert(Alert.AlertType.INFORMATION);
-            newAlert.setHeaderText("Vehicle removed");
-            newAlert.showAndWait();
+            Alert deleteVehicle = new Alert(Alert.AlertType.INFORMATION);
+            deleteVehicle.setHeaderText("Vehicle Deleted Successfully");
+            deleteVehicle.showAndWait();
 
             closeStage();
         }
@@ -157,6 +157,9 @@ public class updateVehicleController implements Initializable
                     manageVehiclesController.thisVehicle.setEndDate(end);
                     manageVehiclesController.thisVehicle.setCostMultiplier(costMulti);
 
+                    Alert updateVehicle = new Alert(Alert.AlertType.INFORMATION);
+                    updateVehicle.setHeaderText("Vehicle Updated Successfully");
+                    updateVehicle.showAndWait();
                     closeStage();
                 }
                 else

@@ -113,11 +113,14 @@ public class updateClientController implements Initializable
     {
         if(isDelete.selectedProperty().getValue())
         {
-            String deleteClient = "UPDATE Client SET active = No WHERE clientID = \'" + manageClientsController.thisClient.getClientID() + "\'";
-            RentACar.statement.executeUpdate(deleteClient);
+            String delete = "UPDATE Client SET active = No WHERE clientID = \'" + manageClientsController.thisClient.getClientID() + "\'";
+            RentACar.statement.executeUpdate(delete);
 
             manageClientsController.thisClient.setActive(false);
             baseController.clients.removeAll(manageClientsController.thisClient);
+            Alert deleteClient = new Alert(Alert.AlertType.INFORMATION);
+            deleteClient.setHeaderText("Client Deleted Successfully");
+            deleteClient.showAndWait();
             closeStage();
         }
         else
@@ -159,12 +162,18 @@ public class updateClientController implements Initializable
                         else
                         {
                             updateClient(fName, sName, number, email, licence, strNum, strName, sub, city, postCode, compName);
+                            Alert updateClient = new Alert(Alert.AlertType.INFORMATION);
+                            updateClient.setHeaderText("Client Updated Successfully");
+                            updateClient.showAndWait();
                             closeStage();
                         }
                     }
                     else
                     {
                         updateClient(fName, sName, number, email, licence, strNum, strName, sub, city, postCode, compName);
+                        Alert updateClient = new Alert(Alert.AlertType.INFORMATION);
+                        updateClient.setHeaderText("Client Updated Successfully");
+                        updateClient.showAndWait();
                         closeStage();
                     }
                 }
@@ -315,7 +324,29 @@ public class updateClientController implements Initializable
             this.email.clear();
             return false;
         }
-        if(!email.contains("."))
+
+        char[] emailArray = email.toCharArray();
+
+        int atSymbol;
+        boolean dotAfter = false;
+
+        for (char c : emailArray)
+        {
+            if (c == '@')
+            {
+                atSymbol = c;
+                for (int j = atSymbol + 1; j < emailArray.length; j++)
+                {
+                    if (emailArray[j] == '.')
+                    {
+                        dotAfter = true;
+                        break;
+                    }
+
+                }
+            }
+        }
+        if(!dotAfter)
         {
             errorMessage = "Email Address should contain a '.' after the @ symbol";
             this.email.clear();

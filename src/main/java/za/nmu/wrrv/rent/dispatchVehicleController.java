@@ -148,5 +148,9 @@ public class dispatchVehicleController implements Initializable
                 break;
             }
         }
+
+        Alert dispatchVehicle = new Alert(Alert.AlertType.INFORMATION);
+        dispatchVehicle.setHeaderText("Vehicle Dispatched For Rental");
+        dispatchVehicle.showAndWait();
     }
 }

@@ -186,6 +186,9 @@ public class addVehicleController implements Initializable
                     Vehicle newVehicle = new Vehicle(regNum, clientNumber, regExp, isInsured, make, model, colour, seats, start, end, costMulti);
                     Vehicle.vehicleList.add(newVehicle);
 
+                    Alert vehicleAdded = new Alert(Alert.AlertType.INFORMATION);
+                    vehicleAdded.setHeaderText("Vehicle Added Successfully");
+                    vehicleAdded.showAndWait();
                     closeStage();
                 }
                 else
