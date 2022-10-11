@@ -1,5 +1,6 @@
 package za.nmu.wrrv.rent;
 
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;

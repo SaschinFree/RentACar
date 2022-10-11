@@ -48,7 +48,7 @@ public class Booking
             String thisVehicleRegistration = result.getString("vehicleRegistration");
             Date thisStartDate = result.getDate("startDate");
             Date thisEndDate = result.getDate("endDate");
-            int thisCost = result.getInt("cost");
+            double thisCost = result.getDouble("cost");
             int thisCompanyCommission = result.getInt("companyCommission");
             int thisOwnerCommission = result.getInt("ownerCommission");
             boolean thisBeingRented = result.getBoolean("isBeingRented");
@@ -87,7 +87,7 @@ public class Booking
         {
             if(searchQuery.equals("yes") || searchQuery.equals("no"))
                 searchQuery = searchQuery.replace(String.valueOf(searchQuery.charAt(0)), String.valueOf(searchQuery.charAt(0)).toUpperCase());
-            if(searchQuery.equals(".") | searchQuery.equals("Yes") | searchQuery.contains("No")) // problem
+            if(searchQuery.equals(".") | searchQuery.equals("Yes") | searchQuery.contains("No"))
                 sql = "SELECT * FROM Booking WHERE " + tableColumn + " = " + searchQuery + " " + extraParameter + "";
             else
                 sql = "SELECT * FROM Booking WHERE " + tableColumn + " LIKE \'" + "%" + searchQuery + "%" + "\' " + extraParameter + "";
@@ -102,7 +102,7 @@ public class Booking
             String thisVehicleRegistration = result.getString("vehicleRegistration");
             Date thisStartDate = result.getDate("startDate");
             Date thisEndDate = result.getDate("endDate");
-            int thisCost = result.getInt("cost");
+            double thisCost = result.getDouble("cost");
             int thisCompanyCommission = result.getInt("companyCommission");
             int thisOwnerCommission = result.getInt("ownerCommission");
             boolean thisBeingRented = result.getBoolean("isBeingRented");

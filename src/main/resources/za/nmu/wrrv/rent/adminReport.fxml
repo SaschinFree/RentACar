@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.text.*?>
+
+<VBox fx:id="adminBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="420.0" prefWidth="916.0" spacing="10.0" style="-fx-background-color: #CDD7EC;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="za.nmu.wrrv.rent.adminReportController">
+   <children>
+      <HBox alignment="CENTER_RIGHT" prefHeight="46.0" prefWidth="600.0" spacing="5.0" style="-fx-background-color: #8d918d;">
+         <children>
+            <ChoiceBox fx:id="clientFilter" prefWidth="150.0" />
+         </children>
+         <padding>
+            <Insets right="5.0" />
+         </padding>
+      </HBox>
+      <VBox prefHeight="376.0" prefWidth="916.0" spacing="10.0" style="-fx-background-color: #8d918d;">
+         <children>
+            <ScrollPane fx:id="scrollPane" prefHeight="450.0" prefWidth="890.0" style="-fx-background-color: #8d918d;">
+               <content>
+                  <VBox fx:id="insideScroll" prefHeight="305.0" prefWidth="890.0" style="-fx-background-color: #8d918d;">
+                     <children>
+                        <HBox fx:id="amountBox" prefHeight="50.0" prefWidth="200.0">
+                           <children>
+                              <Label fx:id="amountLabel" prefWidth="200.0" text="Amount">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font></Label>
+                              <Label fx:id="amount" text="Label">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font></Label>
+                           </children></HBox>
+                        <HBox fx:id="dateBox" prefHeight="50.0" prefWidth="200.0">
+                           <children>
+                              <Label fx:id="dateLabel" prefWidth="200.0" text="Date">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="date" text="Label">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </Label>
+                           </children></HBox>
+                        <Line fx:id="line" endX="886.0" stroke="#3b2f2f" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeWidth="3.0" />
+                     </children></VBox>
+               </content>
+            </ScrollPane>
+            <VBox alignment="BOTTOM_LEFT" prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <Button fx:id="back" mnemonicParsing="false" onMouseClicked="#buttonClicked" style="-fx-background-color: #3B2F2F;" text="Back" textFill="WHITE" />
+               </children>
+            </VBox>
+         </children>
+         <padding>
+            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+         </padding>
+      </VBox>
+   </children>
+</VBox>

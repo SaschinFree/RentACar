@@ -18,7 +18,7 @@ public class clerkController
     @FXML
     protected Button manageVehicles;
     @FXML
-    protected Button generateReport;
+    protected Button clerkReport;
 
     @FXML
     protected void buttonClicked(MouseEvent mouseEvent)

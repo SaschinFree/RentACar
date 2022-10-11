@@ -10,15 +10,15 @@ public class adminController
     @FXML
     protected Button manageClients;
     @FXML
+    protected Button manageVehicles;
+    @FXML
     protected Button manageBookings;
     @FXML
-    protected Button manageVehicles;
+    protected Button managePayments;
     @FXML
     protected Button manageSettings;
     @FXML
-    protected Button generateReport;
-    @FXML
-    protected Button managePayments;
+    protected Button adminReport;
 
     @FXML
     protected void buttonClicked(MouseEvent mouseEvent)
