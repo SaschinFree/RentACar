@@ -166,7 +166,7 @@ public class addBookingController implements Initializable
                 thisClient = (Client) clientVehicleTable.getSelectionModel().getSelectedItem();
                 if(thisClient != null)
                 {
-                    clientSearchQuery.setText(String.valueOf(thisClient.getClientNumber()));
+                    clientSearchQuery.setText(String.valueOf(thisClient.getClientID()));
                     clientNameLabel.textProperty().bind(thisClient.firstNameProperty());
                     clientSurnameLabel.textProperty().bind(thisClient.surnameProperty());
 
@@ -189,6 +189,8 @@ public class addBookingController implements Initializable
                     vehicleMakeLabel.setVisible(true);
                     vehicleModelLabel.setVisible(true);
                     confirmVehicle.setVisible(true);
+
+                    cost.setVisible(true);
 
                     thisVehicleRegistration = thisVehicle.getVehicleRegistration();
 
@@ -275,7 +277,6 @@ public class addBookingController implements Initializable
 
                 totalCost.setVisible(true);
                 R.setVisible(true);
-                cost.setVisible(true);
                 bookingPaid.setVisible(true);
                 isPaid.setVisible(true);
 

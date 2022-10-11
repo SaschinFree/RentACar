@@ -54,11 +54,12 @@ public class dispatchVehicleController implements Initializable
         }
 
         searchFilter.getItems().addAll(
+                "None",
                 "vehicleRegistration",
                 "startDate",
                 "endDate");
 
-        searchFilter.setValue("vehicleRegistration");
+        searchFilter.setValue("None");
 
         searchFilter.getSelectionModel().selectedItemProperty().addListener((observableValue, stringSingleSelectionModel, t1) ->
         {
@@ -66,8 +67,9 @@ public class dispatchVehicleController implements Initializable
 
             switch(searchFilter.getSelectionModel().getSelectedItem())
             {
+                case "None" -> searchQuery.setPromptText("Search");
                 case "vehicleRegistration" -> searchQuery.setPromptText("ABC123 EC or CUSTOM MP");
-                case "startDate", "endDate" -> searchQuery.setPromptText("YYYY/MM/DD");
+                case "startDate", "endDate" -> searchQuery.setPromptText("YYYY-MM-DD");
             }
         });
 
@@ -80,7 +82,6 @@ public class dispatchVehicleController implements Initializable
         bookingEnd.setCellValueFactory(new PropertyValueFactory<>("endDate"));
 
         filteredTable.setItems(filteredBookings);
-        search.setTooltip(baseController.searchTip);
     }
 
     @FXML
@@ -111,7 +112,7 @@ public class dispatchVehicleController implements Initializable
     }
     private void onSearch() throws SQLException
     {
-        if(searchQuery.getText().isEmpty())
+        if(searchFilter.getSelectionModel().getSelectedItem().equals("None"))
             filteredTable.setItems(filteredBookings);
         else
         {

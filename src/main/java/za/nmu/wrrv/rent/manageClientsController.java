@@ -56,6 +56,7 @@ public class manageClientsController implements Initializable
     public void initialize(URL url, ResourceBundle rb)
     {
         searchFilter.getItems().addAll(
+                "None",
                 "clientNumber",
                 "clientID",
                 "firstName",
@@ -65,7 +66,7 @@ public class manageClientsController implements Initializable
                 "licenceExpiryDate",
                 "companyName",
                 "moneyOwed");
-        searchFilter.setValue("clientNumber");
+        searchFilter.setValue("None");
 
         searchFilter.getSelectionModel().selectedItemProperty().addListener((observableValue, stringSingleSelectionModel, t1) ->
         {
@@ -73,13 +74,14 @@ public class manageClientsController implements Initializable
 
             switch(searchFilter.getSelectionModel().getSelectedItem())
             {
+                case "None" -> searchQuery.setPromptText("Search");
                 case "clientNumber" -> searchQuery.setPromptText("1");
                 case "clientID" -> searchQuery.setPromptText("1234567898765");
                 case "firstName" -> searchQuery.setPromptText("John");
                 case "surname" -> searchQuery.setPromptText("Doe");
                 case "contactNumber" -> searchQuery.setPromptText("0123456789");
                 case "email" -> searchQuery.setPromptText("johndoe@gmail.com");
-                case "licenceExpiryDate" -> searchQuery.setPromptText("YYYY/MM/DD");
+                case "licenceExpiryDate" -> searchQuery.setPromptText("YYYY-MM-DD");
                 case "companyName" -> searchQuery.setPromptText("Uber or Private");
                 case "moneyOwed" -> searchQuery.setPromptText("0.0");
             }
@@ -105,7 +107,6 @@ public class manageClientsController implements Initializable
         moneyOwed.setCellValueFactory(new PropertyValueFactory<>("moneyOwed"));
 
         clientTable.setItems(baseController.clients);
-        search.setTooltip(baseController.searchTip);
     }
     @FXML
     protected void clientSelected(MouseEvent mouseEvent)
@@ -143,7 +144,7 @@ public class manageClientsController implements Initializable
     }
     private void onSearch() throws SQLException
     {
-        if(searchQuery.getText().isEmpty())
+        if(searchFilter.getSelectionModel().getSelectedItem().equals("None"))
             clientTable.setItems(baseController.clients);
         else
         {

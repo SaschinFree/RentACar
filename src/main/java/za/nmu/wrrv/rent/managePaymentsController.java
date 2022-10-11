@@ -64,6 +64,7 @@ public class managePaymentsController implements Initializable
         }
 
         searchFilter.getItems().addAll(
+                "None",
                 "clientID",
                 "firstName",
                 "surname",
@@ -71,7 +72,7 @@ public class managePaymentsController implements Initializable
                 "email",
                 "companyName",
                 "moneyOwed");
-        searchFilter.setValue("clientID");
+        searchFilter.setValue("None");
 
         searchFilter.getSelectionModel().selectedItemProperty().addListener((observableValue, stringSingleSelectionModel, t1) ->
         {
@@ -79,6 +80,7 @@ public class managePaymentsController implements Initializable
 
             switch(searchFilter.getSelectionModel().getSelectedItem())
             {
+                case "None" -> searchQuery.setPromptText("Search");
                 case "clientID" -> searchQuery.setPromptText("1234567898765");
                 case "firstName" -> searchQuery.setPromptText("John");
                 case "surname" -> searchQuery.setPromptText("Doe");
@@ -104,7 +106,6 @@ public class managePaymentsController implements Initializable
         moneyOwed.setCellValueFactory(new PropertyValueFactory<>("moneyOwed"));
 
         queryTable.setItems(filteredClients);
-        search.setTooltip(baseController.searchTip);
     }
     @FXML
     protected void clientSelected(MouseEvent mouseEvent)
@@ -147,7 +148,7 @@ public class managePaymentsController implements Initializable
 
     private void onSearch() throws SQLException
     {
-        if(searchQuery.getText().isEmpty())
+        if(searchFilter.getSelectionModel().getSelectedItem().equals("None"))
             queryTable.setItems(filteredClients);
         else
         {

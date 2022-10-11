@@ -54,6 +54,7 @@ public class manageBookingsController implements Initializable
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
         searchFilter.getItems().addAll(
+                "None",
                 "bookingNumber",
                 "clientNumber",
                 "vehicleRegistration",
@@ -62,7 +63,7 @@ public class manageBookingsController implements Initializable
                 "cost",
                 "isBeingRented",
                 "hasPaid");
-        searchFilter.setValue("bookingNumber");
+        searchFilter.setValue("None");
 
         searchFilter.getSelectionModel().selectedItemProperty().addListener((observableValue, stringSingleSelectionModel, t1) ->
         {
@@ -70,9 +71,10 @@ public class manageBookingsController implements Initializable
 
             switch(searchFilter.getSelectionModel().getSelectedItem())
             {
+                case "None" -> searchQuery.setPromptText("Search");
                 case "bookingNumber", "clientNumber" -> searchQuery.setPromptText("1");
                 case "vehicleRegistration" -> searchQuery.setPromptText("ABC123 EC or CUSTOM MP etc");
-                case "startDate", "endDate" -> searchQuery.setPromptText("YYYY/MM/DD");
+                case "startDate", "endDate" -> searchQuery.setPromptText("YYYY-MM-DD");
                 case "cost" -> searchQuery.setPromptText("0.0");
                 case "isBeingRented", "hasPaid" -> searchQuery.setPromptText("Yes or No");
             }
@@ -95,7 +97,6 @@ public class manageBookingsController implements Initializable
         hasPaid.setCellValueFactory(new PropertyValueFactory<>("hasPaid"));
 
         bookingTable.setItems(baseController.bookings);
-        search.setTooltip(baseController.searchTip);
     }
     @FXML
     protected void bookingSelected(MouseEvent mouseEvent)
@@ -129,7 +130,7 @@ public class manageBookingsController implements Initializable
 
     private void onSearch() throws SQLException
     {
-        if(searchQuery.getText().isEmpty())
+        if(searchFilter.getSelectionModel().getSelectedItem().equals("None"))
             bookingTable.setItems(baseController.bookings);
         else
         {

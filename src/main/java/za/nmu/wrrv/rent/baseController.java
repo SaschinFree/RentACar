@@ -61,8 +61,6 @@ public class baseController implements Initializable
     protected static final char[] letterArray = new char[52];
     protected static final char[] numberArray = new char[10];
 
-    protected static Tooltip searchTip = new Tooltip("To clear your filter, empty the search query and click search");
-
     protected static ObservableList<Client> clients;
     protected static ObservableList<Vehicle> vehicles;
     protected static ObservableList<Booking> bookings;

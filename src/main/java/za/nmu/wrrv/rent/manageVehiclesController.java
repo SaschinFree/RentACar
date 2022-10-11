@@ -56,6 +56,7 @@ public class manageVehiclesController implements Initializable
     public void initialize(URL url, ResourceBundle rb)
     {
         searchFilter.getItems().addAll(
+                "None",
                 "vehicleRegistration",
                 "clientNumber",
                 "registrationExpiryDate",
@@ -66,7 +67,7 @@ public class manageVehiclesController implements Initializable
                 "seats",
                 "startDate",
                 "endDate");
-        searchFilter.setValue("vehicleRegistration");
+        searchFilter.setValue("None");
 
         searchFilter.getSelectionModel().selectedItemProperty().addListener((observableValue, stringSingleSelectionModel, t1) ->
         {
@@ -74,9 +75,10 @@ public class manageVehiclesController implements Initializable
 
             switch(searchFilter.getSelectionModel().getSelectedItem())
             {
+                case "None" -> searchQuery.setPromptText("Search");
                 case "vehicleRegistration" -> searchQuery.setPromptText("ABC123 EC or CUSTOM MP etc");
                 case "clientNumber" -> searchQuery.setPromptText("1");
-                case "registrationExpiryDate", "startDate", "endDate" -> searchQuery.setPromptText("YYYY/MM/DD");
+                case "registrationExpiryDate", "startDate", "endDate" -> searchQuery.setPromptText("YYYY-MM-DD");
                 case "insured" -> searchQuery.setPromptText("Yes or No");
                 case "make" -> searchQuery.setPromptText("Volkswagen or BMW etc");
                 case "model" -> searchQuery.setPromptText("Polo or 530i etc");
@@ -104,7 +106,6 @@ public class manageVehiclesController implements Initializable
         endDate.setCellValueFactory(new PropertyValueFactory<>("endDate"));
 
         vehicleTable.setItems(baseController.vehicles);
-        search.setTooltip(baseController.searchTip);
     }
     @FXML
     protected void vehicleSelected(MouseEvent mouseEvent)
@@ -142,7 +143,7 @@ public class manageVehiclesController implements Initializable
 
     private void onSearch() throws SQLException
     {
-        if(searchQuery.getText().isEmpty())
+        if(searchFilter.getSelectionModel().getSelectedItem().equals("None"))
             vehicleTable.setItems(baseController.vehicles);
         else
         {
