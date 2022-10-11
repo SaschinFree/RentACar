@@ -18,7 +18,7 @@ import java.util.ResourceBundle;
 public class updateVehicleController implements Initializable
 {
     @FXML
-    protected Label clientNumber;
+    protected Label clientSurnameName;
     @FXML
     protected Label registrationNumber;
     @FXML
@@ -56,7 +56,9 @@ public class updateVehicleController implements Initializable
         vehicleStartDate.setConverter(baseController.dateConverter);
         vehicleEndDate.setConverter(baseController.dateConverter);
 
-        clientNumber.textProperty().bind(manageVehiclesController.thisVehicle.clientNumberProperty().asString());
+        Client thisClient = baseController.clients.stream().filter(client -> client.getClientNumber() == manageVehiclesController.thisVehicle.getClientNumber()).toList().get(0);
+
+        clientSurnameName.textProperty().bind(thisClient.surnameProperty().concat(", " + thisClient.getFirstName()));
         registrationNumber.textProperty().bind(manageVehiclesController.thisVehicle.vehicleRegistrationProperty());
         vehicleMake.textProperty().bind(manageVehiclesController.thisVehicle.makeProperty());
         vehicleModel.textProperty().bind(manageVehiclesController.thisVehicle.modelProperty());

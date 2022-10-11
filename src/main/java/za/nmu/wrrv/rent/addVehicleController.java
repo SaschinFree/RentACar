@@ -20,7 +20,7 @@ import java.util.ResourceBundle;
 public class addVehicleController implements Initializable
 {
     @FXML
-    protected ChoiceBox<Integer> clientNumber;
+    protected ChoiceBox<String> clientSurnameName;
     @FXML
     protected TextField registrationNumber;
     @FXML
@@ -50,6 +50,7 @@ public class addVehicleController implements Initializable
 
     private final Alert alert = new Alert(Alert.AlertType.ERROR);
     private String errorMessage;
+    private int clientNumber;
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
@@ -63,15 +64,15 @@ public class addVehicleController implements Initializable
 
         for(Client thisClient : baseController.clients)
         {
-            clientNumber.getItems().add(thisClient.getClientNumber());
+            clientSurnameName.getItems().add(thisClient.getSurname() + ", " + thisClient.getFirstName());
         }
 
         SpinnerValueFactory<Integer> seats = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 24);
         seats.setValue(1);
         vehicleSeats.setValueFactory(seats);
 
-        clientNumber.addEventHandler(EventType.ROOT, event -> {
-            if(clientNumber.getSelectionModel().getSelectedIndex() != -1)
+        clientSurnameName.addEventHandler(EventType.ROOT, event -> {
+            if(clientSurnameName.getSelectionModel().getSelectedIndex() != -1)
             {
                 registrationNumber.setVisible(true);
                 plateExtension.setVisible(true);
@@ -86,6 +87,11 @@ public class addVehicleController implements Initializable
                 costMultiplier.setVisible(true);
 
                 addVehicle.setVisible(true);
+
+                String[] thisClient = clientSurnameName.getSelectionModel().getSelectedItem().split(", ");
+                Client selectedClient = baseController.clients.stream().filter(client -> client.isActive() && client.getSurname().equals(thisClient[0]) && client.getFirstName().equals(thisClient[1])).toList().get(0);
+
+                clientNumber = selectedClient.getClientNumber();
             }
         });
 
@@ -144,7 +150,7 @@ public class addVehicleController implements Initializable
         }
         else
         {
-            int clientNumber =  this.clientNumber.getSelectionModel().getSelectedItem();
+            int clientNumber =  this.clientNumber;
 
             String regExpString = registrationExpirationDate.getEditor().getText();
             regExpString = regExpString.replace("/", "-");

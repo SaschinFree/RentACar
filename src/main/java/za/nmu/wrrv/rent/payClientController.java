@@ -6,6 +6,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
@@ -46,6 +47,15 @@ public class payClientController implements Initializable
         clientMoneyOwed.textProperty().bind(managePaymentsController.thisClient.moneyOwedProperty().asString());
     }
 
+    @FXML
+    protected void keyClicked(KeyEvent keyEvent) throws SQLException
+    {
+        switch(keyEvent.getCode())
+        {
+            case ESCAPE -> closeStage();
+            case ENTER -> onPay();
+        }
+    }
     @FXML
     protected void buttonClicked(MouseEvent mouseEvent) throws SQLException
     {
