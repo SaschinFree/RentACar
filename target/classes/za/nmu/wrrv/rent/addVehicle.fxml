@@ -25,12 +25,12 @@
                <children>
                   <HBox alignment="CENTER_LEFT" prefHeight="100.0">
                      <children>
-                        <Label prefWidth="200.0" text="Client Number">
+                        <Label prefWidth="200.0" text="Client Surname &amp; Name">
                            <font>
                               <Font size="16.0" />
                            </font>
                         </Label>
-                        <ChoiceBox fx:id="clientNumber" prefWidth="150.0" />
+                        <ChoiceBox fx:id="clientSurnameName" prefWidth="150.0" />
                      </children>
                   </HBox>
                   <HBox alignment="CENTER_LEFT" prefHeight="100.0">

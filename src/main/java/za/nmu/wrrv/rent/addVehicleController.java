@@ -182,7 +182,7 @@ public class addVehicleController implements Initializable
                     Date regExp = Date.valueOf(regExpString);
                     Date start = Date.valueOf(startDateString);
                     Date end = Date.valueOf(endDateString);
-                    double costMulti = Double.parseDouble(costMultiString);
+                    double costMulti = Math.round(Double.parseDouble(costMultiString) * 100.0) / 100.0;
 
                     String sql = "INSERT INTO Vehicle " +
                             "(vehicleRegistration, clientNumber, registrationExpiryDate, insured, make, model, colour, seats, startDate, endDate, costMultiplier, active)" +

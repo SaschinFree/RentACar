@@ -78,14 +78,14 @@ public class payClientController implements Initializable
         if(emptyCheck(thisAmount) & errorCheck(thisAmount) & valueCheck(Double.parseDouble(thisAmount), Double.parseDouble(clientMoneyOwed.getText())))
         {
             double amount = Double.parseDouble(thisAmount);
-            double remainder = Double.parseDouble(clientMoneyOwed.getText()) - amount;
+            double remainder = Math.round((Double.parseDouble(clientMoneyOwed.getText()) - amount) * 100.0) / 100.0;
 
             String updateClient = "UPDATE Client " +
                     "SET moneyOwed = \'" + remainder + "\' " +
                     "WHERE clientID = \'" + clientID.getText() + "\'";
             RentACar.statement.executeUpdate(updateClient);
 
-            managePaymentsController.thisClient.setMoneyOwed(Double.parseDouble(clientMoneyOwed.getText()) - amount);
+            managePaymentsController.thisClient.setMoneyOwed(remainder);
             managePaymentsController.clientPaid = true;
 
             for(Client thisClient : baseController.clients)
@@ -107,6 +107,9 @@ public class payClientController implements Initializable
 
             baseController.payments.add(new Payment(paymentID, clientNumber, amount, payDate));
 
+            Alert clientPaid = new Alert(Alert.AlertType.INFORMATION);
+            clientPaid.setHeaderText("Client Paid Successfully");
+            clientPaid.showAndWait();
             closeStage();
         }
         else
