@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
@@ -10,14 +11,17 @@
    <children>
       <VBox prefHeight="120.0" prefWidth="100.0">
          <children>
-            <Label text="Rent A Car">
-               <font>
-                  <Font name="System Italic" size="40.0" />
-               </font>
-               <padding>
+            <ImageView fitHeight="63.0" fitWidth="250.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="/logo_small.png" />
+               </image>
+               <viewport>
+                  <Rectangle2D height="63.0" width="250.0" />
+               </viewport>
+               <VBox.margin>
                   <Insets left="10.0" top="5.0" />
-               </padding>
-            </Label>
+               </VBox.margin>
+            </ImageView>
             <Line endX="453.0" stroke="#8d918d" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeWidth="5.0" />
          </children>
       </VBox>

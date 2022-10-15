@@ -7,6 +7,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
@@ -131,17 +132,7 @@ public class baseController implements Initializable
     }
     private void onLogin() throws IOException
     {
-        FXMLLoader loginLoader = new FXMLLoader(RentACar.class.getResource("login.fxml"));
-        Scene loginScene = new Scene(loginLoader.load());
-        Stage loginStage = new Stage();
-
-        loginStage.setScene(loginScene);
-        loginStage.setTitle("Login");
-        loginStage.setResizable(false);
-        loginStage.initModality(Modality.WINDOW_MODAL);
-        loginStage.initOwner(RentACar.mainStage);
-
-        loginStage.showAndWait();
+        newScreen("login", "Login");
 
         if(isLoggedOn)
         {
@@ -252,6 +243,8 @@ public class baseController implements Initializable
         FXMLLoader newScreenLoader = new FXMLLoader(RentACar.class.getResource(screenName + ".fxml"));
         Scene newScreenScene = new Scene(newScreenLoader.load());
         Stage newScreenStage = new Stage();
+
+        newScreenStage.getIcons().add(new Image("icon.png"));
 
         newScreenStage.setScene(newScreenScene);
         newScreenStage.setTitle(title);

@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
@@ -16,11 +17,14 @@
                      <children>
                         <HBox alignment="CENTER_LEFT" prefHeight="180.0" prefWidth="759.0" spacing="20.0">
                            <children>
-                              <Label prefHeight="88.0" prefWidth="759.0" text="Rent A Car">
-                                 <font>
-                                    <Font name="System Italic" size="60.0" />
-                                 </font>
-                              </Label>
+                              <ImageView fitHeight="88.0" fitWidth="759.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="/logo.png" />
+                                 </image>
+                                 <viewport>
+                                    <Rectangle2D height="88.0" width="759.0" />
+                                 </viewport>
+                              </ImageView>
                            </children>
                            <padding>
                               <Insets left="25.0" top="10.0" />

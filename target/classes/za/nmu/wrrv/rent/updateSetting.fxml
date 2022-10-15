@@ -2,22 +2,24 @@
 
 <?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.shape.*?>
 <?import javafx.scene.text.*?>
 
 <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onKeyPressed="#keyClicked" prefHeight="600.0" prefWidth="900.0" style="-fx-background-color: #CDD7EC;" xmlns="http://javafx.com/javafx/16" xmlns:fx="http://javafx.com/fxml/1" fx:controller="za.nmu.wrrv.rent.updateSettingController">
    <children>
-      <Label text="Rent A Car">
-         <font>
-            <Font name="System Italic" size="60.0" />
-         </font>
-         <padding>
-            <Insets left="25.0" top="10.0" />
-         </padding>
+      <ImageView fitHeight="88.0" fitWidth="759.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="/logo.png" />
+         </image>
+         <viewport>
+            <Rectangle2D height="88.0" width="759.0" />
+         </viewport>
          <VBox.margin>
-            <Insets />
-         </VBox.margin></Label>
+            <Insets left="25.0" top="10.0" />
+         </VBox.margin>
+      </ImageView>
       <Line endX="894.0" stroke="#8d918d" strokeLineCap="ROUND" strokeLineJoin="ROUND" strokeWidth="5.0">
          <VBox.margin>
             <Insets bottom="10.0" top="10.0" />
