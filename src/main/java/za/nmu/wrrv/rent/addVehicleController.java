@@ -177,7 +177,7 @@ public class addVehicleController implements Initializable
 
             if(baseController.dateCheck(registrationExpirationDate, regExpString) && baseController.dateCheck(vehicleStartDate, startDateString) && baseController.dateCheck(vehicleEndDate, endDateString))
             {
-                if(emptyChecks(regExpString, make, colour, startDateString, endDateString, costMultiString) && errorChecks(Date.valueOf(regExpString), make, colour, Date.valueOf(startDateString), Date.valueOf(endDateString), costMultiString))
+                if(emptyChecks(regExpString, make, colour, startDateString, endDateString, costMultiString) && errorChecks(regNum, Date.valueOf(regExpString), make, colour, Date.valueOf(startDateString), Date.valueOf(endDateString), costMultiString))
                 {
                     Date regExp = Date.valueOf(regExpString);
                     Date start = Date.valueOf(startDateString);
@@ -262,8 +262,32 @@ public class addVehicleController implements Initializable
 
         return true;
     }
-    private boolean errorChecks(Date regExp, String make, String colour, Date start, Date end, String costMulti)
+    private boolean errorChecks(String regNum, Date regExp, String make, String colour, Date start, Date end, String costMulti)
     {
+        if(plateExtension.getSelectionModel().getSelectedItem().equals("L"))
+        {
+            if(regNum.length() > 8)
+            {
+                errorMessage = "Registration Number: Registration Number cannot be longer than 7 characters";
+                registrationNumber.clear();
+                return false;
+            }
+        }
+        else
+        {
+            if(regNum.length() > 9)
+            {
+                errorMessage = "Registration Number: Registration Number cannot be longer than 7 characters";
+                registrationNumber.clear();
+                return false;
+            }
+        }
+        if(!baseController.symbolCheck(regNum))
+        {
+            errorMessage = "Registration Number: Registration Number cannot contain any special characters";
+            registrationNumber.clear();
+            return false;
+        }
         if(regExp.before(Date.valueOf(LocalDate.now())))
         {
             errorMessage = "Registration Expiration Date: Registration Date cannot be a date in the past";
