@@ -28,9 +28,9 @@
             </TableView>
             <HBox prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <Button fx:id="back" mnemonicParsing="false" onMouseClicked="#buttonClicked" style="-fx-background-color: #3B2F2F;" text="Back" textFill="WHITE" />
+                  <Button fx:id="back" onMouseClicked="#buttonClicked" style="-fx-background-color: #3B2F2F;" text="_Back" textFill="WHITE" />
                   <Label prefHeight="17.0" prefWidth="768.0" />
-                  <Button fx:id="updateSetting" mnemonicParsing="false" onMouseClicked="#buttonClicked" style="-fx-background-color: #3B2F2F;" text="Update Setting" textFill="WHITE" />
+                  <Button fx:id="updateSetting" onMouseClicked="#buttonClicked" style="-fx-background-color: #3B2F2F;" text="_Update Setting" textFill="WHITE" />
                </children></HBox>
          </children>
          <padding>

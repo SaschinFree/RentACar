@@ -1,9 +1,10 @@
 package za.nmu.wrrv.rent;
 
 import javafx.collections.ObservableList;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.*;
@@ -14,7 +15,7 @@ import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
-public class manageClientsController implements Initializable
+public class manageClientsController implements Initializable, EventHandler<Event>
 {
     @FXML
     protected ChoiceBox<String> searchFilter;
@@ -55,6 +56,16 @@ public class manageClientsController implements Initializable
     @Override
     public void initialize(URL url, ResourceBundle rb)
     {
+        search.setOnAction(this::handle);
+        addClient.setOnAction(this::handle);
+        updateClient.setOnAction(this::handle);
+        back.setOnAction(this::handle);
+
+        search.setTooltip(new Tooltip("Alt+S"));
+        addClient.setTooltip(new Tooltip("Alt+A"));
+        updateClient.setTooltip(new Tooltip("Alt+U"));
+        back.setTooltip(new Tooltip("Alt+B"));
+
         searchFilter.getItems().addAll(
                 "None",
                 "clientNumber",
@@ -108,6 +119,54 @@ public class manageClientsController implements Initializable
 
         clientTable.setItems(baseController.clients);
     }
+    @Override
+    public void handle(Event event)
+    {
+        Button thisButton = (Button) event.getSource();
+        String buttonId = thisButton.getId();
+
+        switch(buttonId)
+        {
+            case "search" ->
+                    {
+                        try
+                        {
+                            onSearch();
+                        }
+                        catch (SQLException e)
+                        {
+                            e.printStackTrace();
+                        }
+                    }
+            case "addClient" ->
+                    {
+                        try
+                        {
+                            baseController.newScreen("addClient", "Add A Client");
+                        }
+                        catch (IOException e)
+                        {
+                            e.printStackTrace();
+                        }
+                    }
+            case "updateClient" ->
+                    {
+                        if(thisClient != null)
+                        {
+                            try
+                            {
+                                baseController.newScreen("updateClient", "Update A Client");
+                            }
+                            catch (IOException e)
+                            {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+            case "back" -> baseController.nextScene(baseController.userLoggedOn);
+        }
+    }
+
     @FXML
     protected void clientSelected(MouseEvent mouseEvent)
     {
@@ -133,11 +192,7 @@ public class manageClientsController implements Initializable
             {
                 case "search" -> onSearch();
                 case "addClient" -> baseController.newScreen("addClient", "Add A Client");
-                case "updateClient" ->
-                        {
-                            if(thisClient != null)
-                                baseController.newScreen("updateClient", "Update A Client");
-                        }
+                case "updateClient" -> baseController.newScreen("updateClient", "Update A Client");
                 case "back" -> baseController.nextScene(baseController.userLoggedOn);
             }
         }

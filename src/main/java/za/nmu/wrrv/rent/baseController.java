@@ -1,6 +1,8 @@
 package za.nmu.wrrv.rent;
 
 import javafx.collections.ObservableList;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -22,7 +24,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 
-public class baseController implements Initializable
+public class baseController implements Initializable, EventHandler<Event>
 {
     @FXML
     protected BorderPane main;
@@ -86,6 +88,9 @@ public class baseController implements Initializable
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
+        login.setOnAction(this::handle);
+        login.setTooltip(new Tooltip("Alt+L"));
+
         mainReference = main;
         logged.setVisible(false);
         user.setVisible(false);
@@ -94,6 +99,28 @@ public class baseController implements Initializable
         setLetterArray();
         setNumberArray();
     }
+
+    @Override
+    public void handle(Event event)
+    {
+        Button thisButton = (Button) event.getSource();
+        String buttonId = thisButton.getId();
+
+        switch (buttonId)
+        {
+            case "login" -> {
+                try {
+                    onLogin();
+                }
+                catch (IOException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+            case "logout" -> onLogout();
+        }
+    }
+
     @FXML
     protected void buttonClicked(MouseEvent mouseEvent) throws IOException
     {
@@ -125,7 +152,7 @@ public class baseController implements Initializable
         alert.setTitle("Successful");
         alert.setHeaderText("Logout successful");
 
-        login.setText("Login");
+        login.setText("_Login");
         login.setId("login");
 
         alert.showAndWait();
@@ -151,7 +178,7 @@ public class baseController implements Initializable
 
             user.setVisible(true);
 
-            login.setText("Logout");
+            login.setText("_Logout");
             login.setId("logout");
 
             nextScene(userLoggedOn);

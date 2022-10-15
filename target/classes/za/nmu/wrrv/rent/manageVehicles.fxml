@@ -19,7 +19,7 @@
             </Label>
             <ChoiceBox fx:id="searchFilter" prefWidth="150.0" />
             <TextField fx:id="searchQuery" promptText="Search" />
-            <Button fx:id="search" mnemonicParsing="false" onMouseClicked="#buttonClicked" style="-fx-background-color: #3B2F2F;" text="Search" textFill="WHITE">
+            <Button fx:id="search" onMouseClicked="#buttonClicked" style="-fx-background-color: #3B2F2F;" text="_Search" textFill="WHITE">
                <HBox.margin>
                   <Insets right="5.0" />
                </HBox.margin></Button>
@@ -43,11 +43,11 @@
             </TableView>
             <HBox prefHeight="115.0" prefWidth="906.0">
                <children>
-                  <Button fx:id="addVehicle" mnemonicParsing="false" onMouseClicked="#buttonClicked" style="-fx-background-color: #3B2F2F;" text="Add Vehicle" textFill="WHITE" />
+                  <Button fx:id="addVehicle" onMouseClicked="#buttonClicked" style="-fx-background-color: #3B2F2F;" text="_Add Vehicle" textFill="WHITE" />
                   <Label prefHeight="17.0" prefWidth="728.0" />
-                  <Button fx:id="updateVehicle" mnemonicParsing="false" onMouseClicked="#buttonClicked" style="-fx-background-color: #3B2F2F;" text="Update Vehicle" textFill="WHITE" />
+                  <Button fx:id="updateVehicle" onMouseClicked="#buttonClicked" style="-fx-background-color: #3B2F2F;" text="_Update Vehicle" textFill="WHITE" />
                </children></HBox>
-            <Button fx:id="back" mnemonicParsing="false" onMouseClicked="#buttonClicked" style="-fx-background-color: #3B2F2F;" text="Back" textFill="WHITE" />
+            <Button fx:id="back" onMouseClicked="#buttonClicked" style="-fx-background-color: #3B2F2F;" text="_Back" textFill="WHITE" />
          </children></VBox>
    </children>
 </VBox>

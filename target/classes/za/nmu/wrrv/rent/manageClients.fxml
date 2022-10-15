@@ -19,7 +19,7 @@
             </Label>
             <ChoiceBox fx:id="searchFilter" prefWidth="150.0" />
             <TextField fx:id="searchQuery" promptText="Search" />
-            <Button fx:id="search" mnemonicParsing="false" onMouseClicked="#buttonClicked" style="-fx-background-color: #3B2F2F;" text="Search" textFill="WHITE">
+            <Button fx:id="search" onMouseClicked="#buttonClicked" style="-fx-background-color: #3B2F2F;" text="_Search" textFill="WHITE">
                <HBox.margin>
                   <Insets right="5.0" />
                </HBox.margin></Button>
@@ -42,12 +42,12 @@
             </TableView>
             <HBox prefHeight="115.0" prefWidth="906.0">
                <children>
-                  <Button fx:id="addClient" mnemonicParsing="false" onMouseClicked="#buttonClicked" prefHeight="25.0" prefWidth="79.0" style="-fx-background-color: #3B2F2F;" text="Add Client" textFill="WHITE" />
+                  <Button fx:id="addClient" onMouseClicked="#buttonClicked" prefHeight="25.0" prefWidth="79.0" style="-fx-background-color: #3B2F2F;" text="_Add Client" textFill="WHITE" />
                   <Label disable="true" prefHeight="17.0" prefWidth="740.0" />
-                  <Button fx:id="updateClient" mnemonicParsing="false" onMouseClicked="#buttonClicked" style="-fx-background-color: #3B2F2F;" text="Update Client" textFill="WHITE" />
+                  <Button fx:id="updateClient" onMouseClicked="#buttonClicked" style="-fx-background-color: #3B2F2F;" text="_Update Client" textFill="WHITE" />
                </children>
             </HBox>
-            <Button fx:id="back" mnemonicParsing="false" onMouseClicked="#buttonClicked" style="-fx-background-color: #3B2F2F;" text="Back" textFill="WHITE" />
+            <Button fx:id="back" onMouseClicked="#buttonClicked" style="-fx-background-color: #3B2F2F;" text="_Back" textFill="WHITE" />
          </children>
          <padding>
             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />

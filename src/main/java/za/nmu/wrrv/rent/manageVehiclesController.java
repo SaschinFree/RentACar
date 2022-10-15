@@ -1,12 +1,12 @@
 package za.nmu.wrrv.rent;
 
 import javafx.collections.ObservableList;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 
@@ -16,7 +16,7 @@ import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
-public class manageVehiclesController implements Initializable
+public class manageVehiclesController implements Initializable, EventHandler<Event>
 {
     @FXML
     protected ChoiceBox<String> searchFilter;
@@ -41,13 +41,13 @@ public class manageVehiclesController implements Initializable
     @FXML
     protected TableColumn<Vehicle, Date> endDate;
     @FXML
+    protected TableView<Vehicle> vehicleTable;
+    @FXML
     protected Button addVehicle;
     @FXML
     protected Button updateVehicle;
     @FXML
     protected Button back;
-    @FXML
-    protected TableView<Vehicle> vehicleTable;
 
     protected static Vehicle thisVehicle;
     protected static boolean vehicleUpdated;
@@ -55,6 +55,16 @@ public class manageVehiclesController implements Initializable
     @Override
     public void initialize(URL url, ResourceBundle rb)
     {
+        search.setOnAction(this::handle);
+        addVehicle.setOnAction(this::handle);
+        updateVehicle.setOnAction(this::handle);
+        back.setOnAction(this::handle);
+
+        search.setTooltip(new Tooltip("Alt+S"));
+        addVehicle.setTooltip(new Tooltip("Alt+A"));
+        updateVehicle.setTooltip(new Tooltip("Alt+U"));
+        back.setTooltip(new Tooltip("Alt+B"));
+
         searchFilter.getItems().addAll(
                 "None",
                 "vehicleRegistration",
@@ -107,6 +117,53 @@ public class manageVehiclesController implements Initializable
 
         vehicleTable.setItems(baseController.vehicles);
     }
+    @Override
+    public void handle(Event event)
+    {
+        Button thisButton = (Button) event.getSource();
+        String buttonId = thisButton.getId();
+        switch (buttonId)
+        {
+            case "search" ->
+                    {
+                        try
+                        {
+                            onSearch();
+                        }
+                        catch (SQLException e)
+                        {
+                            e.printStackTrace();
+                        }
+                    }
+            case "addVehicle" ->
+                    {
+                        try
+                        {
+                            baseController.newScreen("addVehicle", "Add A Vehicle");
+                        }
+                        catch (IOException e)
+                        {
+                            e.printStackTrace();
+                        }
+                    }
+            case "updateVehicle" ->
+                    {
+                        if(thisVehicle != null)
+                        {
+                            try
+                            {
+                                baseController.newScreen("updateVehicle", "Update A Vehicle");
+                            }
+                            catch (IOException e)
+                            {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+            case "back" -> baseController.nextScene(baseController.userLoggedOn);
+        }
+    }
+
     @FXML
     protected void vehicleSelected(MouseEvent mouseEvent)
     {

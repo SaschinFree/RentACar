@@ -2,6 +2,8 @@ package za.nmu.wrrv.rent;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -11,12 +13,11 @@ import javafx.scene.input.MouseEvent;
 
 import java.net.URL;
 import java.sql.Date;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ResourceBundle;
 
-public class dispatchVehicleController implements Initializable
+public class dispatchVehicleController implements Initializable, EventHandler<Event>
 {
     @FXML
     protected ChoiceBox<String> searchFilter;
@@ -44,6 +45,14 @@ public class dispatchVehicleController implements Initializable
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
+        search.setOnAction(this::handle);
+        back.setOnAction(this::handle);
+        dispatchVehicle.setOnAction(this::handle);
+
+        search.setTooltip(new Tooltip("Alt+S"));
+        back.setTooltip(new Tooltip("Alt+B"));
+        dispatchVehicle.setTooltip(new Tooltip("Alt+D"));
+
         try
         {
             filteredBookings = Booking.searchQuery("startDate", String.valueOf(LocalDate.now()), "AND isBeingRented = No AND hasPaid = Yes");
@@ -82,6 +91,40 @@ public class dispatchVehicleController implements Initializable
         bookingEnd.setCellValueFactory(new PropertyValueFactory<>("endDate"));
 
         filteredTable.setItems(filteredBookings);
+    }
+    @Override
+    public void handle(Event event)
+    {
+        Button thisButton = (Button) event.getSource();
+        String buttonId = thisButton.getId();
+        switch(buttonId)
+        {
+            case "search" ->
+                    {
+                        try
+                        {
+                            onSearch();
+                        } catch (SQLException e)
+                        {
+                            e.printStackTrace();
+                        }
+                    }
+            case "dispatchVehicle" ->
+                    {
+                        if(thisBooking != null)
+                        {
+                            try
+                            {
+                                onDispatch();
+                            }
+                            catch (SQLException e)
+                            {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+            case "back" -> baseController.nextScene(baseController.userLoggedOn);
+        }
     }
 
     @FXML

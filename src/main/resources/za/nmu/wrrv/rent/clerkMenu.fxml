@@ -17,27 +17,27 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Button fx:id="manageClients" mnemonicParsing="false" onMouseClicked="#buttonClicked" prefHeight="120.0" prefWidth="180.0" style="-fx-background-color: #3B2F2F;" text="Manage Clients" textFill="WHITE" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+            <Button fx:id="manageClients" onMouseClicked="#buttonClicked" prefHeight="120.0" prefWidth="180.0" style="-fx-background-color: #3B2F2F;" text="Manage _Clients" textFill="WHITE" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                <font>
                   <Font size="16.0" />
                </font></Button>
-            <Button fx:id="manageVehicles" mnemonicParsing="false" onMouseClicked="#buttonClicked" prefHeight="120.0" prefWidth="180.0" style="-fx-background-color: #3B2F2F;" text="Manage Vehicles" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+            <Button fx:id="manageVehicles" onMouseClicked="#buttonClicked" prefHeight="120.0" prefWidth="180.0" style="-fx-background-color: #3B2F2F;" text="Manage _Vehicles" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                <font>
                   <Font size="16.0" />
                </font></Button>
-            <Button fx:id="manageBookings" mnemonicParsing="false" onMouseClicked="#buttonClicked" prefHeight="120.0" prefWidth="180.0" style="-fx-background-color: #3B2F2F;" text="Manage Bookings" textFill="WHITE" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+            <Button fx:id="manageBookings" onMouseClicked="#buttonClicked" prefHeight="120.0" prefWidth="180.0" style="-fx-background-color: #3B2F2F;" text="Manage _Bookings" textFill="WHITE" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                <font>
                   <Font size="16.0" />
                </font></Button>
-            <Button fx:id="dispatchVehicle" mnemonicParsing="false" onMouseClicked="#buttonClicked" prefHeight="120.0" prefWidth="180.0" style="-fx-background-color: #3B2F2F;" text="Dispatch Vehicle" textFill="WHITE" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+            <Button fx:id="dispatchVehicle" onMouseClicked="#buttonClicked" prefHeight="120.0" prefWidth="180.0" style="-fx-background-color: #3B2F2F;" text="_Dispatch Vehicle" textFill="WHITE" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                <font>
                   <Font size="16.0" />
                </font></Button>
-            <Button fx:id="returnVehicle" mnemonicParsing="false" onMouseClicked="#buttonClicked" prefHeight="120.0" prefWidth="180.0" style="-fx-background-color: #3B2F2F;" text="Return Vehicle" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+            <Button fx:id="returnVehicle" onMouseClicked="#buttonClicked" prefHeight="120.0" prefWidth="180.0" style="-fx-background-color: #3B2F2F;" text="_Return Vehicle" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                <font>
                   <Font size="16.0" />
                </font></Button>
-            <Button fx:id="clerkReport" mnemonicParsing="false" onMouseClicked="#buttonClicked" prefHeight="120.0" prefWidth="180.0" style="-fx-background-color: #3B2F2F;" text="Generate Report" textFill="WHITE" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+            <Button fx:id="clerkReport" onMouseClicked="#buttonClicked" prefHeight="120.0" prefWidth="180.0" style="-fx-background-color: #3B2F2F;" text="_Generate Report" textFill="WHITE" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                <font>
                   <Font size="16.0" />
                </font></Button>

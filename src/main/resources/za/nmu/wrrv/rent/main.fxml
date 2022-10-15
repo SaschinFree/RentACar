@@ -49,7 +49,7 @@
                         </HBox>
                      </children>
                   </VBox>
-                  <Button fx:id="login" mnemonicParsing="false" onMouseClicked="#buttonClicked" prefHeight="50.0" prefWidth="92.0" style="-fx-background-color: #3B2F2F;" text="Login" textFill="WHITE">
+                  <Button fx:id="login" onMouseClicked="#buttonClicked" prefHeight="50.0" prefWidth="92.0" style="-fx-background-color: #3B2F2F;" text="_Login" textFill="WHITE">
                      <HBox.margin>
                         <Insets top="40.0" />
                      </HBox.margin>

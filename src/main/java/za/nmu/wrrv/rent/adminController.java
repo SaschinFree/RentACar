@@ -1,9 +1,12 @@
 package za.nmu.wrrv.rent;
 
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.Tooltip;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 
@@ -11,7 +14,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class adminController implements Initializable
+public class adminController implements Initializable, EventHandler<Event>
 {
     @FXML
     protected Button manageClients;
@@ -31,6 +34,20 @@ public class adminController implements Initializable
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
+        manageClients.setOnAction(this::handle);
+        manageVehicles.setOnAction(this::handle);
+        manageBookings.setOnAction(this::handle);
+        managePayments.setOnAction(this::handle);
+        manageSettings.setOnAction(this::handle);
+        adminReport.setOnAction(this::handle);
+
+        manageClients.setTooltip(new Tooltip("Alt+C"));
+        manageVehicles.setTooltip(new Tooltip("Alt+V"));
+        manageBookings.setTooltip(new Tooltip("Alt+B"));
+        managePayments.setTooltip(new Tooltip("Alt+P"));
+        manageSettings.setTooltip(new Tooltip("Alt+S"));
+        adminReport.setTooltip(new Tooltip("Alt+G"));
+
         if(!alertShown)
         {
             List<Client> moneyOwed = baseController.clients.stream().filter(client -> client.isActive() && client.getMoneyOwed() > 0).toList();
@@ -52,6 +69,14 @@ public class adminController implements Initializable
             }
             alertShown = true;
         }
+    }
+    @Override
+    public void handle(Event event)
+    {
+        Button thisButton = (Button) event.getSource();
+        String buttonId = thisButton.getId();
+
+        baseController.nextScene(buttonId);
     }
 
     @FXML

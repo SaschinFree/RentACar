@@ -2,12 +2,12 @@ package za.nmu.wrrv.rent;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 
@@ -16,7 +16,7 @@ import java.net.URL;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
-public class managePaymentsController implements Initializable
+public class managePaymentsController implements Initializable, EventHandler<Event>
 {
     @FXML
     protected ChoiceBox<String> searchFilter;
@@ -53,6 +53,13 @@ public class managePaymentsController implements Initializable
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
+        search.setOnAction(this::handle);
+        back.setOnAction(this::handle);
+        payClient.setOnAction(this::handle);
+
+        search.setTooltip(new Tooltip("Alt+S"));
+        back.setTooltip(new Tooltip("Alt+B"));
+        payClient.setTooltip(new Tooltip("Alt+P"));
 
         try
         {
@@ -106,6 +113,48 @@ public class managePaymentsController implements Initializable
         moneyOwed.setCellValueFactory(new PropertyValueFactory<>("moneyOwed"));
 
         queryTable.setItems(filteredClients);
+    }
+    @Override
+    public void handle(Event event)
+    {
+        Button thisButton = (Button) event.getSource();
+        String buttonId = thisButton.getId();
+
+        switch(buttonId)
+        {
+            case "search" ->
+                    {
+                        try
+                        {
+                            onSearch();
+                        }
+                        catch (SQLException e)
+                        {
+                            e.printStackTrace();
+                        }
+                    }
+            case "payClient" ->
+                    {
+                        if(thisClient != null)
+                        {
+                            try
+                            {
+                                baseController.newScreen("payClient", "Pay A Client");
+
+                                if(clientPaid)
+                                {
+                                    if(thisClient.getMoneyOwed() == 0)
+                                        filteredClients.removeAll(thisClient);
+                                }
+                            }
+                            catch (IOException e)
+                            {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+            case "back" -> baseController.nextScene(baseController.userLoggedOn);
+        }
     }
     @FXML
     protected void clientSelected(MouseEvent mouseEvent)

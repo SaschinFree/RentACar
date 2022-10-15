@@ -1,6 +1,8 @@
 package za.nmu.wrrv.rent;
 
 import javafx.collections.ObservableList;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -13,7 +15,7 @@ import java.sql.Date;
 import java.sql.SQLException;
 import java.util.ResourceBundle;
 
-public class manageBookingsController implements Initializable
+public class manageBookingsController implements Initializable, EventHandler<Event>
 {
     @FXML
     protected ChoiceBox<String> searchFilter;
@@ -51,6 +53,16 @@ public class manageBookingsController implements Initializable
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
+        search.setOnAction(this::handle);
+        addBooking.setOnAction(this::handle);
+        updateBooking.setOnAction(this::handle);
+        back.setOnAction(this::handle);
+
+        search.setTooltip(new Tooltip("Alt+S"));
+        addBooking.setTooltip(new Tooltip("Alt+A"));
+        updateBooking.setTooltip(new Tooltip("Alt+U"));
+        back.setTooltip(new Tooltip("Alt+B"));
+
         searchFilter.getItems().addAll(
                 "None",
                 "bookingNumber",
@@ -96,6 +108,53 @@ public class manageBookingsController implements Initializable
 
         bookingTable.setItems(baseController.bookings);
     }
+    @Override
+    public void handle(Event event)
+    {
+        Button thisButton = (Button) event.getSource();
+        String buttonId = thisButton.getId();
+        switch(buttonId)
+        {
+            case "search" ->
+                    {
+                        try
+                        {
+                            onSearch();
+                        }
+                        catch (SQLException e)
+                        {
+                            e.printStackTrace();
+                        }
+                    }
+            case "addBooking" ->
+                    {
+                        try
+                        {
+                            baseController.newScreen("addBooking", "Add A Booking");
+                        }
+                        catch (IOException e)
+                        {
+                            e.printStackTrace();
+                        }
+                    }
+            case "updateBooking" ->
+                    {
+                        if(thisBooking != null)
+                        {
+                            try
+                            {
+                                baseController.newScreen("updateBooking", "Update A Booking");
+                            }
+                            catch (IOException e)
+                            {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+            case "back" -> baseController.nextScene(baseController.userLoggedOn);
+        }
+    }
+
     @FXML
     protected void bookingSelected(MouseEvent mouseEvent)
     {

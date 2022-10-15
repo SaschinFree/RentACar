@@ -1,13 +1,14 @@
 package za.nmu.wrrv.rent;
 
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.Tooltip;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 
@@ -15,18 +16,18 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-public class manageSettingsController implements Initializable
+public class manageSettingsController implements Initializable, EventHandler<Event>
 {
     @FXML
     protected TableColumn<Settings, String> settingName;
     @FXML
     protected TableColumn<Settings, Double> settingValue;
     @FXML
+    protected TableView<Settings> settingTable;
+    @FXML
     protected Button back;
     @FXML
     protected Button updateSetting;
-    @FXML
-    protected TableView<Settings> settingTable;
 
     protected static Settings thisSetting;
     protected static boolean settingUpdated;
@@ -34,6 +35,12 @@ public class manageSettingsController implements Initializable
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
+        back.setOnAction(this::handle);
+        updateSetting.setOnAction(this::handle);
+
+        back.setTooltip(new Tooltip("Alt+B"));
+        updateSetting.setTooltip(new Tooltip("Alt+U"));
+
         settingUpdated = false;
 
         updateSetting.setVisible(false);
@@ -45,6 +52,32 @@ public class manageSettingsController implements Initializable
 
         settingTable.setItems(baseController.settings);
     }
+    @Override
+    public void handle(Event event)
+    {
+        Button thisButton = (Button) event.getSource();
+        String buttonId = thisButton.getId();
+
+        switch (buttonId)
+        {
+            case "updateSetting" ->
+                    {
+                        if(thisSetting != null)
+                        {
+                            try
+                            {
+                                baseController.newScreen("updateSetting", "Update A Setting");
+                            }
+                            catch (IOException e)
+                            {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+            case "back" -> baseController.nextScene(baseController.userLoggedOn);
+        }
+    }
+
     @FXML
     protected void settingSelected(MouseEvent mouseEvent)
     {

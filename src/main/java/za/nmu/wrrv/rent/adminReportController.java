@@ -2,6 +2,8 @@ package za.nmu.wrrv.rent;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.Event;
+import javafx.event.EventHandler;
 import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -19,7 +21,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
-public class adminReportController implements Initializable
+public class adminReportController implements Initializable, EventHandler<Event>
 {
     @FXML
     protected VBox adminBox;
@@ -53,13 +55,22 @@ public class adminReportController implements Initializable
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
+        back.setOnAction(this::handle);
+        back.setTooltip(new Tooltip("Alt+B"));
+
         scrollPane.setVisible(false);
 
         setupComboBox();
 
         attachEventHandler();
-
     }
+
+    @Override
+    public void handle(Event event)
+    {
+        baseController.nextScene(baseController.userLoggedOn);
+    }
+
     @FXML
     protected void buttonClicked(MouseEvent mouseEvent)
     {
