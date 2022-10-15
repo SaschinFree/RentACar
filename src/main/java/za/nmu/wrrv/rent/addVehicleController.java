@@ -212,6 +212,12 @@ public class addVehicleController implements Initializable
     }
     private boolean emptyChecks(String regExp, String make, String colour, String start, String end, String costMulti)
     {
+        if(registrationNumber.getText().isEmpty())
+        {
+            errorMessage = "Registration Number is empty";
+            registrationNumber.clear();
+            return false;
+        }
         if(regExp.isEmpty())
         {
             errorMessage = "Registration Expiration Date is empty";
