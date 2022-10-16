@@ -53,13 +53,7 @@ public class managePaymentsController implements Initializable, EventHandler<Eve
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
-        search.setOnAction(this::handle);
-        back.setOnAction(this::handle);
-        payClient.setOnAction(this::handle);
-
-        search.setTooltip(new Tooltip("Alt+S"));
-        back.setTooltip(new Tooltip("Alt+B"));
-        payClient.setTooltip(new Tooltip("Alt+P"));
+        setupMnemonics();
 
         try
         {
@@ -87,7 +81,11 @@ public class managePaymentsController implements Initializable, EventHandler<Eve
 
             switch(searchFilter.getSelectionModel().getSelectedItem())
             {
-                case "None" -> searchQuery.setPromptText("Search");
+                case "None" ->
+                        {
+                            searchQuery.setPromptText("Search");
+                            queryTable.setItems(filteredClients);
+                        }
                 case "clientID" -> searchQuery.setPromptText("1234567898765");
                 case "firstName" -> searchQuery.setPromptText("John");
                 case "surname" -> searchQuery.setPromptText("Doe");
@@ -156,6 +154,7 @@ public class managePaymentsController implements Initializable, EventHandler<Eve
             case "back" -> baseController.nextScene(baseController.userLoggedOn);
         }
     }
+
     @FXML
     protected void clientSelected(MouseEvent mouseEvent)
     {
@@ -193,6 +192,21 @@ public class managePaymentsController implements Initializable, EventHandler<Eve
                 case "back" -> baseController.nextScene(baseController.userLoggedOn);
             }
         }
+    }
+
+    private void setupMnemonics()
+    {
+        search.setMnemonicParsing(true);
+        back.setMnemonicParsing(true);
+        payClient.setMnemonicParsing(true);
+
+        search.setOnAction(this::handle);
+        back.setOnAction(this::handle);
+        payClient.setOnAction(this::handle);
+
+        search.setTooltip(new Tooltip("Alt+S"));
+        back.setTooltip(new Tooltip("Alt+B"));
+        payClient.setTooltip(new Tooltip("Alt+P"));
     }
 
     private void onSearch() throws SQLException

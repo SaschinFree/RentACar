@@ -90,7 +90,7 @@ public class Client
         else
         {
             if(searchQuery.contains("@"))
-                sql = "SELECT * FROM Client WHERE " + tableColumn + " LIKE \'" + searchQuery + "\' " + extraParameter + "";
+                sql = "SELECT * FROM Client WHERE " + tableColumn + " = \'" + searchQuery + "\' " + extraParameter + "";
             else
             {
                 if(searchQuery.contains(".") || searchQuery.contains("Yes") || searchQuery.contains("No"))

@@ -34,6 +34,7 @@ public class updateSettingController implements Initializable
         settingName.textProperty().bind(manageSettingsController.thisSetting.settingNameProperty());
         settingValue.setText(String.valueOf(manageSettingsController.thisSetting.getSettingValue()));
     }
+
     @FXML
     protected void keyClicked(KeyEvent keyEvent) throws SQLException
     {
@@ -43,7 +44,6 @@ public class updateSettingController implements Initializable
             case ENTER -> onUpdate();
         }
     }
-
     @FXML
     protected void buttonClicked(MouseEvent mouseEvent) throws SQLException
     {

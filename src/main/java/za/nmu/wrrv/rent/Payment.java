@@ -40,26 +40,9 @@ public class Payment
         return paymentList;
     }
 
-    public int getPaymentID()
-    {
-        return paymentID.get();
-    }
-    public IntegerProperty paymentIDProperty()
-    {
-        return paymentID;
-    }
-    public void setPaymentID(int paymentID)
-    {
-        this.paymentID.set(paymentID);
-    }
-
     public int getClientNumber()
     {
         return clientNumber.get();
-    }
-    public IntegerProperty clientNumberProperty()
-    {
-        return clientNumber;
     }
     public void setClientNumber(int clientNumber)
     {
@@ -70,25 +53,9 @@ public class Payment
     {
         return amount.get();
     }
-    public DoubleProperty amountProperty()
-    {
-        return amount;
-    }
-    public void setAmount(double amount)
-    {
-        this.amount.set(amount);
-    }
 
     public Date getPayDate()
     {
         return payDate.getValue();
-    }
-    public Property<Date> payDateProperty()
-    {
-        return payDate;
-    }
-    public void setPayDate(Date payDate)
-    {
-        this.payDate.setValue(payDate);
     }
 }

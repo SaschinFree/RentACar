@@ -35,11 +35,7 @@ public class manageSettingsController implements Initializable, EventHandler<Eve
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
-        back.setOnAction(this::handle);
-        updateSetting.setOnAction(this::handle);
-
-        back.setTooltip(new Tooltip("Alt+B"));
-        updateSetting.setTooltip(new Tooltip("Alt+U"));
+        setupMnemonics();
 
         settingUpdated = false;
 
@@ -105,5 +101,17 @@ public class manageSettingsController implements Initializable, EventHandler<Eve
                 case "back" -> baseController.nextScene(baseController.userLoggedOn);
             }
         }
+    }
+
+    private void setupMnemonics()
+    {
+        back.setMnemonicParsing(true);
+        updateSetting.setMnemonicParsing(true);
+
+        back.setOnAction(this::handle);
+        updateSetting.setOnAction(this::handle);
+
+        back.setTooltip(new Tooltip("Alt+B"));
+        updateSetting.setTooltip(new Tooltip("Alt+U"));
     }
 }

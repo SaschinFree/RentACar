@@ -53,15 +53,7 @@ public class manageBookingsController implements Initializable, EventHandler<Eve
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
-        search.setOnAction(this::handle);
-        addBooking.setOnAction(this::handle);
-        updateBooking.setOnAction(this::handle);
-        back.setOnAction(this::handle);
-
-        search.setTooltip(new Tooltip("Alt+S"));
-        addBooking.setTooltip(new Tooltip("Alt+A"));
-        updateBooking.setTooltip(new Tooltip("Alt+U"));
-        back.setTooltip(new Tooltip("Alt+B"));
+        setupMnemonics();
 
         searchFilter.getItems().addAll(
                 "None",
@@ -81,7 +73,11 @@ public class manageBookingsController implements Initializable, EventHandler<Eve
 
             switch(searchFilter.getSelectionModel().getSelectedItem())
             {
-                case "None" -> searchQuery.setPromptText("Search");
+                case "None" ->
+                        {
+                            searchQuery.setPromptText("Search");
+                            bookingTable.setItems(baseController.bookings);
+                        }
                 case "bookingNumber", "clientNumber" -> searchQuery.setPromptText("1");
                 case "vehicleRegistration" -> searchQuery.setPromptText("ABC123 EC or CUSTOM MP etc");
                 case "startDate", "endDate" -> searchQuery.setPromptText("YYYY-MM-DD");
@@ -185,14 +181,54 @@ public class manageBookingsController implements Initializable, EventHandler<Eve
         }
     }
 
+    private void setupMnemonics()
+    {
+        search.setMnemonicParsing(true);
+        addBooking.setMnemonicParsing(true);
+        updateBooking.setMnemonicParsing(true);
+        back.setMnemonicParsing(true);
+
+        search.setOnAction(this::handle);
+        addBooking.setOnAction(this::handle);
+        updateBooking.setOnAction(this::handle);
+        back.setOnAction(this::handle);
+
+        search.setTooltip(new Tooltip("Alt+S"));
+        addBooking.setTooltip(new Tooltip("Alt+A"));
+        updateBooking.setTooltip(new Tooltip("Alt+U"));
+        back.setTooltip(new Tooltip("Alt+B"));
+    }
+
     private void onSearch() throws SQLException
     {
         if(searchFilter.getSelectionModel().getSelectedItem().equals("None"))
             bookingTable.setItems(baseController.bookings);
         else
         {
-            ObservableList<Booking> filteredList = Booking.searchQuery(searchFilter.getSelectionModel().getSelectedItem(), searchQuery.getText(), "");
-            bookingTable.setItems(filteredList);
+            if(searchQuery.getText().contains("/") || searchQuery.getText().contains("-"))
+            {
+                String thisDate = searchQuery.getText();
+                thisDate = thisDate.replace("/", "-");
+
+                if(baseController.errorValidationCheck(baseController.letterArray, thisDate) || baseController.symbolCheck(thisDate, '-'))
+                {
+                    String[] split = thisDate.split("-");
+                    if(split[0].length() != 4 || split[1].length() != 2 || Integer.parseInt(split[1]) < 1 || Integer.parseInt(split[1]) > 12 || split[2].length() != 2)
+                        bookingTable.setItems(null);
+                    else
+                    {
+                        ObservableList<Booking> filteredList = Booking.searchQuery(searchFilter.getSelectionModel().getSelectedItem(), searchQuery.getText(), "");
+                        bookingTable.setItems(filteredList);
+                    }
+                }
+                else
+                    bookingTable.setItems(null);
+            }
+            else
+            {
+                ObservableList<Booking> filteredList = Booking.searchQuery(searchFilter.getSelectionModel().getSelectedItem(), searchQuery.getText(), "");
+                bookingTable.setItems(filteredList);
+            }
         }
     }
 }

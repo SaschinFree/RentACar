@@ -12,6 +12,7 @@ import java.net.URL;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class updateClientController implements Initializable
@@ -77,6 +78,7 @@ public class updateClientController implements Initializable
         else
             companyName.setVisible(false);
     }
+
     @FXML
     protected void keyClicked(KeyEvent keyEvent) throws SQLException
     {
@@ -109,6 +111,7 @@ public class updateClientController implements Initializable
             }
         }
     }
+
     private void onUpdate() throws SQLException
     {
         if(isDelete.selectedProperty().getValue())
@@ -151,30 +154,30 @@ public class updateClientController implements Initializable
                 {
                     Date licence = Date.valueOf(licenceString);
 
-                    if(isCompany.selectedProperty().getValue())
+                    List<Client> duplicate = baseController.clients.stream().filter(client -> client.isActive() && client.getClientNumber() == Integer.parseInt(number)).toList();
+                    if(duplicate.size() > 0)
                     {
-                        if(!baseController.errorValidationCheck(baseController.numberArray, compName) & !baseController.symbolCheck(compName))
+                        contactNumber.clear();
+                        alert.setHeaderText("This number already exists in the table");
+                        alert.showAndWait();
+                    }
+                    else
+                    {
+                        duplicate = baseController.clients.stream().filter(client -> client.isActive() && client.getEmail().equals(email)).toList();
+                        if(duplicate.size() > 0)
                         {
-                            companyName.clear();
-                            alert.setHeaderText("Company Name is in the incorrect format");
+                            this.email.clear();
+                            alert.setHeaderText("This email address already exists in the table");
                             alert.showAndWait();
                         }
                         else
                         {
                             updateClient(fName, sName, number, email, licence, strNum, strName, sub, city, postCode, compName);
-                            Alert updateClient = new Alert(Alert.AlertType.INFORMATION);
-                            updateClient.setHeaderText("Client Updated Successfully");
-                            updateClient.showAndWait();
+                            Alert clientAdded = new Alert(Alert.AlertType.INFORMATION);
+                            clientAdded.setHeaderText("Client Updated Successfully");
+                            clientAdded.showAndWait();
                             closeStage();
                         }
-                    }
-                    else
-                    {
-                        updateClient(fName, sName, number, email, licence, strNum, strName, sub, city, postCode, compName);
-                        Alert updateClient = new Alert(Alert.AlertType.INFORMATION);
-                        updateClient.setHeaderText("Client Updated Successfully");
-                        updateClient.showAndWait();
-                        closeStage();
                     }
                 }
                 else
@@ -325,30 +328,26 @@ public class updateClientController implements Initializable
             return false;
         }
 
-        char[] emailArray = email.toCharArray();
+        int i = email.indexOf("@");
 
-        int atSymbol;
-        boolean dotAfter = false;
+        String beforeAt = email.substring(0, i);
+        String afterAt = email.substring(i + 1);
 
-        for (char c : emailArray)
+        if(beforeAt.length() == 0)
         {
-            if (c == '@')
-            {
-                atSymbol = c;
-                for (int j = atSymbol + 1; j < emailArray.length; j++)
-                {
-                    if (emailArray[j] == '.')
-                    {
-                        dotAfter = true;
-                        break;
-                    }
-
-                }
-            }
+            errorMessage = "before the '@' sign, the email address should contain at least 1 character";
+            this.email.clear();
+            return false;
         }
-        if(!dotAfter)
+        if(!baseController.symbolCheck(beforeAt, '.', '-', '_'))
         {
-            errorMessage = "Email Address should contain a '.' after the @ symbol";
+            errorMessage = "before the '@' sign, the email address should not contain any symbols, except '.', '-', or '_'";
+            this.email.clear();
+            return false;
+        }
+        if(!baseController.errorValidationCheck(baseController.numberArray, afterAt) && !baseController.symbolCheck(afterAt, '.'))
+        {
+            errorMessage = "After the '@' sign, the email address should not contain any numbers and symbols, except '.'";
             this.email.clear();
             return false;
         }

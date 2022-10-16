@@ -15,6 +15,9 @@ import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class addVehicleController implements Initializable
@@ -62,9 +65,17 @@ public class addVehicleController implements Initializable
         plateExtension.getItems().addAll("WP", "ZN", "MP", "EC", "L", "GP", "NC", "FS", "NW");
         plateExtension.setValue("EC");
 
+        List<String> sortedClient = new ArrayList<>();
         for(Client thisClient : baseController.clients)
         {
-            clientSurnameName.getItems().add(thisClient.getSurname() + ", " + thisClient.getFirstName());
+            sortedClient.add(thisClient.getSurname() + ", " + thisClient.getFirstName());
+        }
+
+        Collections.sort(sortedClient);
+
+        for(String thisClient : sortedClient)
+        {
+            clientSurnameName.getItems().add(thisClient);
         }
 
         SpinnerValueFactory<Integer> seats = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 24);
@@ -84,6 +95,8 @@ public class addVehicleController implements Initializable
                 vehicleSeats.setVisible(true);
                 vehicleStartDate.setVisible(true);
                 vehicleEndDate.setVisible(true);
+
+                costMultiplier.setText("1.0");
                 costMultiplier.setVisible(true);
 
                 addVehicle.setVisible(true);
@@ -109,6 +122,7 @@ public class addVehicleController implements Initializable
 
         addVehicle.setVisible(false);
     }
+
     @FXML
     protected void keyClicked(KeyEvent keyEvent) throws SQLException
     {
@@ -282,7 +296,7 @@ public class addVehicleController implements Initializable
                 return false;
             }
         }
-        if(!baseController.symbolCheck(regNum))
+        if(!baseController.symbolCheck(registrationNumber.getText()))
         {
             errorMessage = "Registration Number: Registration Number cannot contain any special characters";
             registrationNumber.clear();

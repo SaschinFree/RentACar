@@ -78,14 +78,12 @@ public class clerkReportController implements Initializable, EventHandler<Event>
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
-        back.setOnAction(this::handle);
-        back.setTooltip(new Tooltip("Alt+B"));
+        setupMnemonics();
 
         scrollPane.setVisible(false);
 
         attachEventHandler();
     }
-
     @Override
     public void handle(Event event)
     {
@@ -99,6 +97,13 @@ public class clerkReportController implements Initializable, EventHandler<Event>
         {
             baseController.nextScene(baseController.userLoggedOn);
         }
+    }
+
+    private void setupMnemonics()
+    {
+        back.setMnemonicParsing(true);
+        back.setOnAction(this::handle);
+        back.setTooltip(new Tooltip("Alt+B"));
     }
 
     private void attachEventHandler()

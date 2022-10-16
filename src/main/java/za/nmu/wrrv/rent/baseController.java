@@ -88,8 +88,7 @@ public class baseController implements Initializable, EventHandler<Event>
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
-        login.setOnAction(this::handle);
-        login.setTooltip(new Tooltip("Alt+L"));
+        setupMnemonics();
 
         mainReference = main;
         logged.setVisible(false);
@@ -99,7 +98,6 @@ public class baseController implements Initializable, EventHandler<Event>
         setLetterArray();
         setNumberArray();
     }
-
     @Override
     public void handle(Event event)
     {
@@ -136,6 +134,13 @@ public class baseController implements Initializable, EventHandler<Event>
         }
     }
 
+    private void setupMnemonics()
+    {
+        login.setMnemonicParsing(true);
+        login.setOnAction(this::handle);
+        login.setTooltip(new Tooltip("Alt+L"));
+    }
+
     private void onLogout()
     {
         Alert alert;
@@ -144,6 +149,9 @@ public class baseController implements Initializable, EventHandler<Event>
 
         isLoggedOn = false;
         userLoggedOn = null;
+
+        clerkController.alertShown = false;
+        adminController.alertShown = false;
 
         logged.setVisible(false);
         user.setVisible(false);
@@ -255,14 +263,20 @@ public class baseController implements Initializable, EventHandler<Event>
         }
         return true;
     }
-    protected static boolean symbolCheck(String thisValue, char extraParameter)
+    protected static boolean symbolCheck(String thisValue, char... extraParameter)
     {
+        boolean check = true;
         for(Character symbol : baseController.symbolArray)
         {
-            if(thisValue.contains(symbol.toString()) & !symbol.equals(extraParameter))
-                return false;
+            if(thisValue.contains(symbol.toString()))
+            {
+                for(char thisChar : extraParameter)
+                {
+                    check = symbol.equals(thisChar);
+                }
+            }
         }
-        return true;
+        return check;
     }
 
     protected static void newScreen(String screenName, String title) throws IOException

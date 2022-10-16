@@ -36,6 +36,40 @@ public class clerkController implements Initializable,EventHandler<Event>
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
+        setupMnemonics();
+
+        setupAlert();
+    }
+    @Override
+    public void handle(Event event)
+    {
+        Button thisButton = (Button) event.getSource();
+        String buttonId = thisButton.getId();
+
+        baseController.nextScene(buttonId);
+    }
+
+    @FXML
+    protected void buttonClicked(MouseEvent mouseEvent)
+    {
+        if(mouseEvent.getButton() == MouseButton.PRIMARY)
+        {
+            Button thisButton = (Button) mouseEvent.getSource();
+            String buttonId = thisButton.getId();
+
+            baseController.nextScene(buttonId);
+        }
+    }
+
+    private void setupMnemonics()
+    {
+        manageClients.setMnemonicParsing(true);
+        manageVehicles.setMnemonicParsing(true);
+        manageBookings.setMnemonicParsing(true);
+        dispatchVehicle.setMnemonicParsing(true);
+        returnVehicle.setMnemonicParsing(true);
+        clerkReport.setMnemonicParsing(true);
+
         manageClients.setOnAction(this::handle);
         manageVehicles.setOnAction(this::handle);
         manageBookings.setOnAction(this::handle);
@@ -49,7 +83,10 @@ public class clerkController implements Initializable,EventHandler<Event>
         dispatchVehicle.setTooltip(new Tooltip("Alt+D"));
         returnVehicle.setTooltip(new Tooltip("Alt+R"));
         clerkReport.setTooltip(new Tooltip("Alt+G"));
+    }
 
+    private void setupAlert()
+    {
         if(!alertShown)
         {
             List<Booking> dispatchToday = baseController.bookings.stream().filter(booking -> booking.isActive() && booking.getStartDate().equals(Date.valueOf(LocalDate.now())) && booking.isIsBeingRented().equals("No")).toList();
@@ -87,26 +124,6 @@ public class clerkController implements Initializable,EventHandler<Event>
                 alert.showAndWait();
             }
             alertShown = true;
-        }
-    }
-    @Override
-    public void handle(Event event)
-    {
-        Button thisButton = (Button) event.getSource();
-        String buttonId = thisButton.getId();
-
-        baseController.nextScene(buttonId);
-    }
-
-    @FXML
-    protected void buttonClicked(MouseEvent mouseEvent)
-    {
-        if(mouseEvent.getButton() == MouseButton.PRIMARY)
-        {
-            Button thisButton = (Button) mouseEvent.getSource();
-            String buttonId = thisButton.getId();
-
-            baseController.nextScene(buttonId);
         }
     }
 }

@@ -34,6 +34,40 @@ public class adminController implements Initializable, EventHandler<Event>
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
+        setupMnemonics();
+
+        setupAlert();
+    }
+    @Override
+    public void handle(Event event)
+    {
+        Button thisButton = (Button) event.getSource();
+        String buttonId = thisButton.getId();
+
+        baseController.nextScene(buttonId);
+    }
+
+    @FXML
+    protected void buttonClicked(MouseEvent mouseEvent)
+    {
+        if(mouseEvent.getButton() == MouseButton.PRIMARY)
+        {
+            Button thisButton = (Button) mouseEvent.getSource();
+            String buttonId = thisButton.getId();
+
+            baseController.nextScene(buttonId);
+        }
+    }
+
+    private void setupMnemonics()
+    {
+        manageClients.setMnemonicParsing(true);
+        manageVehicles.setMnemonicParsing(true);
+        manageBookings.setMnemonicParsing(true);
+        managePayments.setMnemonicParsing(true);
+        manageSettings.setMnemonicParsing(true);
+        adminReport.setMnemonicParsing(true);
+
         manageClients.setOnAction(this::handle);
         manageVehicles.setOnAction(this::handle);
         manageBookings.setOnAction(this::handle);
@@ -47,7 +81,10 @@ public class adminController implements Initializable, EventHandler<Event>
         managePayments.setTooltip(new Tooltip("Alt+P"));
         manageSettings.setTooltip(new Tooltip("Alt+S"));
         adminReport.setTooltip(new Tooltip("Alt+G"));
+    }
 
+    private void setupAlert()
+    {
         if(!alertShown)
         {
             List<Client> moneyOwed = baseController.clients.stream().filter(client -> client.isActive() && client.getMoneyOwed() > 0).toList();
@@ -68,26 +105,6 @@ public class adminController implements Initializable, EventHandler<Event>
                 alert.showAndWait();
             }
             alertShown = true;
-        }
-    }
-    @Override
-    public void handle(Event event)
-    {
-        Button thisButton = (Button) event.getSource();
-        String buttonId = thisButton.getId();
-
-        baseController.nextScene(buttonId);
-    }
-
-    @FXML
-    protected void buttonClicked(MouseEvent mouseEvent)
-    {
-        if(mouseEvent.getButton() == MouseButton.PRIMARY)
-        {
-            Button thisButton = (Button) mouseEvent.getSource();
-            String buttonId = thisButton.getId();
-
-            baseController.nextScene(buttonId);
         }
     }
 }

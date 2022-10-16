@@ -74,6 +74,7 @@ public class updateVehicleController implements Initializable
         vehicleInsurance.setSelected(isInsured.equals("Yes"));
         costMultiplier.setText(String.valueOf(manageVehiclesController.thisVehicle.getCostMultiplier()));
     }
+
     @FXML
     protected void keyClicked(KeyEvent keyEvent) throws SQLException
     {
@@ -83,7 +84,6 @@ public class updateVehicleController implements Initializable
             case ENTER -> onUpdate();
         }
     }
-
     @FXML
     protected void buttonClicked(MouseEvent mouseEvent) throws SQLException
     {

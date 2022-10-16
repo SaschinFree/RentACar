@@ -52,6 +52,7 @@ public class updateBookingController implements Initializable
 
         isPaid.setSelected(manageBookingsController.thisBooking.isHasPaid().equals("Yes"));
     }
+
     @FXML
     protected void keyClicked(KeyEvent keyEvent) throws SQLException
     {
@@ -61,7 +62,6 @@ public class updateBookingController implements Initializable
             case ENTER -> onUpdate();
         }
     }
-
     @FXML
     protected void buttonClicked(MouseEvent mouseEvent) throws SQLException
     {

@@ -143,6 +143,7 @@ public class addBookingController implements Initializable
 
         addBooking.setVisible(false);
     }
+
     @FXML
     protected void keyClicked(KeyEvent keyEvent) throws SQLException
     {
@@ -225,13 +226,13 @@ public class addBookingController implements Initializable
         }
     }
 
-    private void clientSearch() throws SQLException
+    private void clientSearch()
     {
         if(clientSearchQuery.getText().equals(""))
             clientVehicleTable.setItems(baseController.clients);
         else
         {
-            ObservableList<Client> filteredClients = Client.searchQuery("clientNumber", clientSearchQuery.getText(), "");
+            ObservableList<Client> filteredClients = FXCollections.observableArrayList(baseController.clients.stream().filter(client -> client.isActive() && client.getClientID().equals(clientSearchQuery.getText())).toList());
             clientVehicleTable.setItems(filteredClients);
         }
     }

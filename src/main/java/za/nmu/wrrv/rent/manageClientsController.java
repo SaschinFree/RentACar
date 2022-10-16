@@ -56,15 +56,7 @@ public class manageClientsController implements Initializable, EventHandler<Even
     @Override
     public void initialize(URL url, ResourceBundle rb)
     {
-        search.setOnAction(this::handle);
-        addClient.setOnAction(this::handle);
-        updateClient.setOnAction(this::handle);
-        back.setOnAction(this::handle);
-
-        search.setTooltip(new Tooltip("Alt+S"));
-        addClient.setTooltip(new Tooltip("Alt+A"));
-        updateClient.setTooltip(new Tooltip("Alt+U"));
-        back.setTooltip(new Tooltip("Alt+B"));
+        setupMnemonics();
 
         searchFilter.getItems().addAll(
                 "None",
@@ -85,7 +77,11 @@ public class manageClientsController implements Initializable, EventHandler<Even
 
             switch(searchFilter.getSelectionModel().getSelectedItem())
             {
-                case "None" -> searchQuery.setPromptText("Search");
+                case "None" ->
+                        {
+                            searchQuery.setPromptText("Search");
+                            clientTable.setItems(baseController.clients);
+                        }
                 case "clientNumber" -> searchQuery.setPromptText("1");
                 case "clientID" -> searchQuery.setPromptText("1234567898765");
                 case "firstName" -> searchQuery.setPromptText("John");
@@ -197,14 +193,55 @@ public class manageClientsController implements Initializable, EventHandler<Even
             }
         }
     }
+
+    private void setupMnemonics()
+    {
+        search.setMnemonicParsing(true);
+        addClient.setMnemonicParsing(true);
+        updateClient.setMnemonicParsing(true);
+        back.setMnemonicParsing(true);
+
+        search.setOnAction(this::handle);
+        addClient.setOnAction(this::handle);
+        updateClient.setOnAction(this::handle);
+        back.setOnAction(this::handle);
+
+        search.setTooltip(new Tooltip("Alt+S"));
+        addClient.setTooltip(new Tooltip("Alt+A"));
+        updateClient.setTooltip(new Tooltip("Alt+U"));
+        back.setTooltip(new Tooltip("Alt+B"));
+    }
+
     private void onSearch() throws SQLException
     {
         if(searchFilter.getSelectionModel().getSelectedItem().equals("None"))
             clientTable.setItems(baseController.clients);
         else
         {
-            ObservableList<Client> filteredList = Client.searchQuery(searchFilter.getSelectionModel().getSelectedItem(), searchQuery.getText(), "");
-            clientTable.setItems(filteredList);
+            if(searchQuery.getText().contains("/") || searchQuery.getText().contains("-"))
+            {
+                String thisDate = searchQuery.getText();
+                thisDate = thisDate.replace("/", "-");
+
+                if(baseController.errorValidationCheck(baseController.letterArray, thisDate) || baseController.symbolCheck(thisDate, '-'))
+                {
+                    String[] split = thisDate.split("-");
+                    if(split[0].length() != 4 || split[1].length() != 2 || Integer.parseInt(split[1]) < 1 || Integer.parseInt(split[1]) > 12 || split[2].length() != 2)
+                        clientTable.setItems(null);
+                    else
+                    {
+                        ObservableList<Client> filteredList = Client.searchQuery(searchFilter.getSelectionModel().getSelectedItem(), searchQuery.getText(), "");
+                        clientTable.setItems(filteredList);
+                    }
+                }
+                else
+                    clientTable.setItems(null);
+            }
+            else
+            {
+                ObservableList<Client> filteredList = Client.searchQuery(searchFilter.getSelectionModel().getSelectedItem(), searchQuery.getText(), "");
+                clientTable.setItems(filteredList);
+            }
         }
     }
 }

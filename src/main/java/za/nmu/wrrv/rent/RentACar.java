@@ -27,7 +27,7 @@ public class RentACar extends Application
             Scene mainScene = new Scene(mainLoader.load());
 
             stage.setScene(mainScene);
-            stage.setTitle("Main");
+            stage.setTitle("Rent A Car");
             stage.setResizable(false);
             mainStage = stage;
 

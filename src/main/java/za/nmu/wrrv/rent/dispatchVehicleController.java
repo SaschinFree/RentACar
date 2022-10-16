@@ -45,13 +45,7 @@ public class dispatchVehicleController implements Initializable, EventHandler<Ev
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
-        search.setOnAction(this::handle);
-        back.setOnAction(this::handle);
-        dispatchVehicle.setOnAction(this::handle);
-
-        search.setTooltip(new Tooltip("Alt+S"));
-        back.setTooltip(new Tooltip("Alt+B"));
-        dispatchVehicle.setTooltip(new Tooltip("Alt+D"));
+        setupMnemonics();
 
         try
         {
@@ -76,7 +70,11 @@ public class dispatchVehicleController implements Initializable, EventHandler<Ev
 
             switch(searchFilter.getSelectionModel().getSelectedItem())
             {
-                case "None" -> searchQuery.setPromptText("Search");
+                case "None" ->
+                        {
+                            searchQuery.setPromptText("Search");
+                            filteredTable.setItems(filteredBookings);
+                        }
                 case "vehicleRegistration" -> searchQuery.setPromptText("ABC123 EC or CUSTOM MP");
                 case "startDate", "endDate" -> searchQuery.setPromptText("YYYY-MM-DD");
             }
@@ -137,7 +135,6 @@ public class dispatchVehicleController implements Initializable, EventHandler<Ev
                 dispatchVehicle.setVisible(true);
         }
     }
-
     @FXML
     protected void buttonClicked(MouseEvent mouseEvent) throws SQLException
     {
@@ -153,14 +150,52 @@ public class dispatchVehicleController implements Initializable, EventHandler<Ev
             }
         }
     }
+
+    private void setupMnemonics()
+    {
+        search.setMnemonicParsing(true);
+        back.setMnemonicParsing(true);
+        dispatchVehicle.setMnemonicParsing(true);
+
+        search.setOnAction(this::handle);
+        back.setOnAction(this::handle);
+        dispatchVehicle.setOnAction(this::handle);
+
+        search.setTooltip(new Tooltip("Alt+S"));
+        back.setTooltip(new Tooltip("Alt+B"));
+        dispatchVehicle.setTooltip(new Tooltip("Alt+D"));
+    }
+
     private void onSearch() throws SQLException
     {
         if(searchFilter.getSelectionModel().getSelectedItem().equals("None"))
             filteredTable.setItems(filteredBookings);
         else
         {
-            ObservableList<Booking> filteredList = Booking.searchQuery(searchFilter.getSelectionModel().getSelectedItem(), searchQuery.getText(), "AND isBeingRented = No");
-            filteredTable.setItems(filteredList);
+            if(searchQuery.getText().contains("/") || searchQuery.getText().contains("-"))
+            {
+                String thisDate = searchQuery.getText();
+                thisDate = thisDate.replace("/", "-");
+
+                if(baseController.errorValidationCheck(baseController.letterArray, thisDate) || baseController.symbolCheck(thisDate, '-'))
+                {
+                    String[] split = thisDate.split("-");
+                    if(split[0].length() != 4 || split[1].length() != 2 || Integer.parseInt(split[1]) < 1 || Integer.parseInt(split[1]) > 12 || split[2].length() != 2)
+                        filteredTable.setItems(null);
+                    else
+                    {
+                        ObservableList<Booking> filteredList = Booking.searchQuery(searchFilter.getSelectionModel().getSelectedItem(), searchQuery.getText(), "AND isBeingRented = No");
+                        filteredTable.setItems(filteredList);
+                    }
+                }
+                else
+                    filteredTable.setItems(null);
+            }
+            else
+            {
+                ObservableList<Booking> filteredList = Booking.searchQuery(searchFilter.getSelectionModel().getSelectedItem(), searchQuery.getText(), "AND isBeingRented = No");
+                filteredTable.setItems(filteredList);
+            }
         }
     }
     private void onDispatch() throws SQLException

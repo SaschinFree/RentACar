@@ -17,6 +17,7 @@ import javafx.scene.text.Font;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
@@ -55,8 +56,7 @@ public class adminReportController implements Initializable, EventHandler<Event>
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
-        back.setOnAction(this::handle);
-        back.setTooltip(new Tooltip("Alt+B"));
+        setupMnemonics();
 
         scrollPane.setVisible(false);
 
@@ -64,7 +64,6 @@ public class adminReportController implements Initializable, EventHandler<Event>
 
         attachEventHandler();
     }
-
     @Override
     public void handle(Event event)
     {
@@ -80,6 +79,13 @@ public class adminReportController implements Initializable, EventHandler<Event>
         }
     }
 
+    private void setupMnemonics()
+    {
+        back.setMnemonicParsing(true);
+        back.setOnAction(this::handle);
+        back.setTooltip(new Tooltip("Alt+B"));
+    }
+
     private void setupComboBox()
     {
         for(Payment thisClient : baseController.payments)
@@ -91,6 +97,8 @@ public class adminReportController implements Initializable, EventHandler<Event>
             if(!checkClient(surnameName))
                 clients.add(surnameName);
         }
+
+        Collections.sort(clients);
 
         for(String client : clients)
             clientFilter.getItems().add(client);
