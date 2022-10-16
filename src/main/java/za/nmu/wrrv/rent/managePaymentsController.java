@@ -55,14 +55,7 @@ public class managePaymentsController implements Initializable, EventHandler<Eve
     {
         setupMnemonics();
 
-        try
-        {
-            filteredClients = Client.searchQuery("active", "Yes", "AND moneyOwed > 0");
-        }
-        catch (SQLException e)
-        {
-            e.printStackTrace();
-        }
+        filteredClients = Client.searchQuery("moneyOwed", "0.0", ">");
 
         searchFilter.getItems().addAll(
                 "None",
@@ -120,17 +113,7 @@ public class managePaymentsController implements Initializable, EventHandler<Eve
 
         switch(buttonId)
         {
-            case "search" ->
-                    {
-                        try
-                        {
-                            onSearch();
-                        }
-                        catch (SQLException e)
-                        {
-                            e.printStackTrace();
-                        }
-                    }
+            case "search" -> onSearch();
             case "payClient" ->
                     {
                         if(thisClient != null)
@@ -209,14 +192,23 @@ public class managePaymentsController implements Initializable, EventHandler<Eve
         payClient.setTooltip(new Tooltip("Alt+P"));
     }
 
-    private void onSearch() throws SQLException
+    private void onSearch()
     {
         if(searchFilter.getSelectionModel().getSelectedItem().equals("None"))
             queryTable.setItems(filteredClients);
         else
         {
-            ObservableList<Client> filteredList = Client.searchQuery(searchFilter.getSelectionModel().getSelectedItem(), searchQuery.getText(), "AND moneyOwed > 0");
-            queryTable.setItems(filteredList);
+            if(searchFilter.getSelectionModel().getSelectedItem().equals("moneyOwed"))
+            {
+
+                ObservableList<Client> filteredList = Client.searchQuery("moneyOwed", searchQuery.getText(), ">");
+                queryTable.setItems(filteredList);
+            }
+            else
+            {
+                ObservableList<Client> filteredList = Client.searchQuery(searchFilter.getSelectionModel().getSelectedItem(), searchQuery.getText(), "");
+                queryTable.setItems(filteredList);
+            }
         }
     }
 }

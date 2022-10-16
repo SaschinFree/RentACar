@@ -30,7 +30,7 @@
                <content>
                   <VBox fx:id="insideScroll" prefHeight="305.0" prefWidth="890.0" style="-fx-background-color: #8d918d;">
                      <children>
-                        <HBox fx:id="amountBox" prefHeight="50.0" prefWidth="200.0">
+                        <HBox fx:id="amountBox" prefHeight="30.0" prefWidth="200.0">
                            <children>
                               <Label fx:id="amountLabel" prefWidth="200.0" text="Amount">
                                  <font>
@@ -41,7 +41,7 @@
                                     <Font size="16.0" />
                                  </font></Label>
                            </children></HBox>
-                        <HBox fx:id="dateBox" prefHeight="50.0" prefWidth="200.0">
+                        <HBox fx:id="dateBox" prefHeight="30.0" prefWidth="200.0">
                            <children>
                               <Label fx:id="dateLabel" prefWidth="200.0" text="Date">
                                  <font>

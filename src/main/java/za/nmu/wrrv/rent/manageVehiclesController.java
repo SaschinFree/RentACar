@@ -120,17 +120,7 @@ public class manageVehiclesController implements Initializable, EventHandler<Eve
         String buttonId = thisButton.getId();
         switch (buttonId)
         {
-            case "search" ->
-                    {
-                        try
-                        {
-                            onSearch();
-                        }
-                        catch (SQLException e)
-                        {
-                            e.printStackTrace();
-                        }
-                    }
+            case "search" -> onSearch();
             case "addVehicle" ->
                     {
                         try
@@ -212,7 +202,7 @@ public class manageVehiclesController implements Initializable, EventHandler<Eve
         back.setTooltip(new Tooltip("Alt+B"));
     }
 
-    private void onSearch() throws SQLException
+    private void onSearch()
     {
         if(searchFilter.getSelectionModel().getSelectedItem().equals("None"))
             vehicleTable.setItems(baseController.vehicles);
@@ -230,7 +220,7 @@ public class manageVehiclesController implements Initializable, EventHandler<Eve
                         vehicleTable.setItems(null);
                     else
                     {
-                        ObservableList<Vehicle> filteredList = Vehicle.searchQuery(searchFilter.getSelectionModel().getSelectedItem(), searchQuery.getText(), "");
+                        ObservableList<Vehicle> filteredList = Vehicle.searchQuery(searchFilter.getSelectionModel().getSelectedItem(), thisDate);
                         vehicleTable.setItems(filteredList);
                     }
                 }
@@ -239,7 +229,7 @@ public class manageVehiclesController implements Initializable, EventHandler<Eve
             }
             else
             {
-                ObservableList<Vehicle> filteredList = Vehicle.searchQuery(searchFilter.getSelectionModel().getSelectedItem(), searchQuery.getText(), "");
+                ObservableList<Vehicle> filteredList = Vehicle.searchQuery(searchFilter.getSelectionModel().getSelectedItem(), searchQuery.getText());
                 vehicleTable.setItems(filteredList);
             }
         }

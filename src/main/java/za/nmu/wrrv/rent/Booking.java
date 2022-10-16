@@ -3,6 +3,7 @@ package za.nmu.wrrv.rent;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import net.ucanaccess.converters.Functions;
 
 import java.sql.Date;
 import java.sql.ResultSet;
@@ -75,59 +76,63 @@ public class Booking
         }
         return bookingList;
     }
-    public static ObservableList<Booking> searchQuery(String tableColumn, String searchQuery, String extraParameter) throws SQLException
+    public static ObservableList<Booking> searchQuery(String tableColumn, String search)
     {
-        ObservableList<Booking> thisList = FXCollections.observableArrayList();
-        String sql;
+        String uppercase = String.valueOf(search.charAt(0)).toUpperCase();
+        String finalUppercase = search.replace(String.valueOf(search.charAt(0)), uppercase);
 
-        searchQuery = searchQuery.replace("/", "-");
-        if(searchQuery.contains("-"))
-            sql = "SELECT * FROM Booking WHERE " + tableColumn + " = \'" + Date.valueOf(searchQuery) + "\' " + extraParameter + "";
-        else
+        switch(tableColumn)
         {
-            if(searchQuery.equals("yes") || searchQuery.equals("no"))
-                searchQuery = searchQuery.replace(String.valueOf(searchQuery.charAt(0)), String.valueOf(searchQuery.charAt(0)).toUpperCase());
-            if(searchQuery.equals(".") | searchQuery.equals("Yes") | searchQuery.contains("No"))
-                sql = "SELECT * FROM Booking WHERE " + tableColumn + " = " + searchQuery + " " + extraParameter + "";
-            else
-                sql = "SELECT * FROM Booking WHERE " + tableColumn + " LIKE \'" + "%" + searchQuery + "%" + "\' " + extraParameter + "";
+            case "bookingNumber" ->
+                    {
+                        if(Functions.isNumeric(search))
+                            return FXCollections.observableArrayList(bookingList.stream().filter(booking -> booking.isActive() && String.valueOf(booking.getBookingNumber()).contains(search)).toList());
+                    }
+            case "clientNumber" ->
+                    {
+                        if(Functions.isNumeric(search))
+                            return FXCollections.observableArrayList(bookingList.stream().filter(booking -> booking.isActive() && String.valueOf(booking.getClientNumber()).contains(search)).toList());
+                    }
+            case "vehicleRegistration" ->
+                    {
+                        return FXCollections.observableArrayList(bookingList.stream().filter(booking -> booking.isActive() && booking.getVehicleRegistration().contains(search)).toList());
+                    }
+            case "startDate" ->
+                    {
+                        return FXCollections.observableArrayList(bookingList.stream().filter(booking -> booking.isActive() && booking.getStartDate().equals(Date.valueOf(search))).toList());
+                    }
+            case "endDate" ->
+                    {
+                        return FXCollections.observableArrayList(bookingList.stream().filter(booking -> booking.isActive() && booking.getEndDate().equals(Date.valueOf(search))).toList());
+                    }
+            case "cost" ->
+                    {
+                        if(Functions.isNumeric(search))
+                            return FXCollections.observableArrayList(bookingList.stream().filter(booking -> booking.isActive() && booking.getCost() == Double.parseDouble(search)).toList());
+                    }
+            case "companyCommission" ->
+                    {
+                        if(Functions.isNumeric(search))
+                            return FXCollections.observableArrayList(bookingList.stream().filter(booking -> booking.isActive() && booking.getCompanyCommission() == Double.parseDouble(search)).toList());
+                    }
+            case "ownerCommission" ->
+                    {
+                        if(Functions.isNumeric(search))
+                            return FXCollections.observableArrayList(bookingList.stream().filter(booking -> booking.isActive() && booking.getOwnerCommission() == Double.parseDouble(search)).toList());
+                    }
+            case "isBeingRented" ->
+                    {
+                        if (finalUppercase.equals("Yes") || finalUppercase.equals("No"))
+                            return FXCollections.observableArrayList(bookingList.stream().filter(booking -> booking.isActive() && booking.isIsBeingRented().equals(finalUppercase)).toList());
+                    }
+            case "hasPaid" ->
+                    {
+                        if (finalUppercase.equals("Yes") || finalUppercase.equals("No"))
+                            return FXCollections.observableArrayList(bookingList.stream().filter(booking -> booking.isActive() && booking.isHasPaid().equals(finalUppercase)).toList());
+                    }
         }
 
-        ResultSet result = RentACar.statement.executeQuery(sql);
-
-        while(result.next())
-        {
-            int thisBookingNumber = result.getInt("bookingNumber");
-            int thisClientNumber = result.getInt("clientNumber");
-            String thisVehicleRegistration = result.getString("vehicleRegistration");
-            Date thisStartDate = result.getDate("startDate");
-            Date thisEndDate = result.getDate("endDate");
-            double thisCost = result.getDouble("cost");
-            int thisCompanyCommission = result.getInt("companyCommission");
-            int thisOwnerCommission = result.getInt("ownerCommission");
-            boolean thisBeingRented = result.getBoolean("isBeingRented");
-
-            String rented = "No";
-            if(thisBeingRented)
-                rented = "Yes";
-
-            boolean thisPaid = result.getBoolean("hasPaid");
-
-            String paid = "No";
-            if(thisPaid)
-                paid = "Yes";
-
-            boolean thisActive = result.getBoolean("active");
-
-            if(thisActive)
-            {
-                Booking thisBooking = new Booking(thisBookingNumber, thisClientNumber, thisVehicleRegistration, thisStartDate, thisEndDate, thisCost, thisCompanyCommission, thisOwnerCommission, rented, paid);
-                thisList.add(thisBooking);
-
-                thisBooking.setActive(true);
-            }
-        }
-        return thisList;
+        return null;
     }
 
     public int getBookingNumber()
@@ -137,10 +142,6 @@ public class Booking
     public IntegerProperty bookingNumberProperty()
     {
         return bookingNumber;
-    }
-    public void setBookingNumber(int bookingNumber)
-    {
-        this.bookingNumber.set(bookingNumber);
     }
 
     public int getClientNumber() {
@@ -166,18 +167,12 @@ public class Booking
     public Date getStartDate() {
         return startDate.getValue();
     }
-    public Property<Date> startDateProperty() {
-        return startDate;
-    }
     public void setStartDate(Date startDate) {
         this.startDate.setValue(startDate);
     }
 
     public Date getEndDate() {
         return endDate.getValue();
-    }
-    public Property<Date> endDateProperty() {
-        return endDate;
     }
     public void setEndDate(Date endDate) {
         this.endDate.setValue(endDate);
@@ -196,28 +191,13 @@ public class Booking
     public double getCompanyCommission() {
         return companyCommission.get();
     }
-    public DoubleProperty companyCommissionProperty() {
-        return companyCommission;
-    }
-    public void setCompanyCommission(double companyCommission) {
-        this.companyCommission.set(companyCommission);
-    }
 
     public double getOwnerCommission() {
         return ownerCommission.get();
     }
-    public DoubleProperty ownerCommissionProperty() {
-        return ownerCommission;
-    }
-    public void setOwnerCommission(double ownerCommission) {
-        this.ownerCommission.set(ownerCommission);
-    }
 
     public String isIsBeingRented() {
         return isBeingRented.get();
-    }
-    public StringProperty isBeingRentedProperty() {
-        return isBeingRented;
     }
     public void setIsBeingRented(String isBeingRented) {
         this.isBeingRented.set(isBeingRented);
@@ -226,18 +206,12 @@ public class Booking
     public String isHasPaid() {
         return hasPaid.get();
     }
-    public StringProperty hasPaidProperty() {
-        return hasPaid;
-    }
     public void setHasPaid(String hasPaid) {
         this.hasPaid.set(hasPaid);
     }
 
     public boolean isActive() {
         return active.get();
-    }
-    public BooleanProperty activeProperty() {
-        return active;
     }
     public void setActive(boolean active) {
         this.active.set(active);

@@ -123,17 +123,7 @@ public class manageClientsController implements Initializable, EventHandler<Even
 
         switch(buttonId)
         {
-            case "search" ->
-                    {
-                        try
-                        {
-                            onSearch();
-                        }
-                        catch (SQLException e)
-                        {
-                            e.printStackTrace();
-                        }
-                    }
+            case "search" -> onSearch();
             case "addClient" ->
                     {
                         try
@@ -212,35 +202,43 @@ public class manageClientsController implements Initializable, EventHandler<Even
         back.setTooltip(new Tooltip("Alt+B"));
     }
 
-    private void onSearch() throws SQLException
+    private void onSearch()
     {
         if(searchFilter.getSelectionModel().getSelectedItem().equals("None"))
             clientTable.setItems(baseController.clients);
         else
         {
-            if(searchQuery.getText().contains("/") || searchQuery.getText().contains("-"))
+            if(searchFilter.getSelectionModel().getSelectedItem().equals("moneyOwed"))
             {
-                String thisDate = searchQuery.getText();
-                thisDate = thisDate.replace("/", "-");
-
-                if(baseController.errorValidationCheck(baseController.letterArray, thisDate) || baseController.symbolCheck(thisDate, '-'))
-                {
-                    String[] split = thisDate.split("-");
-                    if(split[0].length() != 4 || split[1].length() != 2 || Integer.parseInt(split[1]) < 1 || Integer.parseInt(split[1]) > 12 || split[2].length() != 2)
-                        clientTable.setItems(null);
-                    else
-                    {
-                        ObservableList<Client> filteredList = Client.searchQuery(searchFilter.getSelectionModel().getSelectedItem(), searchQuery.getText(), "");
-                        clientTable.setItems(filteredList);
-                    }
-                }
-                else
-                    clientTable.setItems(null);
+                ObservableList<Client> filteredList = Client.searchQuery("moneyOwed", searchQuery.getText(), "=");
+                clientTable.setItems(filteredList);
             }
             else
             {
-                ObservableList<Client> filteredList = Client.searchQuery(searchFilter.getSelectionModel().getSelectedItem(), searchQuery.getText(), "");
-                clientTable.setItems(filteredList);
+                if(searchQuery.getText().contains("/") || searchQuery.getText().contains("-"))
+                {
+                    String thisDate = searchQuery.getText();
+                    thisDate = thisDate.replace("/", "-");
+
+                    if(baseController.errorValidationCheck(baseController.letterArray, thisDate) || baseController.symbolCheck(thisDate, '-'))
+                    {
+                        String[] split = thisDate.split("-");
+                        if(split[0].length() != 4 || split[1].length() != 2 || Integer.parseInt(split[1]) < 1 || Integer.parseInt(split[1]) > 12 || split[2].length() != 2)
+                            clientTable.setItems(null);
+                        else
+                        {
+                            ObservableList<Client> filteredList = Client.searchQuery(searchFilter.getSelectionModel().getSelectedItem(), thisDate, "");
+                            clientTable.setItems(filteredList);
+                        }
+                    }
+                    else
+                        clientTable.setItems(null);
+                }
+                else
+                {
+                    ObservableList<Client> filteredList = Client.searchQuery(searchFilter.getSelectionModel().getSelectedItem(), searchQuery.getText(), "");
+                    clientTable.setItems(filteredList);
+                }
             }
         }
     }

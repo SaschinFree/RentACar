@@ -3,6 +3,7 @@ package za.nmu.wrrv.rent;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import net.ucanaccess.converters.Functions;
 
 import java.sql.Date;
 import java.sql.ResultSet;
@@ -11,18 +12,18 @@ import java.sql.SQLException;
 public class Vehicle
 {
     protected static final ObservableList<Vehicle> vehicleList = FXCollections.observableArrayList();
-    private StringProperty vehicleRegistration = new SimpleStringProperty();
-    private IntegerProperty clientNumber = new SimpleIntegerProperty();
-    private Property<Date> registrationExpiryDate = new SimpleObjectProperty<>();
-    private StringProperty insured = new SimpleStringProperty();
-    private StringProperty make = new SimpleStringProperty();
-    private StringProperty model = new SimpleStringProperty();
-    private StringProperty colour = new SimpleStringProperty();
-    private IntegerProperty seats = new SimpleIntegerProperty();
-    private Property<Date> startDate = new SimpleObjectProperty<>();
-    private Property<Date> endDate = new SimpleObjectProperty<>();
-    private DoubleProperty costMultiplier = new SimpleDoubleProperty();
-    private BooleanProperty active = new SimpleBooleanProperty();
+    private final StringProperty vehicleRegistration = new SimpleStringProperty();
+    private final IntegerProperty clientNumber = new SimpleIntegerProperty();
+    private final Property<Date> registrationExpiryDate = new SimpleObjectProperty<>();
+    private final StringProperty insured = new SimpleStringProperty();
+    private final StringProperty make = new SimpleStringProperty();
+    private final StringProperty model = new SimpleStringProperty();
+    private final StringProperty colour = new SimpleStringProperty();
+    private final IntegerProperty seats = new SimpleIntegerProperty();
+    private final Property<Date> startDate = new SimpleObjectProperty<>();
+    private final Property<Date> endDate = new SimpleObjectProperty<>();
+    private final DoubleProperty costMultiplier = new SimpleDoubleProperty();
+    private final BooleanProperty active = new SimpleBooleanProperty();
 
     public Vehicle(String vehicleRegistration, int clientNumber, Date registrationExpiryDate, String insured, String make, String model, String colour, int seats, Date startDate, Date endDate, double costMultiplier)
     {
@@ -75,56 +76,63 @@ public class Vehicle
         }
         return vehicleList;
     }
-    public static ObservableList<Vehicle> searchQuery(String tableColumn, String searchQuery, String extraParameter) throws SQLException
+    public static ObservableList<Vehicle> searchQuery(String tableColumn, String search)
     {
-        ObservableList<Vehicle> thisList = FXCollections.observableArrayList();
-        String sql;
+        String uppercase = String.valueOf(search.charAt(0)).toUpperCase();
+        String finalUppercase = search.replace(String.valueOf(search.charAt(0)), uppercase);
 
-        searchQuery = searchQuery.replace("/", "-");
-        if(searchQuery.contains("-"))
-            sql = "SELECT * FROM Vehicle WHERE " + tableColumn + " = \'" + Date.valueOf(searchQuery) + "\' " + extraParameter + "";
-        else
+        switch (tableColumn)
         {
-            if(searchQuery.equals("yes") || searchQuery.equals("no"))
-                searchQuery = searchQuery.replace(String.valueOf(searchQuery.charAt(0)), String.valueOf(searchQuery.charAt(0)).toUpperCase());
-            if(searchQuery.equals(".") || searchQuery.equals("Yes") || searchQuery.contains("No"))
-                sql = "SELECT * FROM Vehicle WHERE " + tableColumn + " = " + searchQuery + " " + extraParameter + "";
-            else
-                sql = "SELECT * FROM Vehicle WHERE " + tableColumn + " LIKE \'" + "%" + searchQuery + "%" + "\' " + extraParameter + "";
+            case "vehicleRegistration" ->
+                    {
+                        return FXCollections.observableArrayList(vehicleList.stream().filter(vehicle -> vehicle.isActive() && vehicle.getVehicleRegistration().contains(search)).toList());
+                    }
+            case "clientNumber" ->
+                    {
+                        if(Functions.isNumeric(search))
+                            return FXCollections.observableArrayList(vehicleList.stream().filter(vehicle -> vehicle.isActive() && String.valueOf(vehicle.getClientNumber()).contains(search)).toList());
+                    }
+            case "registrationExpiryDate" ->
+                    {
+                        return FXCollections.observableArrayList(vehicleList.stream().filter(vehicle -> vehicle.isActive() && vehicle.getRegistrationExpiryDate().equals(Date.valueOf(search))).toList());
+                    }
+            case "insured" ->
+                    {
+                        if(finalUppercase.equals("Yes") || finalUppercase.equals("No"))
+                            return FXCollections.observableArrayList(vehicleList.stream().filter(vehicle -> vehicle.isActive() && vehicle.isInsured().equals(finalUppercase)).toList());
+                    }
+            case "make" ->
+                    {
+                        return FXCollections.observableArrayList(vehicleList.stream().filter(vehicle -> vehicle.isActive() && vehicle.getMake().contains(search)).toList());
+                    }
+            case "model" ->
+                    {
+                        return FXCollections.observableArrayList(vehicleList.stream().filter(vehicle -> vehicle.isActive() && vehicle.getModel().contains(search)).toList());
+                    }
+            case "colour" ->
+                    {
+                        return FXCollections.observableArrayList(vehicleList.stream().filter(vehicle -> vehicle.isActive() && vehicle.getColour().contains(search)).toList());
+                    }
+            case "seats" ->
+                    {
+                        if(Functions.isNumeric(search))
+                            return FXCollections.observableArrayList(vehicleList.stream().filter(vehicle -> vehicle.isActive() && vehicle.getSeats() == Integer.parseInt(search)).toList());
+                    }
+            case "startDate" ->
+                    {
+                        return FXCollections.observableArrayList(vehicleList.stream().filter(vehicle -> vehicle.isActive() && vehicle.getStartDate().equals(Date.valueOf(search))).toList());
+                    }
+            case "endDate" ->
+                    {
+                        return FXCollections.observableArrayList(vehicleList.stream().filter(vehicle -> vehicle.isActive() && vehicle.getEndDate().equals(Date.valueOf(search))).toList());
+                    }
+            case "costMultiplier" ->
+                    {
+                        return FXCollections.observableArrayList(vehicleList.stream().filter(vehicle -> vehicle.isActive() && vehicle.getCostMultiplier() == Double.parseDouble(search)).toList());
+                    }
         }
 
-        ResultSet result = RentACar.statement.executeQuery(sql);
-
-        while(result.next())
-        {
-            String thisVehicleRegistration = result.getString("vehicleRegistration");
-            int thisClientNumber = result.getInt("clientNumber");
-            Date thisRegistrationExpiryDate = result.getDate("registrationExpiryDate");
-            boolean thisInsured = result.getBoolean("insured");
-
-            String isInsured = "No";
-            if(thisInsured)
-                isInsured = "Yes";
-
-            String thisMake = result.getString("make");
-            String thisModel = result.getString("model");
-            String thisColour = result.getString("colour");
-            int thisSeats = result.getInt("seats");
-            Date thisStartDate = result.getDate("startDate");
-            Date thisEndDate = result.getDate("endDate");
-            int thisCostMultiplier = result.getInt("costMultiplier");
-
-            boolean thisActive = result.getBoolean("active");
-
-            if(thisActive)
-            {
-                Vehicle thisVehicle = new Vehicle(thisVehicleRegistration, thisClientNumber, thisRegistrationExpiryDate, isInsured, thisMake, thisModel, thisColour, thisSeats, thisStartDate, thisEndDate, thisCostMultiplier);
-                thisList.add(thisVehicle);
-
-                thisVehicle.setActive(true);
-            }
-        }
-        return thisList;
+        return null;
     }
 
     public String getVehicleRegistration() {
@@ -140,9 +148,6 @@ public class Vehicle
     public int getClientNumber() {
         return clientNumber.get();
     }
-    public IntegerProperty clientNumberProperty() {
-        return clientNumber;
-    }
     public void setClientNumber(int clientNumber) {
         this.clientNumber.set(clientNumber);
     }
@@ -150,18 +155,12 @@ public class Vehicle
     public Date getRegistrationExpiryDate() {
         return registrationExpiryDate.getValue();
     }
-    public Property<Date> registrationExpiryDateProperty() {
-        return registrationExpiryDate;
-    }
     public void setRegistrationExpiryDate(Date registrationExpiryDate) {
         this.registrationExpiryDate.setValue(registrationExpiryDate);
     }
 
     public String isInsured() {
         return insured.get();
-    }
-    public StringProperty insuredProperty() {
-        return insured;
     }
     public void setInsured(String insured) {
         this.insured.set(insured);
@@ -173,9 +172,6 @@ public class Vehicle
     public StringProperty makeProperty() {
         return make;
     }
-    public void setMake(String make) {
-        this.make.set(make);
-    }
 
     public String getModel() {
         return model.get();
@@ -183,15 +179,9 @@ public class Vehicle
     public StringProperty modelProperty() {
         return model;
     }
-    public void setModel(String model) {
-        this.model.set(model);
-    }
 
     public String getColour() {
         return colour.get();
-    }
-    public StringProperty colourProperty() {
-        return colour;
     }
     public void setColour(String colour) {
         this.colour.set(colour);
@@ -203,15 +193,9 @@ public class Vehicle
     public IntegerProperty seatsProperty() {
         return seats;
     }
-    public void setSeats(int seats) {
-        this.seats.set(seats);
-    }
 
     public Date getStartDate() {
         return startDate.getValue();
-    }
-    public Property<Date> startDateProperty() {
-        return startDate;
     }
     public void setStartDate(Date startDate) {
         this.startDate.setValue(startDate);
@@ -219,9 +203,6 @@ public class Vehicle
 
     public Date getEndDate() {
         return endDate.getValue();
-    }
-    public Property<Date> endDateProperty() {
-        return endDate;
     }
     public void setEndDate(Date endDate) {
         this.endDate.setValue(endDate);
@@ -240,10 +221,6 @@ public class Vehicle
     public boolean isActive()
     {
         return active.get();
-    }
-    public BooleanProperty activeProperty()
-    {
-        return active;
     }
     public void setActive(boolean active)
     {

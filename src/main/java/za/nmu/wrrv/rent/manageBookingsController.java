@@ -111,17 +111,7 @@ public class manageBookingsController implements Initializable, EventHandler<Eve
         String buttonId = thisButton.getId();
         switch(buttonId)
         {
-            case "search" ->
-                    {
-                        try
-                        {
-                            onSearch();
-                        }
-                        catch (SQLException e)
-                        {
-                            e.printStackTrace();
-                        }
-                    }
+            case "search" -> onSearch();
             case "addBooking" ->
                     {
                         try
@@ -199,7 +189,7 @@ public class manageBookingsController implements Initializable, EventHandler<Eve
         back.setTooltip(new Tooltip("Alt+B"));
     }
 
-    private void onSearch() throws SQLException
+    private void onSearch()
     {
         if(searchFilter.getSelectionModel().getSelectedItem().equals("None"))
             bookingTable.setItems(baseController.bookings);
@@ -217,7 +207,7 @@ public class manageBookingsController implements Initializable, EventHandler<Eve
                         bookingTable.setItems(null);
                     else
                     {
-                        ObservableList<Booking> filteredList = Booking.searchQuery(searchFilter.getSelectionModel().getSelectedItem(), searchQuery.getText(), "");
+                        ObservableList<Booking> filteredList = Booking.searchQuery(searchFilter.getSelectionModel().getSelectedItem(), thisDate);
                         bookingTable.setItems(filteredList);
                     }
                 }
@@ -226,7 +216,7 @@ public class manageBookingsController implements Initializable, EventHandler<Eve
             }
             else
             {
-                ObservableList<Booking> filteredList = Booking.searchQuery(searchFilter.getSelectionModel().getSelectedItem(), searchQuery.getText(), "");
+                ObservableList<Booking> filteredList = Booking.searchQuery(searchFilter.getSelectionModel().getSelectedItem(), searchQuery.getText());
                 bookingTable.setItems(filteredList);
             }
         }

@@ -31,7 +31,7 @@
                <content>
                   <VBox fx:id="insideScroll" prefHeight="305.0" prefWidth="890.0" style="-fx-background-color: #8d918d;">
                      <children>
-                        <HBox fx:id="regBox" prefHeight="50.0" prefWidth="200.0">
+                        <HBox fx:id="regBox" prefHeight="30.0" prefWidth="200.0">
                            <children>
                               <Label fx:id="regLabel" prefWidth="200.0" text="Vehicle Registration">
                                  <font>
@@ -44,7 +44,7 @@
                                  </font>
                               </Label>
                            </children></HBox>
-                        <HBox fx:id="overdueBox" prefHeight="50.0" prefWidth="200.0">
+                        <HBox fx:id="overdueBox" prefHeight="30.0" prefWidth="200.0">
                            <children>
                               <Label fx:id="overdueLabel" prefWidth="200.0" text="Days Overdue">
                                  <font>
@@ -55,7 +55,7 @@
                                     <Font size="16.0" />
                                  </font></Label>
                            </children></HBox>
-                        <HBox fx:id="makeModelBox" layoutX="10.0" layoutY="60.0" prefHeight="50.0" prefWidth="200.0">
+                        <HBox fx:id="makeModelBox" layoutX="10.0" layoutY="60.0" prefHeight="30.0" prefWidth="200.0">
                            <children>
                               <Label fx:id="makeModelLabel" prefWidth="200.0" text="Vehicle Make &amp; Model">
                                  <font>
@@ -69,7 +69,7 @@
                               </Label>
                            </children>
                         </HBox>
-                        <HBox fx:id="nameSurnameBox" layoutX="10.0" layoutY="110.0" prefHeight="50.0" prefWidth="200.0">
+                        <HBox fx:id="nameSurnameBox" layoutX="10.0" layoutY="110.0" prefHeight="30.0" prefWidth="200.0">
                            <children>
                               <Label fx:id="nameSurnameLabel" prefWidth="200.0" text="Client Name &amp; Surname">
                                  <font>
@@ -83,7 +83,7 @@
                               </Label>
                            </children>
                         </HBox>
-                        <HBox fx:id="contactBox" layoutX="10.0" layoutY="160.0" prefHeight="50.0" prefWidth="200.0">
+                        <HBox fx:id="contactBox" layoutX="10.0" layoutY="160.0" prefHeight="30.0" prefWidth="200.0">
                            <children>
                               <Label fx:id="contactLabel" prefWidth="200.0" text="Client Contact Details">
                                  <font>

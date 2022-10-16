@@ -47,14 +47,9 @@ public class dispatchVehicleController implements Initializable, EventHandler<Ev
     {
         setupMnemonics();
 
-        try
-        {
-            filteredBookings = Booking.searchQuery("startDate", String.valueOf(LocalDate.now()), "AND isBeingRented = No AND hasPaid = Yes");
-        }
-        catch (SQLException e)
-        {
-            e.printStackTrace();
-        }
+        filteredBookings = Booking.searchQuery("startDate", String.valueOf(LocalDate.now()));
+        if(filteredBookings != null)
+            filteredBookings = FXCollections.observableArrayList(filteredBookings.stream().filter(booking -> booking.isIsBeingRented().equals("No") && booking.isHasPaid().equals("Yes")).toList());
 
         searchFilter.getItems().addAll(
                 "None",
@@ -97,16 +92,7 @@ public class dispatchVehicleController implements Initializable, EventHandler<Ev
         String buttonId = thisButton.getId();
         switch(buttonId)
         {
-            case "search" ->
-                    {
-                        try
-                        {
-                            onSearch();
-                        } catch (SQLException e)
-                        {
-                            e.printStackTrace();
-                        }
-                    }
+            case "search" -> onSearch();
             case "dispatchVehicle" ->
                     {
                         if(thisBooking != null)
@@ -166,7 +152,7 @@ public class dispatchVehicleController implements Initializable, EventHandler<Ev
         dispatchVehicle.setTooltip(new Tooltip("Alt+D"));
     }
 
-    private void onSearch() throws SQLException
+    private void onSearch()
     {
         if(searchFilter.getSelectionModel().getSelectedItem().equals("None"))
             filteredTable.setItems(filteredBookings);
@@ -184,7 +170,9 @@ public class dispatchVehicleController implements Initializable, EventHandler<Ev
                         filteredTable.setItems(null);
                     else
                     {
-                        ObservableList<Booking> filteredList = Booking.searchQuery(searchFilter.getSelectionModel().getSelectedItem(), searchQuery.getText(), "AND isBeingRented = No");
+                        ObservableList<Booking> filteredList = Booking.searchQuery(searchFilter.getSelectionModel().getSelectedItem(), thisDate);
+                        if(filteredList != null)
+                            filteredList = FXCollections.observableList(filteredList.stream().filter(booking -> booking.isIsBeingRented().equals("No") && booking.isHasPaid().equals("Yes")).toList());
                         filteredTable.setItems(filteredList);
                     }
                 }
@@ -193,7 +181,9 @@ public class dispatchVehicleController implements Initializable, EventHandler<Ev
             }
             else
             {
-                ObservableList<Booking> filteredList = Booking.searchQuery(searchFilter.getSelectionModel().getSelectedItem(), searchQuery.getText(), "AND isBeingRented = No");
+                ObservableList<Booking> filteredList = Booking.searchQuery(searchFilter.getSelectionModel().getSelectedItem(), searchQuery.getText());
+                if(filteredList != null)
+                    filteredList = FXCollections.observableList(filteredList.stream().filter(booking -> booking.isIsBeingRented().equals("No") && booking.isHasPaid().equals("Yes")).toList());
                 filteredTable.setItems(filteredList);
             }
         }
@@ -213,7 +203,7 @@ public class dispatchVehicleController implements Initializable, EventHandler<Ev
         }
         filteredBookings.removeAll(thisBooking);
 
-        ObservableList<Vehicle> clientVehicle = Vehicle.searchQuery("vehicleRegistration", String.valueOf(thisBooking.getVehicleRegistration()), "");
+        ObservableList<Vehicle> clientVehicle = Vehicle.searchQuery("vehicleRegistration", String.valueOf(thisBooking.getVehicleRegistration()));
         Vehicle thisVehicle = clientVehicle.get(0);
 
         String updateClient = "UPDATE Client SET moneyOwed = \'" + thisBooking.getOwnerCommission() + "\' WHERE clientNumber = \'" + thisVehicle.getClientNumber() + "\'";

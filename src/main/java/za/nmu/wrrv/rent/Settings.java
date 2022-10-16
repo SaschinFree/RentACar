@@ -9,6 +9,7 @@ import javafx.collections.ObservableList;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 public class Settings
 {
@@ -35,18 +36,13 @@ public class Settings
         }
         return settingsList;
     }
-    public static Settings getSetting(String settingName) throws SQLException
+    public static Settings getSetting(String settingName)
     {
-        String sql = "SELECT * FROM Settings WHERE settingName = \'" + settingName + "\'";
-        ResultSet result = RentACar.statement.executeQuery(sql);
+        List<Settings> thisSetting = settingsList.stream().filter(setting -> setting.getSettingName().equals(settingName)).toList();
 
-        if(result.next())
-        {
-            String thisSettingName = result.getString("settingName");
-            double thisSettingValue = result.getDouble("settingValue");
+        if (thisSetting.size() > 0)
+            return thisSetting.get(0);
 
-            return new Settings(thisSettingName, thisSettingValue);
-        }
         return null;
     }
 
@@ -58,18 +54,10 @@ public class Settings
     {
         return settingName;
     }
-    public void setSettingName(String settingName)
-    {
-        this.settingName.set(settingName);
-    }
 
     public double getSettingValue()
     {
         return settingValue.get();
-    }
-    public DoubleProperty settingValueProperty()
-    {
-        return settingValue;
     }
     public void setSettingValue(double settingValue)
     {

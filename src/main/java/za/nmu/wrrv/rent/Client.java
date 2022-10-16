@@ -3,10 +3,12 @@ package za.nmu.wrrv.rent;
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import net.ucanaccess.converters.Functions;
 
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 
 public class Client
 {
@@ -79,64 +81,91 @@ public class Client
         }
         return clientList;
     }
-    public static ObservableList<Client> searchQuery(String tableColumn, String searchQuery, String extraParameter) throws SQLException
+    public static ObservableList<Client> searchQuery(String tableColumn, String search, String extraParameter)
     {
-        ObservableList<Client> thisList = FXCollections.observableArrayList();
-        String sql;
-
-        searchQuery = searchQuery.replace("/", "-");
-        if(searchQuery.contains("-"))
-            sql = "SELECT * FROM Client WHERE " + tableColumn + " = \'" + Date.valueOf(searchQuery) + "\' " + extraParameter + "";
-        else
+        switch(tableColumn)
         {
-            if(searchQuery.contains("@"))
-                sql = "SELECT * FROM Client WHERE " + tableColumn + " = \'" + searchQuery + "\' " + extraParameter + "";
-            else
-            {
-                if(searchQuery.contains(".") || searchQuery.contains("Yes") || searchQuery.contains("No"))
-                    sql = "SELECT * FROM Client WHERE " + tableColumn + " = " + searchQuery + " " + extraParameter  + "";
-                else
-                    sql = "SELECT * FROM Client WHERE " + tableColumn + " LIKE \'" + "%" + searchQuery + "%" + "\' " + extraParameter + "";
-            }
+            case "clientNumber" ->
+                    {
+                        if(Functions.isNumeric(search))
+                            return FXCollections.observableArrayList(clientList.stream().filter(client -> client.isActive() && String.valueOf(client.getClientNumber()).contains(search)).toList());
+                    }
+            case "clientID" ->
+                    {
+                        return FXCollections.observableArrayList(clientList.stream().filter(client -> client.isActive() && client.getClientID().contains(search)).toList());
+                    }
+            case "firstName" ->
+                    {
+                        return FXCollections.observableArrayList(clientList.stream().filter(client -> client.isActive() && client.getFirstName().contains(search)).toList());
+                    }
+            case "surname" ->
+                    {
+                        return FXCollections.observableArrayList(clientList.stream().filter(client -> client.isActive() && client.getSurname().contains(search)).toList());
+                    }
+            case "contactNumber" ->
+                    {
+                        return FXCollections.observableArrayList(clientList.stream().filter(client -> client.isActive() && client.getContactNumber().contains(search)).toList());
+                    }
+            case "email" ->
+                    {
+                        return FXCollections.observableArrayList(clientList.stream().filter(client -> client.isActive() && client.getEmail().contains(search)).toList());
+                    }
+            case "licenceExpiryDate" ->
+                    {
+                        return FXCollections.observableArrayList(clientList.stream().filter(client -> client.isActive() && client.getLicenceExpiryDate().equals(Date.valueOf(search))).toList());
+                    }
+            case "streetNumber" ->
+                    {
+                        return FXCollections.observableArrayList(clientList.stream().filter(client -> client.isActive() && client.getStreetNumber().contains(search)).toList());
+                    }
+            case "streetName" ->
+                    {
+                        return FXCollections.observableArrayList(clientList.stream().filter(client -> client.isActive() && client.getStreetName().contains(search)).toList());
+                    }
+            case "suburb" ->
+                    {
+                        return FXCollections.observableArrayList(clientList.stream().filter(client -> client.isActive() && client.getSuburb().contains(search)).toList());
+                    }
+            case "city" ->
+                    {
+                        return FXCollections.observableArrayList(clientList.stream().filter(client -> client.isActive() && client.getCity().contains(search)).toList());
+                    }
+            case "postalCode" ->
+                    {
+                        return FXCollections.observableArrayList(clientList.stream().filter(client -> client.isActive() && client.getPostalCode().contains(search)).toList());
+                    }
+            case "companyName" ->
+                    {
+                        return FXCollections.observableArrayList(clientList.stream().filter(client -> client.isActive() && client.getCompanyName().contains(search)).toList());
+                    }
+            case "moneyOwed" ->
+                    {
+                        if(Functions.isNumeric(search))
+                        {
+                            switch(extraParameter)
+                            {
+                                case "<" ->
+                                        {
+                                            return FXCollections.observableArrayList(clientList.stream().filter(client -> client.isActive() && client.getMoneyOwed() < Double.parseDouble(search)).toList());
+                                        }
+                                case ">" ->
+                                        {
+                                            return FXCollections.observableArrayList(clientList.stream().filter(client -> client.isActive() && client.getMoneyOwed() > Double.parseDouble(search)).toList());
+                                        }
+                                case "=" ->
+                                        {
+                                            return FXCollections.observableArrayList(clientList.stream().filter(client -> client.isActive() && client.getMoneyOwed() == Double.parseDouble(search)).toList());
+                                        }
+                            }
+                        }
+                    }
         }
 
-        ResultSet result = RentACar.statement.executeQuery(sql);
-
-        while(result.next())
-        {
-            int thisClientNumber = result.getInt("clientNumber");
-            String thisClientID = result.getString("clientID");
-            String thisFirstName = result.getString("firstName");
-            String thisSurname = result.getString("surname");
-            String thisContactNumber = result.getString("contactNumber");
-            String thisEmail = result.getString("email");
-            Date thisLicenceExpiryDate = result.getDate("licenceExpiryDate");
-            String thisStreetNumber = result.getString("streetNumber");
-            String thisStreetName = result.getString("streetName");
-            String thisSuburb = result.getString("suburb");
-            String thisCity = result.getString("city");
-            String thisPostalCode = result.getString("postalCode");
-            String thisCompanyName = result.getString("companyName");
-            double thisMoneyOwed = result.getDouble("moneyOwed");
-
-            boolean thisActive = result.getBoolean("active");
-
-            if(thisActive)
-            {
-                Client thisClient = new Client(thisClientNumber, thisClientID, thisFirstName, thisSurname, thisContactNumber, thisEmail, thisLicenceExpiryDate, thisStreetNumber, thisStreetName, thisSuburb, thisCity, thisPostalCode, thisCompanyName, thisMoneyOwed);
-                thisList.add(thisClient);
-
-                thisClient.setActive(true);
-            }
-        }
-        return thisList;
+        return null;
     }
 
     public int getClientNumber() {
         return clientNumber.get();
-    }
-    public IntegerProperty clientNumberProperty() {
-        return clientNumber;
     }
     public void setClientNumber(int clientNumber) {
         this.clientNumber.set(clientNumber);
@@ -185,18 +214,12 @@ public class Client
     public String getEmail() {
         return email.get();
     }
-    public StringProperty emailProperty() {
-        return email;
-    }
     public void setEmail(String email) {
         this.email.set(email);
     }
 
     public Date getLicenceExpiryDate() {
         return licenceExpiryDate.getValue();
-    }
-    public Property<Date> licenceExpiryDateProperty() {
-        return licenceExpiryDate;
     }
     public void setLicenceExpiryDate(Date licenceExpiryDate) {
         this.licenceExpiryDate.setValue(licenceExpiryDate);
@@ -205,18 +228,12 @@ public class Client
     public String getStreetNumber() {
         return streetNumber.get();
     }
-    public StringProperty streetNumberProperty() {
-        return streetNumber;
-    }
     public void setStreetNumber(String streetNumber) {
         this.streetNumber.set(streetNumber);
     }
 
     public String getStreetName() {
         return streetName.get();
-    }
-    public StringProperty streetNameProperty() {
-        return streetName;
     }
     public void setStreetName(String streetName) {
         this.streetName.set(streetName);
@@ -225,18 +242,12 @@ public class Client
     public String getSuburb() {
         return suburb.get();
     }
-    public StringProperty suburbProperty() {
-        return suburb;
-    }
     public void setSuburb(String suburb) {
         this.suburb.set(suburb);
     }
 
     public String getPostalCode() {
         return postalCode.get();
-    }
-    public StringProperty postalCodeProperty() {
-        return postalCode;
     }
     public void setPostalCode(String postalCode) {
         this.postalCode.set(postalCode);
@@ -245,18 +256,12 @@ public class Client
     public String getCity() {
         return city.get();
     }
-    public StringProperty cityProperty() {
-        return city;
-    }
     public void setCity(String city) {
         this.city.set(city);
     }
 
     public String getCompanyName() {
         return companyName.get();
-    }
-    public StringProperty companyNameProperty() {
-        return companyName;
     }
     public void setCompanyName(String companyName) {
         this.companyName.set(companyName);
@@ -275,10 +280,6 @@ public class Client
     public boolean isActive()
     {
         return active.get();
-    }
-    public BooleanProperty activeProperty()
-    {
-        return active;
     }
     public void setActive(boolean active)
     {

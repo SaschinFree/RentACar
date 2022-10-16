@@ -48,14 +48,7 @@ public class returnVehicleController implements Initializable, EventHandler<Even
     {
         setupMnemonics();
 
-        try
-        {
-            filteredBookings = Booking.searchQuery("isBeingRented", "Yes", "");
-        }
-        catch (SQLException e)
-        {
-            e.printStackTrace();
-        }
+        filteredBookings = Booking.searchQuery("isBeingRented", "Yes");
 
         searchFilter.getItems().addAll(
                 "None",
@@ -98,17 +91,7 @@ public class returnVehicleController implements Initializable, EventHandler<Even
         String buttonId = thisButton.getId();
         switch(buttonId)
         {
-            case "search" ->
-                    {
-                        try
-                        {
-                            onSearch();
-                        }
-                        catch (SQLException e)
-                        {
-                            e.printStackTrace();
-                        }
-                    }
+            case "search" -> onSearch();
             case "returnVehicle" ->
                     {
                         if(thisBooking != null)
@@ -167,7 +150,7 @@ public class returnVehicleController implements Initializable, EventHandler<Even
         returnVehicle.setTooltip(new Tooltip("Alt+R"));
     }
 
-    private void onSearch() throws SQLException
+    private void onSearch()
     {
         if(searchFilter.getSelectionModel().getSelectedItem().equals("None"))
             filteredTable.setItems(filteredBookings);
@@ -185,7 +168,9 @@ public class returnVehicleController implements Initializable, EventHandler<Even
                         filteredTable.setItems(null);
                     else
                     {
-                        ObservableList<Booking> filteredList = Booking.searchQuery(searchFilter.getSelectionModel().getSelectedItem(), searchQuery.getText(), "AND isBeingRented = Yes");
+                        ObservableList<Booking> filteredList = Booking.searchQuery(searchFilter.getSelectionModel().getSelectedItem(), thisDate);
+                        if(filteredList != null)
+                            filteredList = FXCollections.observableList(filteredList.stream().filter(booking -> booking.isIsBeingRented().equals("Yes")).toList());
                         filteredTable.setItems(filteredList);
                     }
                 }
@@ -194,7 +179,9 @@ public class returnVehicleController implements Initializable, EventHandler<Even
             }
             else
             {
-                ObservableList<Booking> filteredList = Booking.searchQuery(searchFilter.getSelectionModel().getSelectedItem(), searchQuery.getText(), "AND isBeingRented = Yes");
+                ObservableList<Booking> filteredList = Booking.searchQuery(searchFilter.getSelectionModel().getSelectedItem(), searchQuery.getText());
+                if(filteredList != null)
+                    filteredList = FXCollections.observableList(filteredList.stream().filter(booking -> booking.isIsBeingRented().equals("Yes")).toList());
                 filteredTable.setItems(filteredList);
             }
         }
@@ -221,7 +208,7 @@ public class returnVehicleController implements Initializable, EventHandler<Even
             if(thisSetting != null)
                 flatRate = thisSetting.getSettingValue();
 
-            ObservableList<Vehicle> thisVehicle = Vehicle.searchQuery("vehicleRegistration", thisBooking.getVehicleRegistration(), "");
+            ObservableList<Vehicle> thisVehicle = Vehicle.searchQuery("vehicleRegistration", thisBooking.getVehicleRegistration());
             Vehicle vehicle = thisVehicle.get(0);
 
             double costMulti = vehicle.getCostMultiplier();
