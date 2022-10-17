@@ -7,8 +7,10 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Tooltip;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
 
 import java.net.URL;
 import java.util.List;
@@ -92,6 +94,7 @@ public class adminController implements Initializable, EventHandler<Event>
             if(moneyOwed.size() > 0)
             {
                 Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                ((Stage) alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image("icon.png"));
                 alert.setHeaderText("Clients To Be Paid");
                 String message = "";
 

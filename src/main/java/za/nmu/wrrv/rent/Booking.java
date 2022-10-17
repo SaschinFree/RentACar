@@ -36,6 +36,7 @@ public class Booking
         this.ownerCommission.set(ownerCommission);
         this.isBeingRented.set(isBeingRented);
         this.hasPaid.set(hasPaid);
+        active.set(true);
     }
     public static ObservableList<Booking> getBookings() throws SQLException
     {
@@ -78,57 +79,61 @@ public class Booking
     }
     public static ObservableList<Booking> searchQuery(String tableColumn, String search)
     {
-        String uppercase = String.valueOf(search.charAt(0)).toUpperCase();
-        String finalUppercase = search.replace(String.valueOf(search.charAt(0)), uppercase);
+        if(search.isEmpty())
+            return null;
 
         switch(tableColumn)
         {
             case "bookingNumber" ->
                     {
                         if(Functions.isNumeric(search))
-                            return FXCollections.observableArrayList(bookingList.stream().filter(booking -> booking.isActive() && String.valueOf(booking.getBookingNumber()).contains(search)).toList());
+                            return FXCollections.observableArrayList(baseController.bookings.stream().filter(booking -> booking.isActive() && String.valueOf(booking.getBookingNumber()).contains(search)).toList());
                     }
             case "clientNumber" ->
                     {
                         if(Functions.isNumeric(search))
-                            return FXCollections.observableArrayList(bookingList.stream().filter(booking -> booking.isActive() && String.valueOf(booking.getClientNumber()).contains(search)).toList());
+                            return FXCollections.observableArrayList(baseController.bookings.stream().filter(booking -> booking.isActive() && String.valueOf(booking.getClientNumber()).contains(search)).toList());
                     }
             case "vehicleRegistration" ->
                     {
-                        return FXCollections.observableArrayList(bookingList.stream().filter(booking -> booking.isActive() && booking.getVehicleRegistration().contains(search)).toList());
+                        return FXCollections.observableArrayList(baseController.bookings.stream().filter(booking -> booking.isActive() && booking.getVehicleRegistration().contains(search)).toList());
                     }
             case "startDate" ->
                     {
-                        return FXCollections.observableArrayList(bookingList.stream().filter(booking -> booking.isActive() && booking.getStartDate().equals(Date.valueOf(search))).toList());
+                        return FXCollections.observableArrayList(baseController.bookings.stream().filter(booking -> booking.isActive() && booking.getStartDate().equals(Date.valueOf(search))).toList());
                     }
             case "endDate" ->
                     {
-                        return FXCollections.observableArrayList(bookingList.stream().filter(booking -> booking.isActive() && booking.getEndDate().equals(Date.valueOf(search))).toList());
+                        return FXCollections.observableArrayList(baseController.bookings.stream().filter(booking -> booking.isActive() && booking.getEndDate().equals(Date.valueOf(search))).toList());
                     }
             case "cost" ->
                     {
                         if(Functions.isNumeric(search))
-                            return FXCollections.observableArrayList(bookingList.stream().filter(booking -> booking.isActive() && booking.getCost() == Double.parseDouble(search)).toList());
+                            return FXCollections.observableArrayList(baseController.bookings.stream().filter(booking -> booking.isActive() && booking.getCost() == Double.parseDouble(search)).toList());
                     }
             case "companyCommission" ->
                     {
                         if(Functions.isNumeric(search))
-                            return FXCollections.observableArrayList(bookingList.stream().filter(booking -> booking.isActive() && booking.getCompanyCommission() == Double.parseDouble(search)).toList());
+                            return FXCollections.observableArrayList(baseController.bookings.stream().filter(booking -> booking.isActive() && booking.getCompanyCommission() == Double.parseDouble(search)).toList());
                     }
             case "ownerCommission" ->
                     {
                         if(Functions.isNumeric(search))
-                            return FXCollections.observableArrayList(bookingList.stream().filter(booking -> booking.isActive() && booking.getOwnerCommission() == Double.parseDouble(search)).toList());
+                            return FXCollections.observableArrayList(baseController.bookings.stream().filter(booking -> booking.isActive() && booking.getOwnerCommission() == Double.parseDouble(search)).toList());
                     }
             case "isBeingRented" ->
                     {
+                        String finalUppercase = search.replace(String.valueOf(search.charAt(0)), String.valueOf(search.charAt(0)).toUpperCase());
+
                         if (finalUppercase.equals("Yes") || finalUppercase.equals("No"))
-                            return FXCollections.observableArrayList(bookingList.stream().filter(booking -> booking.isActive() && booking.isIsBeingRented().equals(finalUppercase)).toList());
+                            return FXCollections.observableArrayList(baseController.bookings.stream().filter(booking -> booking.isActive() && booking.isIsBeingRented().equals(finalUppercase)).toList());
                     }
             case "hasPaid" ->
                     {
+                        String finalUppercase = search.replace(String.valueOf(search.charAt(0)), String.valueOf(search.charAt(0)).toUpperCase());
+
                         if (finalUppercase.equals("Yes") || finalUppercase.equals("No"))
-                            return FXCollections.observableArrayList(bookingList.stream().filter(booking -> booking.isActive() && booking.isHasPaid().equals(finalUppercase)).toList());
+                            return FXCollections.observableArrayList(baseController.bookings.stream().filter(booking -> booking.isActive() && booking.isHasPaid().equals(finalUppercase)).toList());
                     }
         }
 

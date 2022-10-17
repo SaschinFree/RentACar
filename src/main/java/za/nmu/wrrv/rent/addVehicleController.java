@@ -4,6 +4,7 @@ import javafx.event.EventType;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -159,6 +160,7 @@ public class addVehicleController implements Initializable
         if(result.next())
         {
             registrationNumber.clear();
+            ((Stage) alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image("icon.png"));
             alert.setHeaderText("Registration Number: This vehicle already exists in the table");
             alert.showAndWait();
         }
@@ -207,18 +209,21 @@ public class addVehicleController implements Initializable
                     Vehicle.vehicleList.add(newVehicle);
 
                     Alert vehicleAdded = new Alert(Alert.AlertType.INFORMATION);
+                    ((Stage) vehicleAdded.getDialogPane().getScene().getWindow()).getIcons().add(new Image("icon.png"));
                     vehicleAdded.setHeaderText("Vehicle Added Successfully");
                     vehicleAdded.showAndWait();
                     closeStage();
                 }
                 else
                 {
+                    ((Stage) alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image("icon.png"));
                     alert.setHeaderText(errorMessage);
                     alert.showAndWait();
                 }
             }
             else
             {
+                ((Stage) alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image("icon.png"));
                 alert.setHeaderText("Date is in incorrect format");
                 alert.showAndWait();
             }

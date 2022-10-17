@@ -3,6 +3,7 @@ package za.nmu.wrrv.rent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -60,6 +61,9 @@ public class addClientController implements Initializable
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
         licenceExpiryDate.setConverter(baseController.dateConverter);
+
+        nationalityZA.setFocusTraversable(false);
+        nationalityOther.setFocusTraversable(false);
 
         clientID.setVisible(false);
         companyName.setVisible(false);
@@ -165,6 +169,7 @@ public class addClientController implements Initializable
             isCompany.setSelected(false);
             companyName.setVisible(false);
 
+            ((Stage) alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image("icon.png"));
             alert.setHeaderText("Client ID: This client already exists in the table");
             alert.showAndWait();
         }
@@ -176,19 +181,21 @@ public class addClientController implements Initializable
                 {
                     Date licence = Date.valueOf(licenceString);
 
-                    duplicate = baseController.clients.stream().filter(client -> client.isActive() && client.getClientNumber() == Integer.parseInt(number)).toList();
-                    if(duplicate.size() > 0)
+                    duplicate = baseController.clients.stream().filter(client -> client.isActive() && client.getContactNumber().equals(number)).toList();
+                    if(duplicate.size() > 0 && !duplicate.get(0).getClientID().equals(manageClientsController.thisClient.getClientID()))
                     {
                         contactNumber.clear();
+                        ((Stage) alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image("icon.png"));
                         alert.setHeaderText("This number already exists in the table");
                         alert.showAndWait();
                     }
                     else
                     {
                         duplicate = baseController.clients.stream().filter(client -> client.isActive() && client.getEmail().equals(email)).toList();
-                        if(duplicate.size() > 0)
+                        if(duplicate.size() > 0 && !duplicate.get(0).getClientID().equals(manageClientsController.thisClient.getClientID()))
                         {
                             this.email.clear();
+                            ((Stage) alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image("icon.png"));
                             alert.setHeaderText("This email address already exists in the table");
                             alert.showAndWait();
                         }
@@ -196,6 +203,7 @@ public class addClientController implements Initializable
                         {
                             addClient(clientID, fName, sName, number, email, licence, strNum, strName, sub, city, postCode, compName);
                             Alert clientAdded = new Alert(Alert.AlertType.INFORMATION);
+                            ((Stage) clientAdded.getDialogPane().getScene().getWindow()).getIcons().add(new Image("icon.png"));
                             clientAdded.setHeaderText("Client Added Successfully");
                             clientAdded.showAndWait();
                             closeStage();
@@ -204,12 +212,14 @@ public class addClientController implements Initializable
                 }
                 else
                 {
+                    ((Stage) alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image("icon.png"));
                     alert.setHeaderText(errorMessage);
                     alert.showAndWait();
                 }
             }
             else
             {
+                ((Stage) alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image("icon.png"));
                 alert.setHeaderText("Date is in incorrect format");
                 alert.showAndWait();
             }

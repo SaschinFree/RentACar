@@ -235,6 +235,16 @@ public class baseController implements Initializable, EventHandler<Event>
         }
     }
 
+    protected static boolean dateCheck(String thisDateString)
+    {
+        int dashCount = 0;
+        for(Character thisChar : thisDateString.toCharArray())
+        {
+            if (thisChar =='-')
+                dashCount++;
+        }
+        return errorValidationCheck(letterArray, thisDateString) && symbolCheck(thisDateString, '-') && thisDateString.length() == 10 && thisDateString.charAt(4) == '-' && thisDateString.charAt(7) == '-' && dashCount <= 2;
+    }
     protected static boolean dateCheck(DatePicker thisDate, String thisDateString)
     {
         if(!errorValidationCheck(letterArray, thisDateString) || !symbolCheck(thisDateString, '-'))
@@ -272,7 +282,10 @@ public class baseController implements Initializable, EventHandler<Event>
             {
                 for(char thisChar : extraParameter)
                 {
-                    check = symbol.equals(thisChar);
+                    if(symbol.equals(thisChar))
+                        return true;
+                    else
+                        check = false;
                 }
             }
         }

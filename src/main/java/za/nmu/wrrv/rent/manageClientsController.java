@@ -8,11 +8,13 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.*;
+import net.ucanaccess.converters.Functions;
 
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Date;
 import java.sql.SQLException;
+import java.time.Year;
 import java.util.ResourceBundle;
 
 public class manageClientsController implements Initializable, EventHandler<Event>
@@ -51,7 +53,6 @@ public class manageClientsController implements Initializable, EventHandler<Even
     protected Button back;
 
     protected static Client thisClient;
-    protected static boolean clientUpdated;
 
     @Override
     public void initialize(URL url, ResourceBundle rb)
@@ -96,8 +97,6 @@ public class manageClientsController implements Initializable, EventHandler<Even
 
         if(loginController.thisUser.isAdmin())
             addClient.setVisible(false);
-
-        clientUpdated = false;
 
         updateClient.setVisible(false);
 
@@ -210,36 +209,59 @@ public class manageClientsController implements Initializable, EventHandler<Even
         {
             if(searchFilter.getSelectionModel().getSelectedItem().equals("moneyOwed"))
             {
-                ObservableList<Client> filteredList = Client.searchQuery("moneyOwed", searchQuery.getText(), "=");
+                String search = searchQuery.getText().replace(",", ".");
+                ObservableList<Client> filteredList = Client.searchQuery("moneyOwed", search);
                 clientTable.setItems(filteredList);
             }
             else
             {
-                if(searchQuery.getText().contains("/") || searchQuery.getText().contains("-"))
-                {
-                    String thisDate = searchQuery.getText();
-                    thisDate = thisDate.replace("/", "-");
-
-                    if(baseController.errorValidationCheck(baseController.letterArray, thisDate) || baseController.symbolCheck(thisDate, '-'))
-                    {
-                        String[] split = thisDate.split("-");
-                        if(split[0].length() != 4 || split[1].length() != 2 || Integer.parseInt(split[1]) < 1 || Integer.parseInt(split[1]) > 12 || split[2].length() != 2)
-                            clientTable.setItems(null);
-                        else
-                        {
-                            ObservableList<Client> filteredList = Client.searchQuery(searchFilter.getSelectionModel().getSelectedItem(), thisDate, "");
-                            clientTable.setItems(filteredList);
-                        }
-                    }
-                    else
-                        clientTable.setItems(null);
-                }
+                if(searchFilter.getSelectionModel().getSelectedItem().equals("licenceExpiryDate"))
+                    clientTable.setItems(dateValid(searchQuery.getText()));
                 else
                 {
-                    ObservableList<Client> filteredList = Client.searchQuery(searchFilter.getSelectionModel().getSelectedItem(), searchQuery.getText(), "");
+                    ObservableList<Client> filteredList = Client.searchQuery(searchFilter.getSelectionModel().getSelectedItem(), searchQuery.getText());
                     clientTable.setItems(filteredList);
                 }
             }
         }
+    }
+    private ObservableList<Client> dateValid(String date)
+    {
+        date = date.replace("/", "-");
+
+        if(baseController.dateCheck(date))
+        {
+            String[] split = date.split("-");
+            if(Functions.isNumeric(split[0]) && Functions.isNumeric(split[1]) && Functions.isNumeric(split[2]))
+            {
+                switch (Integer.parseInt(split[1]))
+                {
+                    case 1,3,5,7,8,10,12 ->
+                            {
+                                if(Integer.parseInt(split[2]) > 0 && Integer.parseInt(split[2]) <= 31)
+                                    return Client.searchQuery(searchFilter.getSelectionModel().getSelectedItem(), date);
+                            }
+                    case 4,6,9,11 ->
+                            {
+                                if(Integer.parseInt(split[2]) > 0 && Integer.parseInt(split[2]) <= 30)
+                                    return Client.searchQuery(searchFilter.getSelectionModel().getSelectedItem(), date);
+                            }
+                    case 2 ->
+                            {
+                                if(Year.of(Integer.parseInt(split[0])).isLeap())
+                                {
+                                    if(Integer.parseInt(split[2]) > 0 && Integer.parseInt(split[2]) <= 29)
+                                        return Client.searchQuery(searchFilter.getSelectionModel().getSelectedItem(), date);
+                                }
+                                else
+                                {
+                                    if(Integer.parseInt(split[2]) > 0 && Integer.parseInt(split[2]) <= 28)
+                                        return Client.searchQuery(searchFilter.getSelectionModel().getSelectedItem(), date);
+                                }
+                            }
+                }
+            }
+        }
+        return null;
     }
 }

@@ -9,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -238,6 +239,7 @@ public class addBookingController implements Initializable
     }
     private void confirmClient()
     {
+        clientSearchQuery.setText(String.valueOf(thisClientNumber));
         clientSearchQuery.setDisable(true);
         clientSearch.setVisible(false);
         confirmClient.setVisible(false);
@@ -318,12 +320,14 @@ public class addBookingController implements Initializable
             }
             else
             {
+                ((Stage) alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image("icon.png"));
                 alert.setHeaderText(errorMessage);
                 alert.showAndWait();
             }
         }
         else
         {
+            ((Stage) alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image("icon.png"));
             alert.setHeaderText(errorMessage);
             alert.showAndWait();
         }
@@ -335,6 +339,7 @@ public class addBookingController implements Initializable
     }
     private void confirmVehicle()
     {
+        vehicleSearchQuery.setText(thisVehicleRegistration);
         vehicleSearchQuery.setDisable(true);
         vehicleSearch.setVisible(false);
         confirmVehicle.setVisible(false);
@@ -358,11 +363,9 @@ public class addBookingController implements Initializable
         double thisCompanyCommission = thisCost * compCom;
         double thisOwnerCommission = thisCost * ownerCom;
 
-        String thisHasPaid;
+        String thisHasPaid = "No";
         if(isPaid.selectedProperty().getValue())
             thisHasPaid = "Yes";
-        else
-            thisHasPaid = "No";
 
         String sql = "INSERT INTO Booking (clientNumber, vehicleRegistration, startDate, endDate, cost, companyCommission, ownerCommission, isBeingRented, hasPaid, active)" +
                 "VALUES (\'" + thisClientNumber + "\', \'" + thisVehicleRegistration + "\', \'" + thisStartDate + "\', \'" + thisEndDate + "\', \'" + thisCost + "\', \'" + thisCompanyCommission + "\', \'" + thisOwnerCommission + "\', No, " + thisHasPaid + ", Yes)";
@@ -378,6 +381,7 @@ public class addBookingController implements Initializable
         baseController.bookings.add(thisBooking);
 
         Alert bookingAdded = new Alert(Alert.AlertType.INFORMATION);
+        ((Stage) bookingAdded.getDialogPane().getScene().getWindow()).getIcons().add(new Image("icon.png"));
         bookingAdded.setHeaderText("Booking Added Successfully");
         bookingAdded.showAndWait();
         closeStage();

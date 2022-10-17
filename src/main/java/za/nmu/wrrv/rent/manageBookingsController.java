@@ -8,11 +8,13 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.*;
+import net.ucanaccess.converters.Functions;
 
 import java.io.IOException;
 import java.net.URL;
 import java.sql.Date;
 import java.sql.SQLException;
+import java.time.Year;
 import java.util.ResourceBundle;
 
 public class manageBookingsController implements Initializable, EventHandler<Event>
@@ -30,7 +32,7 @@ public class manageBookingsController implements Initializable, EventHandler<Eve
     @FXML
     protected TableColumn<Booking, Date> endDate;
     @FXML
-    protected TableColumn<Booking, Integer> cost;
+    protected TableColumn<Booking, Double> cost;
     @FXML
     protected TableColumn<Booking, Boolean> isBeingRented;
     @FXML
@@ -195,30 +197,52 @@ public class manageBookingsController implements Initializable, EventHandler<Eve
             bookingTable.setItems(baseController.bookings);
         else
         {
-            if(searchQuery.getText().contains("/") || searchQuery.getText().contains("-"))
-            {
-                String thisDate = searchQuery.getText();
-                thisDate = thisDate.replace("/", "-");
-
-                if(baseController.errorValidationCheck(baseController.letterArray, thisDate) || baseController.symbolCheck(thisDate, '-'))
-                {
-                    String[] split = thisDate.split("-");
-                    if(split[0].length() != 4 || split[1].length() != 2 || Integer.parseInt(split[1]) < 1 || Integer.parseInt(split[1]) > 12 || split[2].length() != 2)
-                        bookingTable.setItems(null);
-                    else
-                    {
-                        ObservableList<Booking> filteredList = Booking.searchQuery(searchFilter.getSelectionModel().getSelectedItem(), thisDate);
-                        bookingTable.setItems(filteredList);
-                    }
-                }
-                else
-                    bookingTable.setItems(null);
-            }
+            if(searchFilter.getSelectionModel().getSelectedItem().equals("startDate") || searchFilter.getSelectionModel().getSelectedItem().equals("endDate"))
+                bookingTable.setItems(dateValid(searchQuery.getText()));
             else
             {
                 ObservableList<Booking> filteredList = Booking.searchQuery(searchFilter.getSelectionModel().getSelectedItem(), searchQuery.getText());
                 bookingTable.setItems(filteredList);
             }
         }
+    }
+    private ObservableList<Booking> dateValid(String date)
+    {
+        date = date.replace("/", "-");
+
+        if(baseController.dateCheck(date))
+        {
+            String[] split = date.split("-");
+            if(Functions.isNumeric(split[0]) && Functions.isNumeric(split[1]) && Functions.isNumeric(split[2]))
+            {
+                switch (Integer.parseInt(split[1]))
+                {
+                    case 1,3,5,7,8,10,12 ->
+                            {
+                                if(Integer.parseInt(split[2]) > 0 && Integer.parseInt(split[2]) <= 31)
+                                    return Booking.searchQuery(searchFilter.getSelectionModel().getSelectedItem(), date);
+                            }
+                    case 4,6,9,11 ->
+                            {
+                                if(Integer.parseInt(split[2]) > 0 && Integer.parseInt(split[2]) <= 30)
+                                    return Booking.searchQuery(searchFilter.getSelectionModel().getSelectedItem(), date);
+                            }
+                    case 2 ->
+                            {
+                                if(Year.of(Integer.parseInt(split[0])).isLeap())
+                                {
+                                    if(Integer.parseInt(split[2]) > 0 && Integer.parseInt(split[2]) <= 29)
+                                        return Booking.searchQuery(searchFilter.getSelectionModel().getSelectedItem(), date);
+                                }
+                                else
+                                {
+                                    if(Integer.parseInt(split[2]) > 0 && Integer.parseInt(split[2]) <= 28)
+                                        return Booking.searchQuery(searchFilter.getSelectionModel().getSelectedItem(), date);
+                                }
+                            }
+                }
+            }
+        }
+        return null;
     }
 }

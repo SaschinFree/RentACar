@@ -3,6 +3,7 @@ package za.nmu.wrrv.rent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -107,11 +108,19 @@ public class updateVehicleController implements Initializable
             String delete = "UPDATE Vehicle SET active = false WHERE vehicleRegistration = \'" + manageVehiclesController.thisVehicle.getVehicleRegistration() + "\'";
             RentACar.statement.executeUpdate(delete);
 
-            manageVehiclesController.thisVehicle.setActive(false);
+            for(Vehicle vehicle : baseController.vehicles)
+            {
+                if(vehicle.getVehicleRegistration().equals(manageVehiclesController.thisVehicle.getVehicleRegistration()))
+                {
+                    vehicle.setActive(false);
+                    break;
+                }
+            }
             Vehicle.vehicleList.removeAll(manageVehiclesController.thisVehicle);
 
 
             Alert deleteVehicle = new Alert(Alert.AlertType.INFORMATION);
+            ((Stage) deleteVehicle.getDialogPane().getScene().getWindow()).getIcons().add(new Image("icon.png"));
             deleteVehicle.setHeaderText("Vehicle Deleted Successfully");
             deleteVehicle.showAndWait();
 
@@ -159,19 +168,35 @@ public class updateVehicleController implements Initializable
                     manageVehiclesController.thisVehicle.setEndDate(end);
                     manageVehiclesController.thisVehicle.setCostMultiplier(costMulti);
 
+                    int index = 0;
+                    for(Vehicle vehicle : baseController.vehicles)
+                    {
+                        if(vehicle.getVehicleRegistration().equals(manageVehiclesController.thisVehicle.getVehicleRegistration()))
+                        {
+                            baseController.vehicles.set(index, manageVehiclesController.thisVehicle);
+
+                            break;
+                        }
+                        else
+                            index += 1;
+                    }
+
                     Alert updateVehicle = new Alert(Alert.AlertType.INFORMATION);
+                    ((Stage) updateVehicle.getDialogPane().getScene().getWindow()).getIcons().add(new Image("icon.png"));
                     updateVehicle.setHeaderText("Vehicle Updated Successfully");
                     updateVehicle.showAndWait();
                     closeStage();
                 }
                 else
                 {
+                    ((Stage) alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image("icon.png"));
                     alert.setHeaderText(errorMessage);
                     alert.showAndWait();
                 }
             }
             else
             {
+                ((Stage) alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image("icon.png"));
                 alert.setHeaderText("Date is in incorrect format");
                 alert.showAndWait();
             }

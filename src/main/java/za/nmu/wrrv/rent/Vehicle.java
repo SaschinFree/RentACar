@@ -38,6 +38,7 @@ public class Vehicle
         this.startDate.setValue(startDate);
         this.endDate.setValue(endDate);
         this.costMultiplier.set(costMultiplier);
+        active.set(true);
     }
 
     public static ObservableList<Vehicle> getVehicles() throws SQLException
@@ -78,57 +79,60 @@ public class Vehicle
     }
     public static ObservableList<Vehicle> searchQuery(String tableColumn, String search)
     {
-        String uppercase = String.valueOf(search.charAt(0)).toUpperCase();
-        String finalUppercase = search.replace(String.valueOf(search.charAt(0)), uppercase);
+        if(search.isEmpty())
+            return null;
 
         switch (tableColumn)
         {
             case "vehicleRegistration" ->
                     {
-                        return FXCollections.observableArrayList(vehicleList.stream().filter(vehicle -> vehicle.isActive() && vehicle.getVehicleRegistration().contains(search)).toList());
+                        return FXCollections.observableArrayList(baseController.vehicles.stream().filter(vehicle -> vehicle.isActive() && vehicle.getVehicleRegistration().contains(search)).toList());
                     }
             case "clientNumber" ->
                     {
                         if(Functions.isNumeric(search))
-                            return FXCollections.observableArrayList(vehicleList.stream().filter(vehicle -> vehicle.isActive() && String.valueOf(vehicle.getClientNumber()).contains(search)).toList());
+                            return FXCollections.observableArrayList(baseController.vehicles.stream().filter(vehicle -> vehicle.isActive() && String.valueOf(vehicle.getClientNumber()).contains(search)).toList());
                     }
             case "registrationExpiryDate" ->
                     {
-                        return FXCollections.observableArrayList(vehicleList.stream().filter(vehicle -> vehicle.isActive() && vehicle.getRegistrationExpiryDate().equals(Date.valueOf(search))).toList());
+                        return FXCollections.observableArrayList(baseController.vehicles.stream().filter(vehicle -> vehicle.isActive() && vehicle.getRegistrationExpiryDate().equals(Date.valueOf(search))).toList());
                     }
             case "insured" ->
                     {
+                        String uppercase = String.valueOf(search.charAt(0)).toUpperCase();
+                        String finalUppercase = search.replace(String.valueOf(search.charAt(0)), uppercase);
+
                         if(finalUppercase.equals("Yes") || finalUppercase.equals("No"))
-                            return FXCollections.observableArrayList(vehicleList.stream().filter(vehicle -> vehicle.isActive() && vehicle.isInsured().equals(finalUppercase)).toList());
+                            return FXCollections.observableArrayList(baseController.vehicles.stream().filter(vehicle -> vehicle.isActive() && vehicle.isInsured().equals(finalUppercase)).toList());
                     }
             case "make" ->
                     {
-                        return FXCollections.observableArrayList(vehicleList.stream().filter(vehicle -> vehicle.isActive() && vehicle.getMake().contains(search)).toList());
+                        return FXCollections.observableArrayList(baseController.vehicles.stream().filter(vehicle -> vehicle.isActive() && vehicle.getMake().contains(search)).toList());
                     }
             case "model" ->
                     {
-                        return FXCollections.observableArrayList(vehicleList.stream().filter(vehicle -> vehicle.isActive() && vehicle.getModel().contains(search)).toList());
+                        return FXCollections.observableArrayList(baseController.vehicles.stream().filter(vehicle -> vehicle.isActive() && vehicle.getModel().contains(search)).toList());
                     }
             case "colour" ->
                     {
-                        return FXCollections.observableArrayList(vehicleList.stream().filter(vehicle -> vehicle.isActive() && vehicle.getColour().contains(search)).toList());
+                        return FXCollections.observableArrayList(baseController.vehicles.stream().filter(vehicle -> vehicle.isActive() && vehicle.getColour().contains(search)).toList());
                     }
             case "seats" ->
                     {
                         if(Functions.isNumeric(search))
-                            return FXCollections.observableArrayList(vehicleList.stream().filter(vehicle -> vehicle.isActive() && vehicle.getSeats() == Integer.parseInt(search)).toList());
+                            return FXCollections.observableArrayList(baseController.vehicles.stream().filter(vehicle -> vehicle.isActive() && vehicle.getSeats() == Integer.parseInt(search)).toList());
                     }
             case "startDate" ->
                     {
-                        return FXCollections.observableArrayList(vehicleList.stream().filter(vehicle -> vehicle.isActive() && vehicle.getStartDate().equals(Date.valueOf(search))).toList());
+                        return FXCollections.observableArrayList(baseController.vehicles.stream().filter(vehicle -> vehicle.isActive() && vehicle.getStartDate().equals(Date.valueOf(search))).toList());
                     }
             case "endDate" ->
                     {
-                        return FXCollections.observableArrayList(vehicleList.stream().filter(vehicle -> vehicle.isActive() && vehicle.getEndDate().equals(Date.valueOf(search))).toList());
+                        return FXCollections.observableArrayList(baseController.vehicles.stream().filter(vehicle -> vehicle.isActive() && vehicle.getEndDate().equals(Date.valueOf(search))).toList());
                     }
             case "costMultiplier" ->
                     {
-                        return FXCollections.observableArrayList(vehicleList.stream().filter(vehicle -> vehicle.isActive() && vehicle.getCostMultiplier() == Double.parseDouble(search)).toList());
+                        return FXCollections.observableArrayList(baseController.vehicles.stream().filter(vehicle -> vehicle.isActive() && vehicle.getCostMultiplier() == Double.parseDouble(search)).toList());
                     }
         }
 

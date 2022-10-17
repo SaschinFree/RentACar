@@ -6,6 +6,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -67,6 +68,7 @@ public class updateSettingController implements Initializable
         if(!baseController.errorValidationCheck(baseController.letterArray, thisValue) | !baseController.symbolCheck(thisValue, '.'))
         {
             settingValue.clear();
+            ((Stage) alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image("icon.png"));
             alert.setHeaderText(thisValue + " is not a valid number");
             alert.showAndWait();
         }
@@ -80,6 +82,17 @@ public class updateSettingController implements Initializable
                     String sql = "UPDATE Settings SET settingValue = \'" + value + "\' WHERE settingName = \'" + settingName.getText() + "\'";
                     RentACar.statement.executeUpdate(sql);
                     manageSettingsController.thisSetting.setSettingValue(value);
+
+                    int index = 0;
+                    for(Settings setting : baseController.settings)
+                    {
+                        if(setting.getSettingName().equals(manageSettingsController.thisSetting.getSettingName()))
+                        {
+                            baseController.settings.set(index, manageSettingsController.thisSetting);
+                            break;
+                        }
+                        index++;
+                    }
 
                     double remainder = 1 - Double.parseDouble(thisValue);
                     String otherSettingName = "";
@@ -110,6 +123,7 @@ public class updateSettingController implements Initializable
                     }
 
                     Alert updateSetting = new Alert(Alert.AlertType.INFORMATION);
+                    ((Stage) updateSetting.getDialogPane().getScene().getWindow()).getIcons().add(new Image("icon.png"));
                     updateSetting.setHeaderText("Setting Updated Successfully");
                     updateSetting.showAndWait();
                     closeStage();
@@ -117,6 +131,7 @@ public class updateSettingController implements Initializable
                 else
                 {
                     settingValue.clear();
+                    ((Stage) alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image("icon.png"));
                     alert.setHeaderText(thisValue + " is greater than 100%");
                     alert.showAndWait();
                 }
@@ -128,7 +143,19 @@ public class updateSettingController implements Initializable
                 RentACar.statement.executeUpdate(sql);
                 manageSettingsController.thisSetting.setSettingValue(value);
 
+                int index = 0;
+                for(Settings setting : baseController.settings)
+                {
+                    if(setting.getSettingName().equals(manageSettingsController.thisSetting.getSettingName()))
+                    {
+                        baseController.settings.set(index, manageSettingsController.thisSetting);
+                        break;
+                    }
+                    index++;
+                }
+
                 Alert updateSetting = new Alert(Alert.AlertType.INFORMATION);
+                ((Stage) updateSetting.getDialogPane().getScene().getWindow()).getIcons().add(new Image("icon.png"));
                 updateSetting.setHeaderText("Setting Updated Successfully");
                 updateSetting.showAndWait();
                 closeStage();

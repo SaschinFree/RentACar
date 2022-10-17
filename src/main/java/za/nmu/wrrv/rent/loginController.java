@@ -7,6 +7,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.input.*;
 import javafx.stage.Stage;
 
@@ -63,6 +64,7 @@ public class loginController
         if(thisUser == null)
         {
             alert = new Alert(Alert.AlertType.ERROR);
+            ((Stage) alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image("icon.png"));
             alert.setTitle("Failed");
             alert.setHeaderText("Login failed");
 
@@ -76,6 +78,7 @@ public class loginController
             if(password.equals(thisUser.getPassword()))
             {
                 alert = new Alert(Alert.AlertType.INFORMATION);
+                ((Stage) alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image("icon.png"));
                 alert.setTitle("Success");
                 alert.setHeaderText("Login successful");
                 baseController.isLoggedOn = true;
@@ -83,6 +86,7 @@ public class loginController
             else
             {
                 alert = new Alert(Alert.AlertType.ERROR);
+                ((Stage) alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image("icon.png"));
                 alert.setTitle("Failed");
                 alert.setHeaderText("Login failed");
 

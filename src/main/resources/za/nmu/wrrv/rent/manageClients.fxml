@@ -30,7 +30,7 @@
             <TableView fx:id="clientTable" onMouseClicked="#clientSelected" prefHeight="200.0" prefWidth="200.0">
               <columns>
                   <TableColumn fx:id="clientNumber" prefWidth="100.0" text="Client Number" />
-                  <TableColumn fx:id="clientID" prefWidth="75.0" text="Client ID" />
+                  <TableColumn fx:id="clientID" prefWidth="100.0" text="Client ID" />
                   <TableColumn fx:id="firstName" prefWidth="75.0" text="First Name" />
                   <TableColumn fx:id="surname" prefWidth="75.0" text="Surname" />
                   <TableColumn fx:id="contactNumber" prefWidth="100.0" text="Contact Number" />

@@ -45,6 +45,7 @@ public class Client
         this.postalCode.set(postalCode);
         this.companyName.set(companyName);
         this.moneyOwed.set(moneyOwed);
+        active.set(true);
     }
 
     public static ObservableList<Client> getClients() throws SQLException
@@ -81,83 +82,70 @@ public class Client
         }
         return clientList;
     }
-    public static ObservableList<Client> searchQuery(String tableColumn, String search, String extraParameter)
+    public static ObservableList<Client> searchQuery(String tableColumn, String search)
     {
+        if(search.isEmpty())
+            return null;
+
         switch(tableColumn)
         {
             case "clientNumber" ->
                     {
                         if(Functions.isNumeric(search))
-                            return FXCollections.observableArrayList(clientList.stream().filter(client -> client.isActive() && String.valueOf(client.getClientNumber()).contains(search)).toList());
+                            return FXCollections.observableArrayList(baseController.clients.stream().filter(client -> client.isActive() && String.valueOf(client.getClientNumber()).contains(search)).toList());
                     }
             case "clientID" ->
                     {
-                        return FXCollections.observableArrayList(clientList.stream().filter(client -> client.isActive() && client.getClientID().contains(search)).toList());
+                        return FXCollections.observableArrayList(baseController.clients.stream().filter(client -> client.isActive() && client.getClientID().contains(search)).toList());
                     }
             case "firstName" ->
                     {
-                        return FXCollections.observableArrayList(clientList.stream().filter(client -> client.isActive() && client.getFirstName().contains(search)).toList());
+                        return FXCollections.observableArrayList(baseController.clients.stream().filter(client -> client.isActive() && client.getFirstName().contains(search)).toList());
                     }
             case "surname" ->
                     {
-                        return FXCollections.observableArrayList(clientList.stream().filter(client -> client.isActive() && client.getSurname().contains(search)).toList());
+                        return FXCollections.observableArrayList(baseController.clients.stream().filter(client -> client.isActive() && client.getSurname().contains(search)).toList());
                     }
             case "contactNumber" ->
                     {
-                        return FXCollections.observableArrayList(clientList.stream().filter(client -> client.isActive() && client.getContactNumber().contains(search)).toList());
+                        return FXCollections.observableArrayList(baseController.clients.stream().filter(client -> client.isActive() && client.getContactNumber().contains(search)).toList());
                     }
             case "email" ->
                     {
-                        return FXCollections.observableArrayList(clientList.stream().filter(client -> client.isActive() && client.getEmail().contains(search)).toList());
+                        return FXCollections.observableArrayList(baseController.clients.stream().filter(client -> client.isActive() && client.getEmail().contains(search)).toList());
                     }
             case "licenceExpiryDate" ->
                     {
-                        return FXCollections.observableArrayList(clientList.stream().filter(client -> client.isActive() && client.getLicenceExpiryDate().equals(Date.valueOf(search))).toList());
+                        return FXCollections.observableArrayList(baseController.clients.stream().filter(client -> client.isActive() && client.getLicenceExpiryDate().equals(Date.valueOf(search))).toList());
                     }
             case "streetNumber" ->
                     {
-                        return FXCollections.observableArrayList(clientList.stream().filter(client -> client.isActive() && client.getStreetNumber().contains(search)).toList());
+                        return FXCollections.observableArrayList(baseController.clients.stream().filter(client -> client.isActive() && client.getStreetNumber().contains(search)).toList());
                     }
             case "streetName" ->
                     {
-                        return FXCollections.observableArrayList(clientList.stream().filter(client -> client.isActive() && client.getStreetName().contains(search)).toList());
+                        return FXCollections.observableArrayList(baseController.clients.stream().filter(client -> client.isActive() && client.getStreetName().contains(search)).toList());
                     }
             case "suburb" ->
                     {
-                        return FXCollections.observableArrayList(clientList.stream().filter(client -> client.isActive() && client.getSuburb().contains(search)).toList());
+                        return FXCollections.observableArrayList(baseController.clients.stream().filter(client -> client.isActive() && client.getSuburb().contains(search)).toList());
                     }
             case "city" ->
                     {
-                        return FXCollections.observableArrayList(clientList.stream().filter(client -> client.isActive() && client.getCity().contains(search)).toList());
+                        return FXCollections.observableArrayList(baseController.clients.stream().filter(client -> client.isActive() && client.getCity().contains(search)).toList());
                     }
             case "postalCode" ->
                     {
-                        return FXCollections.observableArrayList(clientList.stream().filter(client -> client.isActive() && client.getPostalCode().contains(search)).toList());
+                        return FXCollections.observableArrayList(baseController.clients.stream().filter(client -> client.isActive() && client.getPostalCode().contains(search)).toList());
                     }
             case "companyName" ->
                     {
-                        return FXCollections.observableArrayList(clientList.stream().filter(client -> client.isActive() && client.getCompanyName().contains(search)).toList());
+                        return FXCollections.observableArrayList(baseController.clients.stream().filter(client -> client.isActive() && client.getCompanyName().contains(search)).toList());
                     }
             case "moneyOwed" ->
                     {
                         if(Functions.isNumeric(search))
-                        {
-                            switch(extraParameter)
-                            {
-                                case "<" ->
-                                        {
-                                            return FXCollections.observableArrayList(clientList.stream().filter(client -> client.isActive() && client.getMoneyOwed() < Double.parseDouble(search)).toList());
-                                        }
-                                case ">" ->
-                                        {
-                                            return FXCollections.observableArrayList(clientList.stream().filter(client -> client.isActive() && client.getMoneyOwed() > Double.parseDouble(search)).toList());
-                                        }
-                                case "=" ->
-                                        {
-                                            return FXCollections.observableArrayList(clientList.stream().filter(client -> client.isActive() && client.getMoneyOwed() == Double.parseDouble(search)).toList());
-                                        }
-                            }
-                        }
+                            return FXCollections.observableArrayList(baseController.clients.stream().filter(client -> client.isActive() && client.getMoneyOwed() == Double.parseDouble(search)).toList());
                     }
         }
 

@@ -8,14 +8,18 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.image.Image;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.stage.Stage;
+import net.ucanaccess.converters.Functions;
 
 import java.net.URL;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.time.Duration;
 import java.time.LocalDate;
+import java.time.Year;
 import java.util.ResourceBundle;
 
 public class returnVehicleController implements Initializable, EventHandler<Event>
@@ -48,7 +52,7 @@ public class returnVehicleController implements Initializable, EventHandler<Even
     {
         setupMnemonics();
 
-        filteredBookings = Booking.searchQuery("isBeingRented", "Yes");
+        filteredBookings = FXCollections.observableArrayList(baseController.bookings.stream().filter(booking -> booking.isActive() && booking.isIsBeingRented().equals("Yes")).toList());
 
         searchFilter.getItems().addAll(
                 "None",
@@ -156,35 +160,60 @@ public class returnVehicleController implements Initializable, EventHandler<Even
             filteredTable.setItems(filteredBookings);
         else
         {
-            if(searchQuery.getText().contains("/") || searchQuery.getText().contains("-"))
+            if(searchFilter.getSelectionModel().getSelectedItem().equals("startDate") || searchFilter.getSelectionModel().getSelectedItem().equals("endDate"))
             {
-                String thisDate = searchQuery.getText();
-                thisDate = thisDate.replace("/", "-");
-
-                if(baseController.errorValidationCheck(baseController.letterArray, thisDate) || baseController.symbolCheck(thisDate, '-'))
-                {
-                    String[] split = thisDate.split("-");
-                    if(split[0].length() != 4 || split[1].length() != 2 || Integer.parseInt(split[1]) < 1 || Integer.parseInt(split[1]) > 12 || split[2].length() != 2)
-                        filteredTable.setItems(null);
-                    else
-                    {
-                        ObservableList<Booking> filteredList = Booking.searchQuery(searchFilter.getSelectionModel().getSelectedItem(), thisDate);
-                        if(filteredList != null)
-                            filteredList = FXCollections.observableList(filteredList.stream().filter(booking -> booking.isIsBeingRented().equals("Yes")).toList());
-                        filteredTable.setItems(filteredList);
-                    }
-                }
-                else
-                    filteredTable.setItems(null);
+                ObservableList<Booking> filteredList = dateValid(searchQuery.getText());
+                if(filteredList != null)
+                    filteredList.filtered(booking -> booking.isIsBeingRented().equals("Yes"));
+                filteredTable.setItems(filteredList);
             }
             else
             {
                 ObservableList<Booking> filteredList = Booking.searchQuery(searchFilter.getSelectionModel().getSelectedItem(), searchQuery.getText());
                 if(filteredList != null)
-                    filteredList = FXCollections.observableList(filteredList.stream().filter(booking -> booking.isIsBeingRented().equals("Yes")).toList());
+                    filteredList.filtered(booking -> booking.isIsBeingRented().equals("Yes"));
                 filteredTable.setItems(filteredList);
             }
         }
+    }
+    private ObservableList<Booking> dateValid(String date)
+    {
+        date = date.replace("/", "-");
+
+        if(baseController.dateCheck(date))
+        {
+            String[] split = date.split("-");
+            if(Functions.isNumeric(split[0]) && Functions.isNumeric(split[1]) && Functions.isNumeric(split[2]))
+            {
+                switch (Integer.parseInt(split[1]))
+                {
+                    case 1,3,5,7,8,10,12 ->
+                            {
+                                if(Integer.parseInt(split[2]) > 0 && Integer.parseInt(split[2]) <= 31)
+                                    return Booking.searchQuery(searchFilter.getSelectionModel().getSelectedItem(), date);
+                            }
+                    case 4,6,9,11 ->
+                            {
+                                if(Integer.parseInt(split[2]) > 0 && Integer.parseInt(split[2]) <= 30)
+                                    return Booking.searchQuery(searchFilter.getSelectionModel().getSelectedItem(), date);
+                            }
+                    case 2 ->
+                            {
+                                if(Year.of(Integer.parseInt(split[0])).isLeap())
+                                {
+                                    if(Integer.parseInt(split[2]) > 0 && Integer.parseInt(split[2]) <= 29)
+                                        return Booking.searchQuery(searchFilter.getSelectionModel().getSelectedItem(), date);
+                                }
+                                else
+                                {
+                                    if(Integer.parseInt(split[2]) > 0 && Integer.parseInt(split[2]) <= 28)
+                                        return Booking.searchQuery(searchFilter.getSelectionModel().getSelectedItem(), date);
+                                }
+                            }
+                }
+            }
+        }
+        return null;
     }
     private void onReturn() throws SQLException
     {
@@ -219,15 +248,18 @@ public class returnVehicleController implements Initializable, EventHandler<Even
             String updateClient = "UPDATE Client SET moneyOwed = moneyOwed + " + clientMoneyOwed + " WHERE clientNumber = \'" + vehicle.getClientNumber() + "\' AND active = Yes";
             RentACar.statement.executeUpdate(updateClient);
 
-            ObservableList<Client> thisClient = Client.searchQuery("clientNumber", String.valueOf(vehicle.getClientNumber()), "");
-            Client updatedClient = thisClient.get(0);
-
-            for(Client client : baseController.clients)
+            ObservableList<Client> thisClient = Client.searchQuery("clientNumber", String.valueOf(vehicle.getClientNumber()));
+            if(thisClient != null)
             {
-                if(client.getClientID().equals(updatedClient.getClientID()))
+                Client updatedClient = thisClient.get(0);
+
+                for(Client client : baseController.clients)
                 {
-                    client.setMoneyOwed(client.getMoneyOwed() + clientMoneyOwed);
-                    break;
+                    if(client.getClientID().equals(updatedClient.getClientID()))
+                    {
+                        client.setMoneyOwed(client.getMoneyOwed() + clientMoneyOwed);
+                        break;
+                    }
                 }
             }
 
@@ -256,12 +288,10 @@ public class returnVehicleController implements Initializable, EventHandler<Even
         {
             returnVehicle.setHeaderText("Vehicle Returned From Rental (Overdue)");
             returnVehicle.setContentText("Vehicle overdue by: " + (int) days + " days\nFine amount: R" + extraMoneyOwed);
-            returnVehicle.showAndWait();
         }
         else
-        {
             returnVehicle.setHeaderText("Vehicle Returned From Rental");
-            returnVehicle.showAndWait();
-        }
+        ((Stage) returnVehicle.getDialogPane().getScene().getWindow()).getIcons().add(new Image("icon.png"));
+        returnVehicle.showAndWait();
     }
 }

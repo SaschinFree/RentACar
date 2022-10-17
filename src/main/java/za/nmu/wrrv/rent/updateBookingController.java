@@ -6,6 +6,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -91,18 +92,17 @@ public class updateBookingController implements Initializable
             {
                 Client thisClient = baseController.clients.stream().filter(client -> client.getClientNumber() == manageBookingsController.thisBooking.getClientNumber()).toList().get(0);
                 updateCancelBooking.setContentText(thisClient.getFirstName() + " " + thisClient.getSurname() + " should be refunded: R" + manageBookingsController.thisBooking.getCost());
-                manageBookingsController.thisBooking.setCost(0);
+
                 for(Booking booking : baseController.bookings)
                 {
                     if(booking.getBookingNumber() == manageBookingsController.thisBooking.getBookingNumber())
                     {
                         booking.setCost(0.0);
+                        booking.setActive(false);
                         break;
                     }
                 }
             }
-
-            manageBookingsController.thisBooking.setActive(false);
             baseController.bookings.removeAll(manageBookingsController.thisBooking);
 
             updateCancel = "Cancelled";
@@ -115,12 +115,23 @@ public class updateBookingController implements Initializable
 
             String sql = "UPDATE Booking SET hasPaid = " + hasPaid + " WHERE bookingNumber = \'" + manageBookingsController.thisBooking.getBookingNumber() + "\'";
             RentACar.statement.executeUpdate(sql);
-
             manageBookingsController.thisBooking.setHasPaid(hasPaid);
+
+            int index = 0;
+            for(Booking booking : baseController.bookings)
+            {
+                if(booking.getBookingNumber() == manageBookingsController.thisBooking.getBookingNumber())
+                {
+                    baseController.bookings.set(index, manageBookingsController.thisBooking);
+                    break;
+                }
+                index++;
+            }
 
             updateCancel = "Updated";
         }
 
+        ((Stage) updateCancelBooking.getDialogPane().getScene().getWindow()).getIcons().add(new Image("icon.png"));
         updateCancelBooking.setHeaderText("Booking " + updateCancel + " Successfully");
         updateCancelBooking.showAndWait();
         closeStage();

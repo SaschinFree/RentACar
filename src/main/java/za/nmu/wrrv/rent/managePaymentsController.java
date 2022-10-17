@@ -55,7 +55,7 @@ public class managePaymentsController implements Initializable, EventHandler<Eve
     {
         setupMnemonics();
 
-        filteredClients = Client.searchQuery("moneyOwed", "0.0", ">");
+        filteredClients = FXCollections.observableArrayList(baseController.clients.stream().filter(client -> client.isActive() && client.getMoneyOwed() > 0.0).toList());
 
         searchFilter.getItems().addAll(
                 "None",
@@ -200,13 +200,17 @@ public class managePaymentsController implements Initializable, EventHandler<Eve
         {
             if(searchFilter.getSelectionModel().getSelectedItem().equals("moneyOwed"))
             {
-
-                ObservableList<Client> filteredList = Client.searchQuery("moneyOwed", searchQuery.getText(), ">");
+                String search = searchQuery.getText().replace(",", ".");
+                ObservableList<Client> filteredList = Client.searchQuery("moneyOwed", search);
+                if(filteredList != null)
+                    filteredList = FXCollections.observableList(filteredList.stream().filter(client -> client.getMoneyOwed() > 0.0).toList());
                 queryTable.setItems(filteredList);
             }
             else
             {
-                ObservableList<Client> filteredList = Client.searchQuery(searchFilter.getSelectionModel().getSelectedItem(), searchQuery.getText(), "");
+                ObservableList<Client> filteredList = Client.searchQuery(searchFilter.getSelectionModel().getSelectedItem(), searchQuery.getText());
+                if (filteredList != null)
+                    filteredList = FXCollections.observableList(filteredList.stream().filter(client -> client.getMoneyOwed() > 0.0).toList());
                 queryTable.setItems(filteredList);
             }
         }
