@@ -145,7 +145,10 @@ public class Client
             case "moneyOwed" ->
                     {
                         if(Functions.isNumeric(search))
-                            return FXCollections.observableArrayList(baseController.clients.stream().filter(client -> client.isActive() && client.getMoneyOwed() == Double.parseDouble(search)).toList());
+                        {
+                            String finalSearch = search.replace(",", ".");
+                            return FXCollections.observableArrayList(baseController.clients.stream().filter(client -> client.isActive() && client.getMoneyOwed() == Double.parseDouble(finalSearch)).toList());
+                        }
                     }
         }
 

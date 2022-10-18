@@ -207,21 +207,12 @@ public class manageClientsController implements Initializable, EventHandler<Even
             clientTable.setItems(baseController.clients);
         else
         {
-            if(searchFilter.getSelectionModel().getSelectedItem().equals("moneyOwed"))
-            {
-                String search = searchQuery.getText().replace(",", ".");
-                ObservableList<Client> filteredList = Client.searchQuery("moneyOwed", search);
-                clientTable.setItems(filteredList);
-            }
+            if(searchFilter.getSelectionModel().getSelectedItem().equals("licenceExpiryDate"))
+                clientTable.setItems(dateValid(searchQuery.getText()));
             else
             {
-                if(searchFilter.getSelectionModel().getSelectedItem().equals("licenceExpiryDate"))
-                    clientTable.setItems(dateValid(searchQuery.getText()));
-                else
-                {
-                    ObservableList<Client> filteredList = Client.searchQuery(searchFilter.getSelectionModel().getSelectedItem(), searchQuery.getText());
-                    clientTable.setItems(filteredList);
-                }
+                ObservableList<Client> filteredList = Client.searchQuery(searchFilter.getSelectionModel().getSelectedItem(), searchQuery.getText());
+                clientTable.setItems(filteredList);
             }
         }
     }

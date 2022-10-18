@@ -109,7 +109,10 @@ public class Booking
             case "cost" ->
                     {
                         if(Functions.isNumeric(search))
-                            return FXCollections.observableArrayList(baseController.bookings.stream().filter(booking -> booking.isActive() && booking.getCost() == Double.parseDouble(search)).toList());
+                        {
+                            String finalSearch = search.replace(",", ".");
+                            return FXCollections.observableArrayList(baseController.bookings.stream().filter(booking -> booking.isActive() && booking.getCost() == Double.parseDouble(finalSearch)).toList());
+                        }
                     }
             case "companyCommission" ->
                     {

@@ -247,7 +247,7 @@ public class baseController implements Initializable, EventHandler<Event>
     }
     protected static boolean dateCheck(DatePicker thisDate, String thisDateString)
     {
-        if(!errorValidationCheck(letterArray, thisDateString) || !symbolCheck(thisDateString, '-'))
+        if(!dateCheck(thisDateString))
         {
             thisDate.setValue(null);
 

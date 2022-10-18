@@ -198,21 +198,10 @@ public class managePaymentsController implements Initializable, EventHandler<Eve
             queryTable.setItems(filteredClients);
         else
         {
-            if(searchFilter.getSelectionModel().getSelectedItem().equals("moneyOwed"))
-            {
-                String search = searchQuery.getText().replace(",", ".");
-                ObservableList<Client> filteredList = Client.searchQuery("moneyOwed", search);
-                if(filteredList != null)
-                    filteredList = FXCollections.observableList(filteredList.stream().filter(client -> client.getMoneyOwed() > 0.0).toList());
-                queryTable.setItems(filteredList);
-            }
-            else
-            {
-                ObservableList<Client> filteredList = Client.searchQuery(searchFilter.getSelectionModel().getSelectedItem(), searchQuery.getText());
-                if (filteredList != null)
-                    filteredList = FXCollections.observableList(filteredList.stream().filter(client -> client.getMoneyOwed() > 0.0).toList());
-                queryTable.setItems(filteredList);
-            }
+            ObservableList<Client> filteredList = Client.searchQuery(searchFilter.getSelectionModel().getSelectedItem(), searchQuery.getText());
+            if (filteredList != null)
+                filteredList = FXCollections.observableList(filteredList.stream().filter(client -> client.getMoneyOwed() > 0.0).toList());
+            queryTable.setItems(filteredList);
         }
     }
 }

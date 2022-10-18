@@ -164,14 +164,14 @@ public class dispatchVehicleController implements Initializable, EventHandler<Ev
             {
                 ObservableList<Booking> filteredList = dateValid(searchQuery.getText());
                 if(filteredList != null)
-                    filteredList.filtered(booking -> booking.isIsBeingRented().equals("No") && booking.isHasPaid().equals("Yes"));
+                    filteredList = FXCollections.observableList(filteredList.stream().filter(booking -> booking.getStartDate().equals(Date.valueOf(LocalDate.now())) && booking.isIsBeingRented().equals("No") && booking.isHasPaid().equals("Yes")).toList());
                 filteredTable.setItems(filteredList);
             }
             else
             {
                 ObservableList<Booking> filteredList = Booking.searchQuery(searchFilter.getSelectionModel().getSelectedItem(), searchQuery.getText());
                 if(filteredList != null)
-                    filteredList.filtered(booking -> booking.isIsBeingRented().equals("No") && booking.isHasPaid().equals("Yes"));
+                    filteredList = FXCollections.observableList(filteredList.stream().filter(booking -> booking.getStartDate().equals(Date.valueOf(LocalDate.now())) && booking.isIsBeingRented().equals("No") && booking.isHasPaid().equals("Yes")).toList());
                 filteredTable.setItems(filteredList);
             }
         }
@@ -219,30 +219,36 @@ public class dispatchVehicleController implements Initializable, EventHandler<Ev
     {
         String dispatch = "UPDATE Booking SET isBeingRented = Yes WHERE vehicleRegistration = \'" + thisBooking.getVehicleRegistration() + "\' AND startDate = \'" + thisBooking.getStartDate() + "\' AND endDate = \'" + thisBooking.getEndDate() + "\'";
         RentACar.statement.executeUpdate(dispatch);
+        thisBooking.setIsBeingRented("Yes");
 
+        int index = 0;
         for(Booking booking : baseController.bookings)
         {
             if(booking.getBookingNumber() == thisBooking.getBookingNumber())
             {
-                booking.setIsBeingRented("Yes");
+                baseController.bookings.set(index, thisBooking);
                 break;
             }
+            index++;
         }
         filteredBookings.removeAll(thisBooking);
 
-        ObservableList<Vehicle> clientVehicle = Vehicle.searchQuery("vehicleRegistration", String.valueOf(thisBooking.getVehicleRegistration()));
+        ObservableList<Vehicle> clientVehicle = FXCollections.observableArrayList(baseController.vehicles.stream().filter(vehicle -> vehicle.isActive() && vehicle.getVehicleRegistration().equals(thisBooking.getVehicleRegistration())).toList());
         Vehicle thisVehicle = clientVehicle.get(0);
 
         String updateClient = "UPDATE Client SET moneyOwed = \'" + thisBooking.getOwnerCommission() + "\' WHERE clientNumber = \'" + thisVehicle.getClientNumber() + "\'";
         RentACar.statement.executeUpdate(updateClient);
 
+        index = 0;
         for(Client thisClient : baseController.clients)
         {
             if(thisClient.getClientNumber() == thisVehicle.getClientNumber())
             {
                 thisClient.setMoneyOwed(thisClient.getMoneyOwed() + thisBooking.getOwnerCommission());
+                baseController.clients.set(index, thisClient);
                 break;
             }
+            index++;
         }
 
         Alert dispatchVehicle = new Alert(Alert.AlertType.INFORMATION);

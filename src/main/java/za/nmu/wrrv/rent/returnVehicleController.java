@@ -164,14 +164,14 @@ public class returnVehicleController implements Initializable, EventHandler<Even
             {
                 ObservableList<Booking> filteredList = dateValid(searchQuery.getText());
                 if(filteredList != null)
-                    filteredList.filtered(booking -> booking.isIsBeingRented().equals("Yes"));
+                    filteredList = FXCollections.observableList(filteredList.stream().filter(booking -> booking.isIsBeingRented().equals("Yes")).toList());
                 filteredTable.setItems(filteredList);
             }
             else
             {
                 ObservableList<Booking> filteredList = Booking.searchQuery(searchFilter.getSelectionModel().getSelectedItem(), searchQuery.getText());
                 if(filteredList != null)
-                    filteredList.filtered(booking -> booking.isIsBeingRented().equals("Yes"));
+                    filteredList = FXCollections.observableList(filteredList.stream().filter(booking -> booking.isIsBeingRented().equals("Yes")).toList());
                 filteredTable.setItems(filteredList);
             }
         }
@@ -237,50 +237,52 @@ public class returnVehicleController implements Initializable, EventHandler<Even
             if(thisSetting != null)
                 flatRate = thisSetting.getSettingValue();
 
-            ObservableList<Vehicle> thisVehicle = Vehicle.searchQuery("vehicleRegistration", thisBooking.getVehicleRegistration());
+            ObservableList<Vehicle> thisVehicle = FXCollections.observableArrayList(baseController.vehicles.stream().filter(vehicle -> vehicle.isActive() && vehicle.getVehicleRegistration().equals(thisBooking.getVehicleRegistration())).toList());
             Vehicle vehicle = thisVehicle.get(0);
 
             double costMulti = vehicle.getCostMultiplier();
 
-            extraMoneyOwed = flatRate*days*costMulti;
+            extraMoneyOwed = flatRate * days * costMulti;
             double clientMoneyOwed = extraMoneyOwed / 2;
 
             String updateClient = "UPDATE Client SET moneyOwed = moneyOwed + " + clientMoneyOwed + " WHERE clientNumber = \'" + vehicle.getClientNumber() + "\' AND active = Yes";
             RentACar.statement.executeUpdate(updateClient);
 
-            ObservableList<Client> thisClient = Client.searchQuery("clientNumber", String.valueOf(vehicle.getClientNumber()));
-            if(thisClient != null)
-            {
-                Client updatedClient = thisClient.get(0);
+            ObservableList<Client> thisClient = FXCollections.observableArrayList(baseController.clients.stream().filter(client -> client.isActive() && client.getClientNumber() == vehicle.getClientNumber()).toList());
+            Client updatedClient = thisClient.get(0);
 
-                for(Client client : baseController.clients)
+            int index = 0;
+            for(Client client : baseController.clients)
+            {
+                if(client.getClientID().equals(updatedClient.getClientID()))
                 {
-                    if(client.getClientID().equals(updatedClient.getClientID()))
-                    {
-                        client.setMoneyOwed(client.getMoneyOwed() + clientMoneyOwed);
-                        break;
-                    }
+                    client.setMoneyOwed(client.getMoneyOwed() + clientMoneyOwed);
+                    baseController.clients.set(index, client);
+                    break;
                 }
+                index++;
             }
 
             String updateBooking = "UPDATE Booking SET cost = cost + " + extraMoneyOwed + " WHERE bookingNumber = \'" + thisBooking.getBookingNumber() + "\' AND active = Yes";
             RentACar.statement.executeUpdate(updateBooking);
         }
 
+        thisBooking.setCost(thisBooking.getCost() + extraMoneyOwed);
         thisBooking.setIsBeingRented("No");
         thisBooking.setActive(false);
 
         filteredBookings.removeAll(thisBooking);
 
+        int index = 0;
         for(Booking booking : baseController.bookings)
         {
             if(booking.getBookingNumber() == thisBooking.getBookingNumber())
             {
-                booking.setCost(booking.getCost() + extraMoneyOwed);
-                booking.setActive(false);
+                baseController.bookings.set(index, thisBooking);
                 baseController.bookings.removeAll(booking);
                 break;
             }
+            index++;
         }
 
         Alert returnVehicle = new Alert(Alert.AlertType.INFORMATION);
@@ -291,6 +293,7 @@ public class returnVehicleController implements Initializable, EventHandler<Even
         }
         else
             returnVehicle.setHeaderText("Vehicle Returned From Rental");
+
         ((Stage) returnVehicle.getDialogPane().getScene().getWindow()).getIcons().add(new Image("icon.png"));
         returnVehicle.showAndWait();
     }
