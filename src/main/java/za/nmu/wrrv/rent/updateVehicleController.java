@@ -1,5 +1,7 @@
 package za.nmu.wrrv.rent;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -108,16 +110,20 @@ public class updateVehicleController implements Initializable
             String delete = "UPDATE Vehicle SET active = false WHERE vehicleRegistration = \'" + manageVehiclesController.thisVehicle.getVehicleRegistration() + "\'";
             RentACar.statement.executeUpdate(delete);
 
+            int index = 0;
             for(Vehicle vehicle : baseController.vehicles)
             {
                 if(vehicle.getVehicleRegistration().equals(manageVehiclesController.thisVehicle.getVehicleRegistration()))
                 {
                     vehicle.setActive(false);
+                    baseController.vehicles.set(index, vehicle);
                     break;
                 }
+                index++;
             }
             Vehicle.vehicleList.removeAll(manageVehiclesController.thisVehicle);
 
+            baseController.deleteBookings(manageVehiclesController.thisVehicle);
 
             Alert deleteVehicle = new Alert(Alert.AlertType.INFORMATION);
             ((Stage) deleteVehicle.getDialogPane().getScene().getWindow()).getIcons().add(new Image("icon.png"));
@@ -278,9 +284,9 @@ public class updateVehicleController implements Initializable
             return false;
         }
 
-        if(end.before(start))
+        if(end.after(regExp))
         {
-            errorMessage = "Rental End Date: Rental end date cannot be before rental start date";
+            errorMessage = "Rental End Date: Rental end date cannot be after registration expiry date";
             vehicleEndDate.setValue(null);
             return false;
         }

@@ -95,6 +95,12 @@ public class manageVehiclesController implements Initializable, EventHandler<Eve
             }
         });
 
+        searchQuery.focusedProperty().addListener((observableValue, aBoolean, t1) ->
+        {
+            enableMnemonics(!searchQuery.isFocused());
+        });
+
+
         if(loginController.thisUser.isAdmin())
             addVehicle.setVisible(false);
 
@@ -186,20 +192,25 @@ public class manageVehiclesController implements Initializable, EventHandler<Eve
 
     private void setupMnemonics()
     {
-        search.setMnemonicParsing(true);
-        addVehicle.setMnemonicParsing(true);
-        updateVehicle.setMnemonicParsing(true);
-        back.setMnemonicParsing(true);
+        enableMnemonics(true);
 
         search.setOnAction(this::handle);
         addVehicle.setOnAction(this::handle);
         updateVehicle.setOnAction(this::handle);
         back.setOnAction(this::handle);
 
+        searchQuery.setTooltip(baseController.searchTip);
         search.setTooltip(new Tooltip("Alt+S"));
         addVehicle.setTooltip(new Tooltip("Alt+A"));
         updateVehicle.setTooltip(new Tooltip("Alt+U"));
         back.setTooltip(new Tooltip("Alt+B"));
+    }
+    private void enableMnemonics(boolean value)
+    {
+        search.setMnemonicParsing(value);
+        addVehicle.setMnemonicParsing(value);
+        updateVehicle.setMnemonicParsing(value);
+        back.setMnemonicParsing(value);
     }
 
     private void onSearch()

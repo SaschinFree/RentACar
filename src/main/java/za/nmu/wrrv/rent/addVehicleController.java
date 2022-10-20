@@ -348,10 +348,9 @@ public class addVehicleController implements Initializable
             vehicleStartDate.setValue(null);
             return false;
         }
-
-        if(end.before(start))
+        if(end.after(regExp))
         {
-            errorMessage = "Rental End Date: Rental end date cannot be before rental start date";
+            errorMessage = "Rental End Date: Rental end date cannot be after registration expiry date";
             vehicleEndDate.setValue(null);
             return false;
         }

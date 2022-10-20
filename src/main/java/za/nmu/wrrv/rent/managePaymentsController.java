@@ -89,6 +89,12 @@ public class managePaymentsController implements Initializable, EventHandler<Eve
             }
         });
 
+        searchQuery.focusedProperty().addListener((observableValue, aBoolean, t1) ->
+        {
+            enableMnemonics(!searchQuery.isFocused());
+        });
+
+
         clientPaid = false;
 
         payClient.setVisible(false);
@@ -179,17 +185,22 @@ public class managePaymentsController implements Initializable, EventHandler<Eve
 
     private void setupMnemonics()
     {
-        search.setMnemonicParsing(true);
-        back.setMnemonicParsing(true);
-        payClient.setMnemonicParsing(true);
+        enableMnemonics(true);
 
         search.setOnAction(this::handle);
         back.setOnAction(this::handle);
         payClient.setOnAction(this::handle);
 
+        searchQuery.setTooltip(baseController.searchTip);
         search.setTooltip(new Tooltip("Alt+S"));
         back.setTooltip(new Tooltip("Alt+B"));
         payClient.setTooltip(new Tooltip("Alt+P"));
+    }
+    private void enableMnemonics(boolean value)
+    {
+        search.setMnemonicParsing(value);
+        back.setMnemonicParsing(value);
+        payClient.setMnemonicParsing(value);
     }
 
     private void onSearch()

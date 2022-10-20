@@ -1,5 +1,6 @@
 package za.nmu.wrrv.rent;
 
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -10,6 +11,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
@@ -19,6 +21,7 @@ import javafx.util.StringConverter;
 
 import java.io.IOException;
 import java.net.URL;
+import java.sql.Date;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -31,6 +34,8 @@ public class baseController implements Initializable, EventHandler<Event>
     @FXML
     protected Button login;
     @FXML
+    protected ImageView loginIcon;
+    @FXML
     protected Label logged;
     @FXML
     protected Label user;
@@ -39,6 +44,7 @@ public class baseController implements Initializable, EventHandler<Event>
     protected static final SceneLoader thisScene = new SceneLoader();
     protected static boolean isLoggedOn = false;
     protected static String userLoggedOn;
+    protected static final Tooltip searchTip = new Tooltip("To continue using shortcuts, press tab after your search query");
 
     protected static final DateTimeFormatter dateFormat = DateTimeFormatter.ofPattern("yyyy/MM/dd");
     protected static final StringConverter<LocalDate> dateConverter = new StringConverter<>()
@@ -141,7 +147,7 @@ public class baseController implements Initializable, EventHandler<Event>
         login.setTooltip(new Tooltip("Alt+L"));
     }
 
-    private void onLogout()
+    public void onLogout()
     {
         Alert alert;
 
@@ -157,15 +163,15 @@ public class baseController implements Initializable, EventHandler<Event>
         user.setVisible(false);
 
         alert = new Alert(AlertType.INFORMATION);
-        alert.setTitle("Successful");
+        ((Stage) alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image("icon.png"));
         alert.setHeaderText("Logout successful");
 
-        login.setText("_Login");
         login.setId("login");
+        loginIcon.setImage(new Image("/login.png"));
 
         alert.showAndWait();
     }
-    private void onLogin() throws IOException
+    public void onLogin() throws IOException
     {
         newScreen("login", "Login");
 
@@ -186,8 +192,8 @@ public class baseController implements Initializable, EventHandler<Event>
 
             user.setVisible(true);
 
-            login.setText("_Logout");
             login.setId("logout");
+            loginIcon.setImage(new Image("/logout.png"));
 
             nextScene(userLoggedOn);
         }
@@ -290,6 +296,78 @@ public class baseController implements Initializable, EventHandler<Event>
             }
         }
         return check;
+    }
+
+    protected static void deleteVehicles(Client thisClient) throws SQLException
+    {
+        ObservableList<Vehicle> clientVehicles = FXCollections.observableArrayList(baseController.vehicles.stream().filter(vehicle -> vehicle.isActive() && vehicle.getClientNumber() == thisClient.getClientNumber()).toList());
+
+        if(clientVehicles.size() > 0)
+        {
+            String delete = "UPDATE Vehicle SET active = false WHERE active  = true AND clientNumber = \'" + thisClient.getClientNumber() + "\'";
+            RentACar.statement.executeUpdate(delete);
+            for(Vehicle thisVehicle : clientVehicles)
+            {
+                int index = 0;
+                for(Vehicle vehicle : vehicles)
+                {
+                    if(vehicle.getVehicleRegistration().equals(thisVehicle.getVehicleRegistration()))
+                    {
+                        vehicle.setActive(false);
+                        vehicles.set(index, vehicle);
+                        deleteBookings(vehicle);
+                        vehicles.removeAll(vehicle);
+                        break;
+                    }
+                    index++;
+                }
+            }
+        }
+    }
+    protected static void deleteBookings(Vehicle thisVehicle) throws SQLException
+    {
+        ObservableList<Booking> vehicleBookings = FXCollections.observableArrayList(bookings.stream().filter(booking -> booking.isActive() && booking.getVehicleRegistration().equals(thisVehicle.getVehicleRegistration()) && booking.isIsBeingRented().equals("No") && booking.getStartDate().equals(Date.valueOf(LocalDate.now())) || booking.getStartDate().after(Date.valueOf(LocalDate.now()))).toList());
+
+        if(vehicleBookings.size() > 0)
+        {
+            String delete = "UPDATE Booking SET active = false WHERE active = true AND vehicleRegistration = \'" + thisVehicle.getVehicleRegistration() + "\' AND startDate >= \'" + Date.valueOf(LocalDate.now()) + "\'";
+            RentACar.statement.executeUpdate(delete);
+            for(Booking thisBooking : vehicleBookings)
+            {
+                int index = 0;
+                for(Booking booking : bookings)
+                {
+                    if(booking.getBookingNumber() == thisBooking.getBookingNumber())
+                    {
+                        if(booking.isHasPaid().equals("Yes"))
+                        {
+                            String updateMoney = "UPDATE Client SET moneyOwed = moneyOwed + " + booking.getCost() + " WHERE clientNumber = \'" + booking.getClientNumber() + "\'";
+                            RentACar.statement.executeUpdate(updateMoney);
+
+                            ObservableList<Client> thisClient = FXCollections.observableArrayList(clients.stream().filter(client -> client.isActive() && client.getClientNumber() == booking.getClientNumber()).toList());
+                            Client updatedClient = thisClient.get(0);
+
+                            int index2 = 0;
+                            for(Client client : baseController.clients)
+                            {
+                                if(client.getClientID().equals(updatedClient.getClientID()))
+                                {
+                                    client.setMoneyOwed(client.getMoneyOwed() + booking.getCost());
+                                    baseController.clients.set(index2, client);
+                                    break;
+                                }
+                                index2++;
+                            }
+                        }
+                        booking.setActive(false);
+                        bookings.set(index, booking);
+                        bookings.removeAll(booking);
+                        break;
+                    }
+                    index++;
+                }
+            }
+        }
     }
 
     protected static void newScreen(String screenName, String title) throws IOException

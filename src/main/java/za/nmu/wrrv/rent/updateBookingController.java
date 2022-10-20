@@ -93,14 +93,17 @@ public class updateBookingController implements Initializable
                 Client thisClient = baseController.clients.stream().filter(client -> client.getClientNumber() == manageBookingsController.thisBooking.getClientNumber()).toList().get(0);
                 updateCancelBooking.setContentText(thisClient.getFirstName() + " " + thisClient.getSurname() + " should be refunded: R" + manageBookingsController.thisBooking.getCost());
 
+                int index = 0;
                 for(Booking booking : baseController.bookings)
                 {
                     if(booking.getBookingNumber() == manageBookingsController.thisBooking.getBookingNumber())
                     {
                         booking.setCost(0.0);
                         booking.setActive(false);
+                        baseController.bookings.set(index, booking);
                         break;
                     }
+                    index++;
                 }
             }
             baseController.bookings.removeAll(manageBookingsController.thisBooking);

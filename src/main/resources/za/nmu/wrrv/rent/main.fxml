@@ -19,7 +19,7 @@
                            <children>
                               <ImageView fitHeight="88.0" fitWidth="759.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="/logo.png" />
+                                    <Image url="@/logo.png" />
                                  </image>
                                  <viewport>
                                     <Rectangle2D height="88.0" width="759.0" />
@@ -49,13 +49,23 @@
                         </HBox>
                      </children>
                   </VBox>
-                  <Button fx:id="login" onMouseClicked="#buttonClicked" prefHeight="50.0" prefWidth="92.0" style="-fx-background-color: #3B2F2F;" text="_Login" textFill="WHITE">
+                  <Button fx:id="login" onMouseClicked="#buttonClicked" prefHeight="50.0" prefWidth="92.0" style="-fx-background-color: #3B2F2F;" textFill="WHITE">
                      <HBox.margin>
                         <Insets top="40.0" />
                      </HBox.margin>
                      <font>
                         <Font size="16.0" />
                      </font>
+                     <graphic>
+                        <ImageView fx:id="loginIcon" fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                           <viewport>
+                              <Rectangle2D height="40.0" width="40.0" />
+                           </viewport>
+                           <image>
+                              <Image url="@/login.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
                   </Button>
                </children>
             </HBox>

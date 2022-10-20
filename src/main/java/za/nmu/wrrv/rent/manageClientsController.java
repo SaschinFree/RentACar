@@ -95,6 +95,11 @@ public class manageClientsController implements Initializable, EventHandler<Even
             }
         });
 
+        searchQuery.focusedProperty().addListener((observableValue, aBoolean, t1) ->
+        {
+            enableMnemonics(!searchQuery.isFocused());
+        });
+
         if(loginController.thisUser.isAdmin())
             addClient.setVisible(false);
 
@@ -185,20 +190,25 @@ public class manageClientsController implements Initializable, EventHandler<Even
 
     private void setupMnemonics()
     {
-        search.setMnemonicParsing(true);
-        addClient.setMnemonicParsing(true);
-        updateClient.setMnemonicParsing(true);
-        back.setMnemonicParsing(true);
+        enableMnemonics(true);
 
         search.setOnAction(this::handle);
         addClient.setOnAction(this::handle);
         updateClient.setOnAction(this::handle);
         back.setOnAction(this::handle);
 
+        searchQuery.setTooltip(baseController.searchTip);
         search.setTooltip(new Tooltip("Alt+S"));
         addClient.setTooltip(new Tooltip("Alt+A"));
         updateClient.setTooltip(new Tooltip("Alt+U"));
         back.setTooltip(new Tooltip("Alt+B"));
+    }
+    private void enableMnemonics(boolean value)
+    {
+        search.setMnemonicParsing(value);
+        addClient.setMnemonicParsing(value);
+        updateClient.setMnemonicParsing(value);
+        back.setMnemonicParsing(value);
     }
 
     private void onSearch()

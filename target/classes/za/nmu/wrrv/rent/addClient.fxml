@@ -11,7 +11,7 @@
    <children>
       <ImageView fitHeight="88.0" fitWidth="759.0" pickOnBounds="true" preserveRatio="true">
          <image>
-            <Image url="/logo.png" />
+            <Image url="@/logo.png" />
          </image>
          <viewport>
             <Rectangle2D height="88.0" width="759.0" />

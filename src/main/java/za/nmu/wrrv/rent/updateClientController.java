@@ -1,5 +1,8 @@
 package za.nmu.wrrv.rent;
 
+import javafx.beans.Observable;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -120,15 +123,20 @@ public class updateClientController implements Initializable
             String delete = "UPDATE Client SET active = No WHERE clientID = \'" + manageClientsController.thisClient.getClientID() + "\'";
             RentACar.statement.executeUpdate(delete);
 
+            int index = 0;
             for(Client client : baseController.clients)
             {
                 if(client.getClientNumber() == manageClientsController.thisClient.getClientNumber())
                 {
                     client.setActive(false);
+                    baseController.clients.set(index, client);
                     break;
                 }
+                index++;
             }
             baseController.clients.removeAll(manageClientsController.thisClient);
+
+            baseController.deleteVehicles(manageClientsController.thisClient);
 
             Alert deleteClient = new Alert(Alert.AlertType.INFORMATION);
             ((Stage) deleteClient.getDialogPane().getScene().getWindow()).getIcons().add(new Image("icon.png"));

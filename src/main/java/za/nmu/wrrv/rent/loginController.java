@@ -65,7 +65,6 @@ public class loginController
         {
             alert = new Alert(Alert.AlertType.ERROR);
             ((Stage) alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image("icon.png"));
-            alert.setTitle("Failed");
             alert.setHeaderText("Login failed");
 
             if(username.isEmpty())
@@ -79,7 +78,6 @@ public class loginController
             {
                 alert = new Alert(Alert.AlertType.INFORMATION);
                 ((Stage) alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image("icon.png"));
-                alert.setTitle("Success");
                 alert.setHeaderText("Login successful");
                 baseController.isLoggedOn = true;
             }
@@ -87,7 +85,6 @@ public class loginController
             {
                 alert = new Alert(Alert.AlertType.ERROR);
                 ((Stage) alert.getDialogPane().getScene().getWindow()).getIcons().add(new Image("icon.png"));
-                alert.setTitle("Failed");
                 alert.setHeaderText("Login failed");
 
                 if(password.isEmpty())

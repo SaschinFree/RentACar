@@ -77,6 +77,12 @@ public class dispatchVehicleController implements Initializable, EventHandler<Ev
             }
         });
 
+        searchQuery.focusedProperty().addListener((observableValue, aBoolean, t1) ->
+        {
+            enableMnemonics(!searchQuery.isFocused());
+        });
+
+
         dispatchVehicle.setVisible(false);
 
         filteredTable.setColumnResizePolicy(TableView.UNCONSTRAINED_RESIZE_POLICY);
@@ -141,17 +147,22 @@ public class dispatchVehicleController implements Initializable, EventHandler<Ev
 
     private void setupMnemonics()
     {
-        search.setMnemonicParsing(true);
-        back.setMnemonicParsing(true);
-        dispatchVehicle.setMnemonicParsing(true);
+        enableMnemonics(true);
 
         search.setOnAction(this::handle);
         back.setOnAction(this::handle);
         dispatchVehicle.setOnAction(this::handle);
 
+        searchQuery.setTooltip(baseController.searchTip);
         search.setTooltip(new Tooltip("Alt+S"));
         back.setTooltip(new Tooltip("Alt+B"));
         dispatchVehicle.setTooltip(new Tooltip("Alt+D"));
+    }
+    private void enableMnemonics(boolean value)
+    {
+        search.setMnemonicParsing(value);
+        back.setMnemonicParsing(value);
+        dispatchVehicle.setMnemonicParsing(value);
     }
 
     private void onSearch()

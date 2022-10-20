@@ -19,40 +19,90 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Button fx:id="manageClients" onMouseClicked="#buttonClicked" prefHeight="120.0" prefWidth="180.0" style="-fx-background-color: #3B2F2F;" text="View _Clients" textFill="WHITE" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+            <Button fx:id="manageClients" onMouseClicked="#buttonClicked" prefHeight="120.0" prefWidth="180.0" style="-fx-background-color: #3B2F2F;" textFill="WHITE" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                <font>
                   <Font size="16.0" />
-               </font></Button>
-            <Button fx:id="manageVehicles" onMouseClicked="#buttonClicked" prefHeight="120.0" prefWidth="180.0" style="-fx-background-color: #3B2F2F;" text="View _Vehicles" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+               </font>
+               <graphic>
+                  <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+                     <viewport>
+                        <Rectangle2D height="100.0" width="100.0" />
+                     </viewport>
+                     <image>
+                        <Image url="@/clients.png" />
+                     </image>
+                  </ImageView>
+               </graphic></Button>
+            <Button fx:id="manageVehicles" onMouseClicked="#buttonClicked" prefHeight="120.0" prefWidth="180.0" style="-fx-background-color: #3B2F2F;" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                <font>
                   <Font size="16.0" />
-               </font></Button>
-            <Button fx:id="manageBookings" onMouseClicked="#buttonClicked" prefHeight="120.0" prefWidth="180.0" style="-fx-background-color: #3B2F2F;" text="View _Bookings" textFill="WHITE" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+               </font>
+               <graphic>
+                  <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+                     <viewport>
+                        <Rectangle2D height="100.0" width="100.0" />
+                     </viewport>
+                     <image>
+                        <Image url="@/vehicles.png" />
+                     </image>
+                  </ImageView>
+               </graphic></Button>
+            <Button fx:id="manageBookings" onMouseClicked="#buttonClicked" prefHeight="120.0" prefWidth="180.0" style="-fx-background-color: #3B2F2F;" textFill="WHITE" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                <font>
                   <Font size="16.0" />
-               </font></Button>
-            <Button fx:id="managePayments" onMouseClicked="#buttonClicked" prefHeight="120.0" prefWidth="180.0" style="-fx-background-color: #3B2F2F;" text="Manage _Payments" textFill="WHITE" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+               </font>
+               <graphic>
+                  <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+                     <viewport>
+                        <Rectangle2D height="100.0" width="100.0" />
+                     </viewport>
+                     <image>
+                        <Image url="@/bookings.png" />
+                     </image>
+                  </ImageView>
+               </graphic></Button>
+            <Button fx:id="managePayments" onMouseClicked="#buttonClicked" prefHeight="120.0" prefWidth="180.0" style="-fx-background-color: #3B2F2F;" textFill="WHITE" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                <font>
                   <Font size="16.0" />
-               </font></Button>
+               </font>
+               <graphic>
+                  <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+                     <viewport>
+                        <Rectangle2D height="100.0" width="100.0" />
+                     </viewport>
+                     <image>
+                        <Image url="@/pay.png" />
+                     </image>
+                  </ImageView>
+               </graphic></Button>
             <Button fx:id="manageSettings" onMouseClicked="#buttonClicked" prefHeight="120.0" prefWidth="180.0" style="-fx-background-color: #3B2F2F;" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                <font>
                   <Font size="16.0" />
                </font>
                <graphic>
-                  <ImageView fitHeight="100.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
                      <viewport>
                         <Rectangle2D height="100.0" width="100.0" />
                      </viewport>
                      <image>
-                        <Image url="@../../../../settings.png" />
+                        <Image url="@/settings.png" />
                      </image>
                   </ImageView>
                </graphic></Button>
-            <Button fx:id="adminReport" onMouseClicked="#buttonClicked" prefHeight="120.0" prefWidth="180.0" style="-fx-background-color: #3B2F2F;" text="_Generate Report" textFill="WHITE" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+            <Button fx:id="adminReport" onMouseClicked="#buttonClicked" prefHeight="120.0" prefWidth="180.0" style="-fx-background-color: #3B2F2F;" textFill="WHITE" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                <font>
                   <Font size="16.0" />
-               </font></Button>
+               </font>
+               <graphic>
+                  <ImageView fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true">
+                     <viewport>
+                        <Rectangle2D height="100.0" width="100.0" />
+                     </viewport>
+                     <image>
+                        <Image url="@/reports.png" />
+                     </image>
+                  </ImageView>
+               </graphic></Button>
          </children>
       </GridPane>
    </children>

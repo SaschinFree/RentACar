@@ -1,5 +1,7 @@
 package za.nmu.wrrv.rent;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -88,6 +90,12 @@ public class manageBookingsController implements Initializable, EventHandler<Eve
             }
         });
 
+        searchQuery.focusedProperty().addListener((observableValue, aBoolean, t1) ->
+        {
+            enableMnemonics(!searchQuery.isFocused());
+        });
+
+
         if(loginController.thisUser.isAdmin())
             addBooking.setVisible(false);
 
@@ -175,20 +183,25 @@ public class manageBookingsController implements Initializable, EventHandler<Eve
 
     private void setupMnemonics()
     {
-        search.setMnemonicParsing(true);
-        addBooking.setMnemonicParsing(true);
-        updateBooking.setMnemonicParsing(true);
-        back.setMnemonicParsing(true);
+        enableMnemonics(true);
 
         search.setOnAction(this::handle);
         addBooking.setOnAction(this::handle);
         updateBooking.setOnAction(this::handle);
         back.setOnAction(this::handle);
 
+        searchQuery.setTooltip(baseController.searchTip);
         search.setTooltip(new Tooltip("Alt+S"));
         addBooking.setTooltip(new Tooltip("Alt+A"));
         updateBooking.setTooltip(new Tooltip("Alt+U"));
         back.setTooltip(new Tooltip("Alt+B"));
+    }
+    private void enableMnemonics(boolean value)
+    {
+        search.setMnemonicParsing(value);
+        addBooking.setMnemonicParsing(value);
+        updateBooking.setMnemonicParsing(value);
+        back.setMnemonicParsing(value);
     }
 
     private void onSearch()
