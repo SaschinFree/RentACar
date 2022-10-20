@@ -92,7 +92,7 @@ public class baseController implements Initializable
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
-        login.setTooltip(new Tooltip("Login/Logout"));
+        login.setTooltip(new Tooltip("Login/Logout\nShortcut: Alt+L"));
 
         mainReference = main;
         logged.setVisible(false);
