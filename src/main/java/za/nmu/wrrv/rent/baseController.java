@@ -120,7 +120,7 @@ public class baseController implements Initializable
         }
     }
 
-    private void onLogout()
+    public void onLogout()
     {
         Alert alert;
 
@@ -144,7 +144,7 @@ public class baseController implements Initializable
 
         alert.showAndWait();
     }
-    private void onLogin() throws IOException
+    public void onLogin() throws IOException
     {
         newScreen("login", "Login");
 

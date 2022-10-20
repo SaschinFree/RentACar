@@ -36,6 +36,23 @@ public class RentACar extends Application
 
             stage.getIcons().add(new Image("icon.png"));
 
+            mainScene.getAccelerators().put(new KeyCodeCombination(KeyCode.L, KeyCombination.ALT_DOWN), () -> {
+                baseController c = mainLoader.getController();
+                if(baseController.isLoggedOn)
+                    c.onLogout();
+                else
+                {
+                    try
+                    {
+                        c.onLogin();
+                    }
+                    catch (IOException e)
+                    {
+                        e.printStackTrace();
+                    }
+                }
+            });
+
             stage.show();
         }
         else

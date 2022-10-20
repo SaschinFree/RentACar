@@ -100,7 +100,7 @@ public class clerkController implements Initializable
                 }
 
                 alert.setContentText(message);
-                alert.showAndWait();
+                alert.show();
             }
             alertShown = true;
         }
