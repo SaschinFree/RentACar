@@ -1,14 +1,11 @@
 package za.nmu.wrrv.rent;
 
-import javafx.event.Event;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Stage;
@@ -19,7 +16,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class clerkController implements Initializable,EventHandler<Event>
+public class clerkController implements Initializable
 {
     @FXML
     protected Button manageClients;
@@ -39,17 +36,9 @@ public class clerkController implements Initializable,EventHandler<Event>
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
-        setupMnemonics();
+        setupTooltips();
 
         setupAlert();
-    }
-    @Override
-    public void handle(Event event)
-    {
-        Button thisButton = (Button) event.getSource();
-        String buttonId = thisButton.getId();
-
-        baseController.nextScene(buttonId);
     }
 
     @FXML
@@ -64,28 +53,14 @@ public class clerkController implements Initializable,EventHandler<Event>
         }
     }
 
-    private void setupMnemonics()
+    private void setupTooltips()
     {
-        manageClients.setMnemonicParsing(true);
-        manageVehicles.setMnemonicParsing(true);
-        manageBookings.setMnemonicParsing(true);
-        dispatchVehicle.setMnemonicParsing(true);
-        returnVehicle.setMnemonicParsing(true);
-        clerkReport.setMnemonicParsing(true);
-
-        manageClients.setOnAction(this::handle);
-        manageVehicles.setOnAction(this::handle);
-        manageBookings.setOnAction(this::handle);
-        dispatchVehicle.setOnAction(this::handle);
-        returnVehicle.setOnAction(this::handle);
-        clerkReport.setOnAction(this::handle);
-
-        manageClients.setTooltip(new Tooltip("Alt+C"));
-        manageVehicles.setTooltip(new Tooltip("Alt+V"));
-        manageBookings.setTooltip(new Tooltip("Alt+B"));
-        dispatchVehicle.setTooltip(new Tooltip("Alt+D"));
-        returnVehicle.setTooltip(new Tooltip("Alt+R"));
-        clerkReport.setTooltip(new Tooltip("Alt+G"));
+        manageClients.setTooltip(new Tooltip("Manage Clients"));
+        manageVehicles.setTooltip(new Tooltip("Manage Vehicles"));
+        manageBookings.setTooltip(new Tooltip("Manage Bookings"));
+        dispatchVehicle.setTooltip(new Tooltip("Dispatch Vehicle"));
+        returnVehicle.setTooltip(new Tooltip("Return Vehicle"));
+        clerkReport.setTooltip(new Tooltip("Generate Report"));
     }
 
     private void setupAlert()

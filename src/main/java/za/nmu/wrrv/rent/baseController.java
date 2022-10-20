@@ -2,8 +2,6 @@ package za.nmu.wrrv.rent;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.Event;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -27,7 +25,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ResourceBundle;
 
-public class baseController implements Initializable, EventHandler<Event>
+public class baseController implements Initializable
 {
     @FXML
     protected BorderPane main;
@@ -94,7 +92,7 @@ public class baseController implements Initializable, EventHandler<Event>
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
-        setupMnemonics();
+        login.setTooltip(new Tooltip("Login/Logout"));
 
         mainReference = main;
         logged.setVisible(false);
@@ -103,26 +101,8 @@ public class baseController implements Initializable, EventHandler<Event>
         setSymbolArray();
         setLetterArray();
         setNumberArray();
-    }
-    @Override
-    public void handle(Event event)
-    {
-        Button thisButton = (Button) event.getSource();
-        String buttonId = thisButton.getId();
 
-        switch (buttonId)
-        {
-            case "login" -> {
-                try {
-                    onLogin();
-                }
-                catch (IOException e)
-                {
-                    e.printStackTrace();
-                }
-            }
-            case "logout" -> onLogout();
-        }
+        login.setFocusTraversable(false);
     }
 
     @FXML
@@ -140,14 +120,7 @@ public class baseController implements Initializable, EventHandler<Event>
         }
     }
 
-    private void setupMnemonics()
-    {
-        login.setMnemonicParsing(true);
-        login.setOnAction(this::handle);
-        login.setTooltip(new Tooltip("Alt+L"));
-    }
-
-    public void onLogout()
+    private void onLogout()
     {
         Alert alert;
 
@@ -171,7 +144,7 @@ public class baseController implements Initializable, EventHandler<Event>
 
         alert.showAndWait();
     }
-    public void onLogin() throws IOException
+    private void onLogin() throws IOException
     {
         newScreen("login", "Login");
 

@@ -1,7 +1,5 @@
 package za.nmu.wrrv.rent;
 
-import javafx.event.Event;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
@@ -15,7 +13,7 @@ import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
 
-public class adminController implements Initializable, EventHandler<Event>
+public class adminController implements Initializable
 {
     @FXML
     protected Button manageClients;
@@ -35,17 +33,9 @@ public class adminController implements Initializable, EventHandler<Event>
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle)
     {
-        setupMnemonics();
+        setupTooltips();
 
         setupAlert();
-    }
-    @Override
-    public void handle(Event event)
-    {
-        Button thisButton = (Button) event.getSource();
-        String buttonId = thisButton.getId();
-
-        baseController.nextScene(buttonId);
     }
 
     @FXML
@@ -60,28 +50,14 @@ public class adminController implements Initializable, EventHandler<Event>
         }
     }
 
-    private void setupMnemonics()
+    private void setupTooltips()
     {
-        manageClients.setMnemonicParsing(true);
-        manageVehicles.setMnemonicParsing(true);
-        manageBookings.setMnemonicParsing(true);
-        managePayments.setMnemonicParsing(true);
-        manageSettings.setMnemonicParsing(true);
-        adminReport.setMnemonicParsing(true);
-
-        manageClients.setOnAction(this::handle);
-        manageVehicles.setOnAction(this::handle);
-        manageBookings.setOnAction(this::handle);
-        managePayments.setOnAction(this::handle);
-        manageSettings.setOnAction(this::handle);
-        adminReport.setOnAction(this::handle);
-
-        manageClients.setTooltip(new Tooltip("Alt+C"));
-        manageVehicles.setTooltip(new Tooltip("Alt+V"));
-        manageBookings.setTooltip(new Tooltip("Alt+B"));
-        managePayments.setTooltip(new Tooltip("Alt+P"));
-        manageSettings.setTooltip(new Tooltip("Alt+S"));
-        adminReport.setTooltip(new Tooltip("Alt+G"));
+        manageClients.setTooltip(new Tooltip("View Clients"));
+        manageVehicles.setTooltip(new Tooltip("View Vehicles"));
+        manageBookings.setTooltip(new Tooltip("View Bookings"));
+        managePayments.setTooltip(new Tooltip("Manage Payments"));
+        manageSettings.setTooltip(new Tooltip("Manage Settings"));
+        adminReport.setTooltip(new Tooltip("Generate Report"));
     }
 
     private void setupAlert()
