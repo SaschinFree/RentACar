@@ -144,6 +144,11 @@ public class returnVehicleController implements Initializable, EventHandler<Even
             }
         }
     }
+    @FXML
+    protected void buttonHover(MouseEvent mouseEvent)
+    {
+        baseController.changeStyle((Button) mouseEvent.getSource());
+    }
 
     private void setupMnemonics()
     {

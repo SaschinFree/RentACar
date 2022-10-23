@@ -144,6 +144,11 @@ public class dispatchVehicleController implements Initializable, EventHandler<Ev
             }
         }
     }
+    @FXML
+    protected void buttonHover(MouseEvent mouseEvent)
+    {
+        baseController.changeStyle((Button) mouseEvent.getSource());
+    }
 
     private void setupMnemonics()
     {

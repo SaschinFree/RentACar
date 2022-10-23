@@ -1,7 +1,5 @@
 package za.nmu.wrrv.rent;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -101,6 +99,11 @@ public class updateVehicleController implements Initializable
                 case "updateVehicle" -> onUpdate();
             }
         }
+    }
+    @FXML
+    protected void buttonHover(MouseEvent mouseEvent)
+    {
+        baseController.changeStyle((Button) mouseEvent.getSource());
     }
 
     private void onUpdate() throws SQLException

@@ -19,7 +19,7 @@
             </Label>
             <ChoiceBox fx:id="searchFilter" prefWidth="150.0" />
             <TextField fx:id="searchQuery" promptText="Search" />
-            <Button fx:id="search" onMouseClicked="#buttonClicked" style="-fx-background-color: #3B2F2F;" text="_Search" textFill="WHITE">
+            <Button fx:id="search" onMouseClicked="#buttonClicked" onMouseEntered="#buttonHover" onMouseExited="#buttonHover" style="-fx-background-color: #3B2F2F;" text="_Search" textFill="WHITE">
                <HBox.margin>
                   <Insets right="5.0" />
                </HBox.margin></Button>
@@ -36,9 +36,9 @@
             </TableView>
             <HBox prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <Button fx:id="back" onMouseClicked="#buttonClicked" style="-fx-background-color: #3B2F2F;" text="_Back" textFill="WHITE" />
+                  <Button fx:id="back" onMouseClicked="#buttonClicked" onMouseEntered="#buttonHover" onMouseExited="#buttonHover" style="-fx-background-color: #3B2F2F;" text="_Back" textFill="WHITE" />
                   <Label prefHeight="17.0" prefWidth="761.0" />
-                  <Button fx:id="dispatchVehicle" onMouseClicked="#buttonClicked" style="-fx-background-color: #3B2F2F;" text="_Dispatch Vehicle" textFill="WHITE" />
+                  <Button fx:id="dispatchVehicle" onMouseClicked="#buttonClicked" onMouseEntered="#buttonHover" onMouseExited="#buttonHover" style="-fx-background-color: #3B2F2F;" text="_Dispatch Vehicle" textFill="WHITE" />
                </children>
             </HBox>
          </children>

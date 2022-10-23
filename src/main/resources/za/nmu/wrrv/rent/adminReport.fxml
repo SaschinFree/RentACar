@@ -60,7 +60,7 @@
             </ScrollPane>
             <VBox alignment="BOTTOM_LEFT" prefHeight="200.0" prefWidth="100.0">
                <children>
-                  <Button fx:id="back" onMouseClicked="#buttonClicked" style="-fx-background-color: #3B2F2F;" text="_Back" textFill="WHITE" />
+                  <Button fx:id="back" onMouseClicked="#buttonClicked" onMouseEntered="#buttonHover" onMouseExited="#buttonHover" style="-fx-background-color: #3B2F2F;" text="_Back" textFill="WHITE" />
                </children>
             </VBox>
          </children>

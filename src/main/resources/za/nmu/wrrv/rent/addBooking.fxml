@@ -36,7 +36,7 @@
                            </font>
                         </Label>
                         <TextField fx:id="clientSearchQuery" prefWidth="135.0" promptText="1234567898765" />
-                        <Button fx:id="clientSearch" mnemonicParsing="false" onMouseClicked="#buttonClicked" style="-fx-background-color: #3B2F2F;" text="Search" textFill="WHITE">
+                        <Button fx:id="clientSearch" mnemonicParsing="false" onMouseClicked="#buttonClicked" onMouseEntered="#buttonHover" onMouseExited="#buttonHover" style="-fx-background-color: #3B2F2F;" text="Search" textFill="WHITE">
                            <HBox.margin>
                               <Insets left="5.0" />
                            </HBox.margin>
@@ -59,7 +59,7 @@
                   </HBox>
                   <HBox alignment="CENTER_RIGHT" prefHeight="100.0">
                      <children>
-                        <Button fx:id="confirmClient" mnemonicParsing="false" onMouseClicked="#buttonClicked" style="-fx-background-color: #3B2F2F;" text="Confirm Client" textFill="WHITE" />
+                        <Button fx:id="confirmClient" mnemonicParsing="false" onMouseClicked="#buttonClicked" onMouseEntered="#buttonHover" onMouseExited="#buttonHover" style="-fx-background-color: #3B2F2F;" text="Confirm Client" textFill="WHITE" />
                      </children>
                   </HBox>
                   <Label fx:id="bookingPeriod" layoutX="10.0" layoutY="210.0" prefHeight="100.0" text="Booking Period">
@@ -99,7 +99,7 @@
                               <Font size="16.0" />
                            </font>
                         </Label>
-                        <Button fx:id="confirmPeriod" mnemonicParsing="false" onMouseClicked="#buttonClicked" style="-fx-background-color: #3B2F2F;" text="Confirm Period" textFill="WHITE" />
+                        <Button fx:id="confirmPeriod" mnemonicParsing="false" onMouseClicked="#buttonClicked" onMouseEntered="#buttonHover" onMouseExited="#buttonHover" style="-fx-background-color: #3B2F2F;" text="Confirm Period" textFill="WHITE" />
                      </children>
                   </HBox>
                   <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="10.0" minWidth="391.0" prefHeight="100.0" prefWidth="391.0">
@@ -110,7 +110,7 @@
                            </font>
                         </Label>
                         <TextField fx:id="vehicleSearchQuery" prefWidth="135.0" promptText="ABC123 EC" />
-                        <Button fx:id="vehicleSearch" mnemonicParsing="false" onMouseClicked="#buttonClicked" style="-fx-background-color: #3B2F2F;" text="Search" textFill="WHITE">
+                        <Button fx:id="vehicleSearch" mnemonicParsing="false" onMouseClicked="#buttonClicked" onMouseEntered="#buttonHover" onMouseExited="#buttonHover" style="-fx-background-color: #3B2F2F;" text="Search" textFill="WHITE">
                            <HBox.margin>
                               <Insets left="5.0" />
                            </HBox.margin>
@@ -133,7 +133,7 @@
                   </HBox>
                   <HBox alignment="CENTER_RIGHT" layoutX="10.0" layoutY="124.0" prefHeight="100.0">
                      <children>
-                        <Button fx:id="confirmVehicle" mnemonicParsing="false" onMouseClicked="#buttonClicked" style="-fx-background-color: #3B2F2F;" text="Confirm Vehicle" textFill="WHITE" />
+                        <Button fx:id="confirmVehicle" mnemonicParsing="false" onMouseClicked="#buttonClicked" onMouseEntered="#buttonHover" onMouseExited="#buttonHover" style="-fx-background-color: #3B2F2F;" text="Confirm Vehicle" textFill="WHITE" />
                      </children>
                   </HBox>
                </children>
@@ -191,8 +191,8 @@
       </HBox>
       <HBox alignment="BOTTOM_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="50.0">
          <children>
-            <Button fx:id="cancel" mnemonicParsing="false" onMouseClicked="#buttonClicked" style="-fx-background-color: #3B2F2F;" text="Cancel" textFill="WHITE" />
-            <Button fx:id="addBooking" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onMouseClicked="#buttonClicked" style="-fx-background-color: #3B2F2F;" text="Add Booking" textFill="WHITE">
+            <Button fx:id="cancel" mnemonicParsing="false" onMouseClicked="#buttonClicked" onMouseEntered="#buttonHover" onMouseExited="#buttonHover" style="-fx-background-color: #3B2F2F;" text="Cancel" textFill="WHITE" />
+            <Button fx:id="addBooking" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onMouseClicked="#buttonClicked" onMouseEntered="#buttonHover" onMouseExited="#buttonHover" style="-fx-background-color: #3B2F2F;" text="Add Booking" textFill="WHITE">
                <HBox.margin>
                   <Insets />
                </HBox.margin>

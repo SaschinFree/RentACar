@@ -78,6 +78,11 @@ public class adminReportController implements Initializable, EventHandler<Event>
             baseController.nextScene(baseController.userLoggedOn);
         }
     }
+    @FXML
+    protected void buttonHover(MouseEvent mouseEvent)
+    {
+        baseController.changeStyle((Button) mouseEvent.getSource());
+    }
 
     private void setupMnemonics()
     {

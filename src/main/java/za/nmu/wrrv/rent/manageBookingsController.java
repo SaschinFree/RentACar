@@ -1,7 +1,5 @@
 package za.nmu.wrrv.rent;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.event.EventHandler;
@@ -179,6 +177,11 @@ public class manageBookingsController implements Initializable, EventHandler<Eve
                 case "back" -> baseController.nextScene(baseController.userLoggedOn);
             }
         }
+    }
+    @FXML
+    protected void buttonHover(MouseEvent mouseEvent)
+    {
+        baseController.changeStyle((Button) mouseEvent.getSource());
     }
 
     private void setupMnemonics()

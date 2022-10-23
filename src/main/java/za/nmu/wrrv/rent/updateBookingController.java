@@ -78,6 +78,11 @@ public class updateBookingController implements Initializable
             }
         }
     }
+    @FXML
+    protected void buttonHover(MouseEvent mouseEvent)
+    {
+        baseController.changeStyle((Button) mouseEvent.getSource());
+    }
 
     private void onUpdate() throws SQLException
     {

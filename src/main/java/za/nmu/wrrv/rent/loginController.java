@@ -1,8 +1,6 @@
 package za.nmu.wrrv.rent;
 
 import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
@@ -11,9 +9,7 @@ import javafx.scene.image.Image;
 import javafx.scene.input.*;
 import javafx.stage.Stage;
 
-import java.net.URL;
 import java.sql.SQLException;
-import java.util.ResourceBundle;
 
 public class loginController
 {
@@ -51,6 +47,11 @@ public class loginController
                 case "login" -> onLogin();
             }
         }
+    }
+    @FXML
+    protected void buttonHover(MouseEvent mouseEvent)
+    {
+        baseController.changeStyle((Button) mouseEvent.getSource());
     }
 
     private void onLogin() throws SQLException

@@ -1,8 +1,5 @@
 package za.nmu.wrrv.rent;
 
-import javafx.beans.Observable;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
@@ -114,6 +111,11 @@ public class updateClientController implements Initializable
                 case "updateClient" -> onUpdate();
             }
         }
+    }
+    @FXML
+    protected void buttonHover(MouseEvent mouseEvent)
+    {
+        baseController.changeStyle((Button) mouseEvent.getSource());
     }
 
     private void onUpdate() throws SQLException

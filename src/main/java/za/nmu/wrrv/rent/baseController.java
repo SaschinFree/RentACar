@@ -1,7 +1,5 @@
 package za.nmu.wrrv.rent;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -14,7 +12,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Paint;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
@@ -125,12 +124,20 @@ public class baseController implements Initializable
     @FXML
     protected void buttonHover(MouseEvent mouseEvent)
     {
-        Button thisButton = (Button) mouseEvent.getSource();
-
+        changeStyle((Button) mouseEvent.getSource());
+    }
+    protected static void changeStyle(Button thisButton)
+    {
         if(thisButton.isHover())
+        {
             thisButton.setStyle("-fx-background-color: #8D918D");
+            thisButton.setBorder(new Border(new BorderStroke(Paint.valueOf("Black"), BorderStrokeStyle.SOLID, new CornerRadii(3), BorderWidths.DEFAULT)));
+        }
         else
+        {
             thisButton.setStyle("-fx-background-color: #3B2F2F");
+            thisButton.setBorder(null);
+        }
     }
 
     public void onLogout()

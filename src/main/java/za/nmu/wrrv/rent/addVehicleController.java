@@ -148,6 +148,11 @@ public class addVehicleController implements Initializable
             }
         }
     }
+    @FXML
+    protected void buttonHover(MouseEvent mouseEvent)
+    {
+        baseController.changeStyle((Button) mouseEvent.getSource());
+    }
 
 
     private void onAdd() throws SQLException

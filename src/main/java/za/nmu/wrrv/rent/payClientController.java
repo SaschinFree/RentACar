@@ -34,6 +34,8 @@ public class payClientController implements Initializable
     protected TextField amountPaid;
     @FXML
     protected Button cancel;
+    @FXML
+    protected Button payClient;
 
     private final Alert alert = new Alert(Alert.AlertType.ERROR);
     private String errorMessage;
@@ -71,6 +73,11 @@ public class payClientController implements Initializable
                 case "payClient" -> onPay();
             }
         }
+    }
+    @FXML
+    protected void buttonHover(MouseEvent mouseEvent)
+    {
+        baseController.changeStyle((Button) mouseEvent.getSource());
     }
 
     private void onPay() throws SQLException
