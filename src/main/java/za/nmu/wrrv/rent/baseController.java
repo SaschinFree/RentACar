@@ -1,5 +1,7 @@
 package za.nmu.wrrv.rent;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -110,7 +112,8 @@ public class baseController implements Initializable
     {
         if(mouseEvent.getButton() == MouseButton.PRIMARY)
         {
-            String buttonId = ((Button) mouseEvent.getSource()).getId();
+            Button thisButton = (Button) mouseEvent.getSource();
+            String buttonId = thisButton.getId();
 
             switch (buttonId)
             {
@@ -118,6 +121,16 @@ public class baseController implements Initializable
                 case "logout" -> onLogout();
             }
         }
+    }
+    @FXML
+    protected void buttonHover(MouseEvent mouseEvent)
+    {
+        Button thisButton = (Button) mouseEvent.getSource();
+
+        if(thisButton.isHover())
+            thisButton.setStyle("-fx-background-color: #8D918D");
+        else
+            thisButton.setStyle("-fx-background-color: #3B2F2F");
     }
 
     public void onLogout()

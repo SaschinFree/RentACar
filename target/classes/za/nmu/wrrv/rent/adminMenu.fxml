@@ -19,7 +19,7 @@
           <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
         </rowConstraints>
          <children>
-            <Button fx:id="manageClients" onMouseClicked="#buttonClicked" prefHeight="120.0" prefWidth="180.0" style="-fx-background-color: #3B2F2F;" textFill="WHITE" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+            <Button fx:id="manageClients" onMouseClicked="#buttonClicked" onMouseEntered="#buttonHover" onMouseExited="#buttonHover" prefHeight="120.0" prefWidth="180.0" style="-fx-background-color: #3B2F2F;" textFill="WHITE" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                <font>
                   <Font size="16.0" />
                </font>
@@ -33,7 +33,7 @@
                      </image>
                   </ImageView>
                </graphic></Button>
-            <Button fx:id="manageVehicles" onMouseClicked="#buttonClicked" prefHeight="120.0" prefWidth="180.0" style="-fx-background-color: #3B2F2F;" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+            <Button fx:id="manageVehicles" onMouseClicked="#buttonClicked" onMouseEntered="#buttonHover" onMouseExited="#buttonHover" prefHeight="120.0" prefWidth="180.0" style="-fx-background-color: #3B2F2F;" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                <font>
                   <Font size="16.0" />
                </font>
@@ -47,7 +47,7 @@
                      </image>
                   </ImageView>
                </graphic></Button>
-            <Button fx:id="manageBookings" onMouseClicked="#buttonClicked" prefHeight="120.0" prefWidth="180.0" style="-fx-background-color: #3B2F2F;" textFill="WHITE" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+            <Button fx:id="manageBookings" onMouseClicked="#buttonClicked" onMouseEntered="#buttonHover" onMouseExited="#buttonHover" prefHeight="120.0" prefWidth="180.0" style="-fx-background-color: #3B2F2F;" textFill="WHITE" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                <font>
                   <Font size="16.0" />
                </font>
@@ -61,7 +61,7 @@
                      </image>
                   </ImageView>
                </graphic></Button>
-            <Button fx:id="managePayments" onMouseClicked="#buttonClicked" prefHeight="120.0" prefWidth="180.0" style="-fx-background-color: #3B2F2F;" textFill="WHITE" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+            <Button fx:id="managePayments" onMouseClicked="#buttonClicked" onMouseEntered="#buttonHover" onMouseExited="#buttonHover" prefHeight="120.0" prefWidth="180.0" style="-fx-background-color: #3B2F2F;" textFill="WHITE" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                <font>
                   <Font size="16.0" />
                </font>
@@ -75,7 +75,7 @@
                      </image>
                   </ImageView>
                </graphic></Button>
-            <Button fx:id="manageSettings" onMouseClicked="#buttonClicked" prefHeight="120.0" prefWidth="180.0" style="-fx-background-color: #3B2F2F;" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+            <Button fx:id="manageSettings" onMouseClicked="#buttonClicked" onMouseEntered="#buttonHover" onMouseExited="#buttonHover" prefHeight="120.0" prefWidth="180.0" style="-fx-background-color: #3B2F2F;" textFill="WHITE" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                <font>
                   <Font size="16.0" />
                </font>
@@ -89,7 +89,7 @@
                      </image>
                   </ImageView>
                </graphic></Button>
-            <Button fx:id="adminReport" onMouseClicked="#buttonClicked" prefHeight="120.0" prefWidth="180.0" style="-fx-background-color: #3B2F2F;" textFill="WHITE" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
+            <Button fx:id="adminReport" onMouseClicked="#buttonClicked" onMouseEntered="#buttonHover" onMouseExited="#buttonHover" prefHeight="120.0" prefWidth="180.0" style="-fx-background-color: #3B2F2F;" textFill="WHITE" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                <font>
                   <Font size="16.0" />
                </font>

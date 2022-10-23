@@ -52,6 +52,16 @@ public class clerkController implements Initializable
             baseController.nextScene(buttonId);
         }
     }
+    @FXML
+    protected void buttonHover(MouseEvent mouseEvent)
+    {
+        Button thisButton = (Button) mouseEvent.getSource();
+
+        if(thisButton.isHover())
+            thisButton.setStyle("-fx-background-color: #8D918D");
+        else
+            thisButton.setStyle("-fx-background-color: #3B2F2F");
+    }
 
     private void setupTooltips()
     {
