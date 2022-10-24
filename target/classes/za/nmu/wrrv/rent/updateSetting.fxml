@@ -54,8 +54,8 @@
       </HBox>
       <HBox alignment="BOTTOM_RIGHT" prefHeight="274.0" prefWidth="900.0" spacing="50.0">
          <children>
-            <Button fx:id="cancel" mnemonicParsing="false" onMouseClicked="#buttonClicked" style="-fx-background-color: #3B2F2F;" text="Cancel" textFill="WHITE" />
-            <Button fx:id="updateSetting" mnemonicParsing="false" onMouseClicked="#buttonClicked" style="-fx-background-color: #3B2F2F;" text="Update Setting" textFill="WHITE" />
+            <Button fx:id="cancel" mnemonicParsing="false" onMouseClicked="#buttonClicked" onMouseEntered="#buttonHover" onMouseExited="#buttonHover" style="-fx-background-color: #3B2F2F;" text="Cancel" textFill="WHITE" />
+            <Button fx:id="updateSetting" mnemonicParsing="false" onMouseClicked="#buttonClicked" onMouseEntered="#buttonHover" onMouseExited="#buttonHover" style="-fx-background-color: #3B2F2F;" text="Update Setting" textFill="WHITE" />
          </children>
          <padding>
             <Insets bottom="5.0" right="10.0" />

@@ -134,8 +134,8 @@
       </HBox>
       <HBox alignment="BOTTOM_RIGHT" layoutX="10.0" layoutY="435.0" prefHeight="100.0" prefWidth="200.0" spacing="50.0">
          <children>
-            <Button fx:id="cancel" mnemonicParsing="false" onMouseClicked="#buttonClicked" style="-fx-background-color: #3B2F2F;" text="Cancel" textFill="WHITE" />
-            <Button fx:id="payClient" mnemonicParsing="false" onMouseClicked="#buttonClicked" style="-fx-background-color: #3B2F2F;" text="Pay Client" textFill="WHITE" />
+            <Button fx:id="cancel" mnemonicParsing="false" onMouseClicked="#buttonClicked" onMouseEntered="#buttonHover" onMouseExited="#buttonHover" style="-fx-background-color: #3B2F2F;" text="Cancel" textFill="WHITE" />
+            <Button fx:id="payClient" mnemonicParsing="false" onMouseClicked="#buttonClicked" onMouseEntered="#buttonHover" onMouseExited="#buttonHover" style="-fx-background-color: #3B2F2F;" text="Pay Client" textFill="WHITE" />
          </children>
          <padding>
             <Insets bottom="5.0" right="10.0" />
